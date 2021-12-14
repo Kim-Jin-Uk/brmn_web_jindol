@@ -1,0 +1,139 @@
+@import "/styles/configs.scss";
+
+.menu {
+    background-color: $main_header;
+    display: flex;
+    height: 56px;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+    padding: 0px 20px;
+    border-bottom: 1px solid #E8E8E8;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    >* {
+        margin-left: 8px;
+    }
+}
+
+.menu_items {
+    display: flex;
+    margin: 0px 10px;
+}
+
+.menu_item:hover, .menu_item.active {
+    padding-top: 4px;
+    border-bottom: 4px solid $header_action;
+}
+
+.menu_item {
+    margin: 0px 20px;
+    display: flex;
+    align-items: center;
+    word-wrap: unset;
+    height: 56px;
+    cursor: pointer;
+    color: #1d1d1d;
+    font-size: 16px;
+}
+
+
+.searchWrapper {
+    width: 400px;
+}
+
+.right_mobile {
+    display: none;
+}
+
+.logo_small {
+    display: none;
+    cursor: pointer;
+}
+
+.logo {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 1024px) {
+    .menu {
+        padding: 10px 20px;
+    }
+    .menu_items, .right, .searchWrapper, .logo {
+        display: none;
+    }
+    .right_mobile {
+        display: block;
+        display: flex;
+        >* {
+            margin-left: 10px;
+        }
+    }
+    .logo_small {
+        display: block;
+    }
+}
+
+.signin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    width: 100%;
+    max-width: 79px;
+    height: auto;
+    > a {
+        color: $gray_3;
+        text-decoration: none;
+
+        &:hover {
+            color: #fff;
+        }
+    }
+}
+
+.create {
+    width: 134px;
+    height: 36px;
+    padding: 8px 10px;
+    font-size: 14px;
+    background: #ffffff;
+    color: #1d1d1d;
+}
+
+.signup {
+    height: 100%;
+    width: 92px;
+    max-height: 36px;
+    padding: 8px 20px;
+    background: #1d1d1d;
+    color: #ffffff;
+    font-size: 14px;
+    border-radius: 2px;
+}
+
+.login {
+    height: 100%;
+    width: 79px;
+    max-height: 36px;
+    padding: 8px 20px;
+    background: #FFFFFF;
+    border: 1px solid #E8E8E8;
+    font-size: 14px;
+    color: #1D1D1D;
+    border-radius: 2px;
+}
+
+.dropdown {
+    padding-left: 4px;
+}

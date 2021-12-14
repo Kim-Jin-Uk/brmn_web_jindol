@@ -1,0 +1,190 @@
+@import "./configs.scss";
+
+.center_align{
+    margin: 0 auto;
+    width: 1030px;
+}
+
+.body_color{
+    background: #FAFAFA;
+    width: 100%;
+    height: 100%;
+}
+
+.top {
+    height: 60px;
+    border-bottom: 1px solid $gray_2;
+    padding: 14px 0px;
+}
+
+.button_container {
+    display: flex;
+    justify-content: right;
+    >div {
+        width: 70px;
+        margin-left: 10px;
+    }
+}
+
+.create_button {
+    display: flex;
+    justify-content: right;
+    >div {
+        width: 100px;
+    }
+}
+
+.project_create_box {
+    width: 90%;
+    max-width: 500px;
+    margin: auto;
+}
+
+.content {
+    padding: 40px 0px;
+    border: 1px solid $gray_2;
+    border-radius: 4px;
+    margin: 40px 0px;
+}
+
+.blank {
+    background-color: $gray_2;
+    margin: 30px 0px;
+}
+
+.music_wrapper {
+    margin: auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.image_wrapper {
+    height: 330px;
+}
+
+.video_wrapper {
+    position: relative;
+    height: 571px;
+}
+
+.setting {
+    padding: 40px;
+    padding-top: 0px;
+    border-bottom: 1px solid $gray_2;
+    >.title {
+        font-size: 15px;
+        font-weight: bold;
+        margin-bottom: 16px;
+    }
+    >.checkbox {
+        display: flex;
+        >div {
+            margin-right: 10px;
+        }
+    }
+}
+
+.box {
+    border: 1px solid $gray_2;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    padding: 20px;
+    .title {
+        font-weight: 500;
+        font-size: 13px;
+        margin-bottom: 10px;
+        color: $gray_6;
+    }
+    .subtitle {
+        color: $gray_4;
+        font-size: 13px;
+    }
+}
+
+.box_content {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.music_box {
+    width: 500px;
+    height: 500px;
+}
+
+.image_box {
+    position: inherit !important;
+    width: 100%;
+    height: 100%;
+}
+
+.video_box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.edit_wrapper {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    >.buttons {
+        width: 200px;
+        >div {
+            margin-bottom: 10px;
+        }
+    }
+}
+
+.text_wrapper {
+    padding: 40px;
+}
+
+.project_detail_upload {
+    display: flex;
+    justify-content: center;
+    >div:first-child > div {
+        width: 320px;
+        margin-right: 20px;
+    }
+    >div:last-child {
+        width: 100%;
+        max-width: 780px;
+    }
+    .upload_box {
+        width: 280px;
+        height: 280px;
+        margin: 20px 0px;
+        background-position: center center;
+        background-size: cover;
+        border: 1px dashed #ccc;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        color: $gray_4;
+        >div:first-child {
+            margin-bottom: auto;
+            margin-top: auto;
+        }
+    }
+    .has_image {
+        border: 0px solid !important;
+        > * {
+            display: none;
+        }
+        &:hover > * {
+            display: block;
+        }
+    }
+}
+
+.newArtist {
+    color: #3380F4;
+    cursor: pointer;
+}

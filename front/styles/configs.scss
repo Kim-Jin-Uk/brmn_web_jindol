@@ -1,0 +1,28 @@
+// 색깔 정의
+$gray_1: #FAFAFA;
+$gray_2: #E8E8E8;
+$gray_3: #A8A8A8;
+$gray_4: #616161;
+$gray_5: #404040;
+$gray_6: #1D1D1D;
+$main_header: #FFFFFF;
+$main: #33F4A3;
+$header_action: #1D1D1D;
+$main_dark: #25D38A;
+$text_dark: #e8e8e8;
+$green: #4CAF50;
+$blue: #0091EA;
+$red: #D32F2F;
+$purple: #9F33F4;
+
+@mixin box ($color) {
+    background: $color;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* gray1 */
+
+// background: #FAFAFA;
+// /* clubhouse */
+
+// box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
