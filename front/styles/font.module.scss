@@ -1,0 +1,22 @@
+@import "./configs.scss";
+
+.b24 {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 130%;
+    color: $gray_6;
+}
+
+.n13 {
+    font-weight: normal;
+    font-size: 13px;
+    color: $gray_4;
+}
+
+.main {
+    color: $main;
+}
+
+.main_dark {
+    color: #000000;
+}

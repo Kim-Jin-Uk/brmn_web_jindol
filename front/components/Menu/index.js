@@ -78,7 +78,7 @@ export default function Menu(param) {
                     ) : (
                         <>
                             <Button login className={styles.login} onClick={()=>router.push("/user/signin")}>로그인</Button>
-                            <Button signup className={styles.signup} onClick={()=>router.push("/")}>회원가입</Button>
+                            <Button signup className={styles.signup} onClick={()=>router.push("/signup")}>회원가입</Button>
                         </>
                     )
                 }

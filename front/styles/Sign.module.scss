@@ -1,0 +1,74 @@
+@import "/styles/configs.scss";
+
+.input_group {
+    margin-top: 30px;
+}
+
+.input_group > div {
+    margin-bottom: 15px;
+}
+
+.create_btn_group {
+    width: 100%;
+}
+
+.sns_button_group {
+    width: 100%;
+    text-align: center;
+    margin-top: 12px;
+}
+
+.sns_button_group > div {
+    display: inline-block;
+    margin-right: 16px;
+    margin-left: 16px;
+    width: 56px;
+    height: 56px;
+    border-radius: 28px;
+    > div{
+        width: 56px;
+        height: 56px;
+        background: black;
+        opacity: 0;
+    }
+}
+
+
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.link {
+    cursor: pointer;
+}
+
+.complete {
+    font-weight: bold;
+    font-size: 24px;
+    color: $gray_6;
+}
+
+.signin {
+    text-decoration: none;
+    border-bottom: 1px solid black;
+    margin: 0;
+    > span{
+        margin: 0 !important
+    }
+}
+
+.sns_link {
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+    font-size: 13px;
+}
+
+.create_btn {
+    width: 100%;
+    margin-top: 20px;
+}
+
+

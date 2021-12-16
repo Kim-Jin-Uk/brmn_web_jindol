@@ -1,0 +1,113 @@
+@import "/styles/configs.scss";
+
+$label: $gray_4;
+$focus: $main;
+$hover: $gray_5;
+$button: $gray_6;
+$underline: $gray_2;
+$hint: $blue;
+$negative: $red;
+$positive: $green;
+
+.label {
+    font-size: 14px;
+    line-height: 170%;
+    color: $label;
+}
+
+.wrapper {
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid $underline;
+    padding-bottom: 3px;
+    align-items: center;
+    input, textarea {
+        width: 100%;
+        border: 0px solid;
+        outline: none;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 130%;
+        color: $gray_6;
+    }
+    textarea {
+        height: 100px;
+    }
+    > .text {
+        margin: 0px 10px;
+        font-size: 14px;
+        line-height: 170%;
+        color: $blue;
+    }
+}
+
+.button {
+    width: 66px;
+    height: 32px;
+    background-color: $button;
+    border-radius: 2px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    border: 0px;
+    padding:  4px 20px;
+    white-space: nowrap;
+    &:hover {
+        background-color: $hover;
+        cursor: pointer;
+    }
+}
+
+.hint, .negative, .positive {
+    font-size: 13px;
+    line-height: 140%;
+    margin-top: 2px;
+}
+
+.wrapper.focus {
+    border-bottom: 1px solid #3380F4;
+}
+
+.hint {
+    color: $hint;
+}
+
+.negative {
+    color: $negative;
+}
+
+.positive {
+    color: $positive;
+}
+
+.wrapper.hint {
+    border-bottom: 1px solid $hint;
+}
+
+.label.hint {
+    color: $hint;
+}
+
+.wrapper.negative {
+    border-bottom: 1px solid $negative;
+}
+
+.label.negative {
+    color: $negative;
+}
+
+.wrapper.positive {
+    border-bottom: 1px solid $positive;
+}
+
+.label.positive {
+    color: $positive;
+}
+
+
+.disabled {
+    background-color: #eee;
+    padding:5px;
+}

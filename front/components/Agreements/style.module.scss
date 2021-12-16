@@ -1,0 +1,41 @@
+$color: #25D38A;
+
+.impact {
+    font-weight: 600;
+}
+
+.agreements {
+    display: flex;
+}
+
+.content {
+
+}
+
+.subtitle {
+    font-size: 12px;
+    line-height: 170%;
+    color: #616161;
+}
+
+.toggle {
+    font-size: 12px;
+    line-height: 150%;
+    text-align: right;
+    text-decoration-line: underline;
+    color: #616161;
+    margin-left: auto;
+    cursor: pointer;
+}
+
+.agreement {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    > span {
+        font-size: 12px;
+        line-height: 150%;
+        text-align: right;
+        cursor: pointer;
+    }
+}

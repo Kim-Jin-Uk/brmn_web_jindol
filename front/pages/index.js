@@ -5,7 +5,7 @@ import Header from "../components/Header";
 const Home = () => {
     return(
         <>
-            <Header />
+            <Header param={"guide"}/>
             <h1>설명 페이지</h1>
             <div><Link href={"/project"}><a>프로젝트</a></Link></div>
             <div><Link href={"/portfolio"}><a>포트폴리오</a></Link></div>
