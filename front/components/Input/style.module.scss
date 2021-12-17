@@ -42,21 +42,36 @@ $positive: $green;
     }
 }
 
-.button {
+.fake_button {
     width: 66px;
     height: 32px;
-    background-color: $button;
+    background-color: #FFFFFF;
     border-radius: 2px;
-    color: #fff;
+    color: #E8E8E8;
     font-weight: 500;
     font-size: 14px;
     line-height: 150%;
-    border: 0px;
+    border: 1px solid #E8E8E8;
     padding:  4px 20px;
     white-space: nowrap;
+}
+
+.button {
+    height: 32px;
+    background-color: #FFFFFF;
+    border-radius: 2px;
+    color: #1D1D1D;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    border: 1px solid #E8E8E8;
+    padding:  4px 20px;
+    white-space: nowrap;
+    vertical-align: center;
     &:hover {
-        background-color: $hover;
+        background-color: #1D1D1D;
         cursor: pointer;
+        color:#ffffff
     }
 }
 
@@ -111,3 +126,4 @@ $positive: $green;
     background-color: #eee;
     padding:5px;
 }
+
