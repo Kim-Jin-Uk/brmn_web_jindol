@@ -13,8 +13,6 @@ export default function Agreements(props) {
         "c1": false,
         "c2": false,
         "c3": false,
-        "c4": false,
-        "c5": false
     })
 
     useEffect(() => {
@@ -72,8 +70,6 @@ export default function Agreements(props) {
                 "c1": false,
                 "c2": false,
                 "c3": false,
-                "c4": false,
-                "c5": false,
             })
             setRequiredToggle(false)
             return
@@ -83,8 +79,6 @@ export default function Agreements(props) {
             "c1": true,
             "c2": true,
             "c3": true,
-            "c4": true,
-            "c5": true,
         })
         setRequiredToggle(true)
     }
@@ -92,9 +86,9 @@ export default function Agreements(props) {
         const field = {}
         field[name] = !checked[name]
         setChecked({...checked, ...field})
-        if ({...checked, ...field}['c1'] && {...checked, ...field}['c2'] && {...checked, ...field}['c3']){
+        if ({...checked, ...field}['c1'] && {...checked, ...field}['c2']){
             setRequiredToggle(true)
-            if ({...checked, ...field}['c4'] && {...checked, ...field}['c5']){
+            if ({...checked, ...field}['c3']){
                 setAllowAll(true)
             }else {
                 setAllowAll(false)
@@ -114,7 +108,7 @@ export default function Agreements(props) {
                 </div>
                 <span onClick={toggle} className={styles.toggle}>
                 {
-                    hidden ? "전체보기" : "접기"
+                    hidden ? "확인하기" : "접기"
                 }
                 </span>
             </div>
@@ -130,40 +124,25 @@ export default function Agreements(props) {
                                     checked={checked['c1']}
                                     toggle={() => {onToggle("c1")}}
                                 >
-                                    <span className={styles.impact}>(필수) 만 14세 이상입니다.</span>
+                                    <span className={styles.impact}>(필수) 서비스 이용약관에 동의합니다.</span>
                                 </Checkbox>
-                                <span>(확인하기)</span>
                             </div>
                             <div className={styles.agreement}>
                                 <Checkbox
                                     checked={checked['c2']}
                                     toggle={() => {onToggle("c2")}}
                                 >
-                                    <span className={styles.impact}>(필수) 서비스 이용약관에 동의합니다.</span>
+                                    <span className={styles.impact}>(필수) 개인정보 수집·이용에 동의합니다.</span>
                                 </Checkbox>
-                                <span>(확인하기)</span>
                             </div>
                             <div className={styles.agreement}>
                                 <Checkbox
                                     checked={checked['c3']}
                                     toggle={() => {onToggle("c3")}}
                                 >
-                                    <span className={styles.impact}>(필수) 개인정보 수집·이용에 동의합니다.</span>
+                                    <span className={styles.choice}>(선택) 이벤트 할인 혜택 알림 수신에 동의합니다.</span>
                                 </Checkbox>
-                                <span>(확인하기)</span>
                             </div>
-                            <Checkbox
-                                checked={checked['c4']}
-                                toggle={() => {onToggle("c4")}}
-                            >
-                                (선택) 이벤트 할인 혜택 알림 수신에 동의합니다.
-                            </Checkbox>
-                            <Checkbox
-                                checked={checked['c5']}
-                                toggle={() => {onToggle("c5")}}
-                            >
-                                (선택) 장기 미접속 시 계정 활성 상태 유지합니다.
-                            </Checkbox>
                         </div>
 
                     </>

@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useState} from "react";
+import React, {memo, useCallback, useEffect, useState} from "react";
 import Image from "next/image"
 import Link from "next/link"
 import image_logo from "../images/logo.svg"
@@ -15,6 +15,7 @@ import fontStyles from "../styles/font.module.scss"
 import SignWrapper from "../components/SignWrapper";
 import Agreements from "/components/Agreements"
 
+
 const SignUp = memo(() => {
     const [isGoogleHover, setIsGoogleHover] = useState(false);
     const [isNaverHover, setIsNaverHover] = useState(false);
@@ -30,7 +31,10 @@ const SignUp = memo(() => {
     const [authCodeErr,setAuthCodeErr] = useState(false);
     const [authCodeFocus,setAuthCodeFocus] = useState(false);
     const [authCodeCheck, setAuthCodeCheck] = useState(false);
+    const [authCodeTime, setAuthCodeTimer] = useState(true);
     const [authType,setAuthType] = useState(false);
+    const [countDownType,setCountDownType] = useState(false);
+    const [countDown,setCountDown] = useState(null);
 
     const [passwordText, setPasswordText] = useState("");
     const [passwordErr,setPasswordErr] = useState(false);
@@ -57,7 +61,10 @@ const SignUp = memo(() => {
         setEmailFocus(false)
     })
     const onClickEmail = useCallback((e) => {
+        setCountDownType(true)
+        setCountDown(600)
         setEmailReadonly(true)
+        setAuthCodeTimer(true)
     })
 
     //authCode
@@ -75,8 +82,10 @@ const SignUp = memo(() => {
     })
     const onClickAuthCode = useCallback((e) => {
         setAuthCodeErr(authCodeText !== "1234")
-        if ((authCodeText !== "1234") === false){
+        if (authCodeText === "1234"){
             setAuthCodeCheck(true)
+            setCountDownType(false)
+            setCountDown(0)
         }
         setAuthType(true)
     },[authCodeErr,authCodeText,authType])
@@ -109,6 +118,30 @@ const SignUp = memo(() => {
         setPasswordCheckFocus(false)
     })
 
+    useEffect(() => {
+        if (countDown > 0) {
+            const Counter = setInterval(() => {
+                setCountDown(countDown - 1)
+            }, 1000)
+            return () => clearInterval(Counter)
+        }
+        else {
+            if (authCodeErr){
+                setAuthCodeTimer(false)
+            }else {
+                setAuthCodeTimer(true)
+            }
+
+        }
+    }, [countDown])
+
+    const timeFormat = (time) => {
+        const m = Math.floor(time / 60).toString()
+        let s = (time % 60).toString()
+        if (s.length === 1) s = `0${s}`
+        return `${m}:${s}`
+    }
+
     return(
         <>
             <SignWrapper>
@@ -126,10 +159,10 @@ const SignUp = memo(() => {
                     <div>
                         {
                             emailErr
-                                ? <div style={{color:'#F43333'}}>이메일</div>
+                                ? <div className={fontStyles.example_text_err}>이메일</div>
                                 : emailFocus
-                                    ? <div style={{color:'#3380F4'}}>이메일</div>
-                                    : <div style={{color:'#616161'}}>이메일</div>
+                                    ? <div className={fontStyles.example_text_focus}>이메일</div>
+                                    : <div className={fontStyles.example_text_default}>이메일</div>
                         }
                         <div style={{
                             display: 'flex',
@@ -171,7 +204,7 @@ const SignUp = memo(() => {
                         }
                         {
                             emailErr
-                                ? <div style={{color:'#F43333'}}>이메일 형식이 유효하지 않습니다.</div>
+                                ? <div className={fontStyles.hint_text_err}>이메일 형식이 유효하지 않습니다.</div>
                                 : null
                         }
 
@@ -182,10 +215,10 @@ const SignUp = memo(() => {
                                 <div style={{marginTop:"16px"}}>
                                     {
                                         authCodeErr
-                                            ? <div style={{color:'#F43333'}}>인증번호 입력</div>
+                                            ? <div className={fontStyles.example_text_err}>인증번호 입력</div>
                                             : authCodeFocus
-                                                ? <div style={{color:'#3380F4'}}>인증번호 입력</div>
-                                                : <div style={{color:'#616161'}}>인증번호 입력</div>
+                                                ? <div className={fontStyles.example_text_focus}>인증번호 입력</div>
+                                                : <div className={fontStyles.example_text_default}>인증번호 입력</div>
                                     }
                                     <div style={{
                                         display: 'flex',
@@ -201,11 +234,36 @@ const SignUp = memo(() => {
                                             onBlur={onBlurAuthCode}
                                             onChange={onChangeAuthCode}
                                             onKeyUp={onKeyUpAuthCode}
+                                            autoComplete='one-time-code'
                                         />
                                         {
-                                            !authCodeCheck
-                                                ? <button className={inputStyles.button} onClick={onClickAuthCode}>인증</button>
+                                            countDownType
+                                                ? (
+                                                    authCodeErr
+                                                    ?
+                                                        (
+                                                            <div className={styles.timer_error}>
+                                                                {timeFormat(countDown)}
+                                                            </div>
+                                                        )
+                                                    :
+                                                        (
+                                                            <div className={styles.timer_default}>
+                                                                {timeFormat(countDown)}
+                                                            </div>
+                                                        )
+
+                                                )
+
                                                 : null
+                                        }
+                                        {
+                                            authCodeTime
+                                                ? !authCodeCheck
+                                                    ? <button className={inputStyles.button} onClick={onClickAuthCode}>인증</button>
+                                                    : null
+                                                : <div className={inputStyles.fake_button} >인증</div>
+
                                         }
 
                                     </div>
@@ -218,14 +276,14 @@ const SignUp = memo(() => {
                                     }
                                     {
                                         authCodeErr
-                                            ? <div style={{color:'#F43333'}}>인증번호가 일치하지 않습니다.</div>
+                                            ? <div className={fontStyles.hint_text_err}>인증번호가 일치하지 않습니다.</div>
                                             : null
                                     }
 
                                 </div>
                                 {
                                     authCodeCheck
-                                        ? <div style={{color:'#3380F4'}}>본인인증이 완료되었습니다.</div>
+                                        ? <div className={fontStyles.hint_text_focus}>본인인증이 완료되었습니다.</div>
                                         : <></>
                                 }
                             </>
@@ -235,12 +293,12 @@ const SignUp = memo(() => {
                         <div>
                             {
                                 passwordErr
-                                    ? <div style={{color:'#F43333'}}>비밀번호</div>
+                                    ? <div className={fontStyles.example_text_err}>비밀번호</div>
                                     : passwordFocus
                                         ? passwordText.length === 0
-                                            ? <div style={{color:'#3380F4'}}>비밀번호</div>
-                                            : <div style={{color:'#25D38A'}}>비밀번호</div>
-                                        : <div style={{color:'#616161'}}>비밀번호</div>
+                                            ? <div className={fontStyles.example_text_focus}>비밀번호</div>
+                                            : <div className={fontStyles.example_text_complete}>비밀번호</div>
+                                        : <div className={fontStyles.example_text_default}>비밀번호</div>
                             }
                             <div style={{
                                 display: 'flex',
@@ -271,10 +329,10 @@ const SignUp = memo(() => {
                                 passwordErr
                                     ?  passwordFocus
                                         ? passwordText.length === 0
-                                            ? <div style={{color:'#3380F4'}}>영문/숫자/특수문자 포함 8~15자리를 입력해주세요.</div>
-                                            : <div style={{color:'#F43333'}}>영문/숫자/특수문자 포함 8~15자리를 입력해주세요.</div>
+                                            ? <div className={fontStyles.hint_text_focus}>영문/숫자/특수문자 포함 8~15자리를 입력해주세요.</div>
+                                            : <div className={fontStyles.hint_text_err}>영문/숫자/특수문자 포함 8~15자리를 입력해주세요.</div>
                                         : null
-                                    : <div style={{color:'#25D38A'}}>사용 가능한 비밀번호입니다.</div>
+                                    : <div className={fontStyles.hint_text_complete}>사용 가능한 비밀번호입니다.</div>
 
 
                             }
@@ -286,11 +344,11 @@ const SignUp = memo(() => {
                             {
                                 passwordCheckFocus
                                     ? passwordCheckText.length === 0
-                                        ? <div style={{color:'#3380F4'}}>비밀번호 확인</div>
+                                        ? <div className={fontStyles.example_text_focus}>비밀번호 확인</div>
                                         :  passwordCheckErr
-                                            ? <div style={{color:'#F43333'}}>비밀번호 확인</div>
-                                            : <div style={{color:'#25D38A'}}>비밀번호 확인</div>
-                                    : <div style={{color:'#616161'}}>비밀번호 확인</div>
+                                            ? <div className={fontStyles.example_text_err}>비밀번호 확인</div>
+                                            : <div className={fontStyles.example_text_complete}>비밀번호 확인</div>
+                                    : <div className={fontStyles.example_text_default}>비밀번호 확인</div>
                             }
                             <div style={{
                                 display: 'flex',
@@ -322,9 +380,9 @@ const SignUp = memo(() => {
                                     ? passwordCheckFocus
                                         ? passwordCheckText.length === 0
                                             ? <></>
-                                            : <div style={{color:'#F43333'}}>비밀번호가 일치하지 않습니다.</div>
+                                            : <div className={fontStyles.hint_text_err}>비밀번호가 일치하지 않습니다.</div>
                                         : null
-                                    : <div style={{color:'#25D38A'}}>비밀번호가 일치합니다.</div>
+                                    : <div className={fontStyles.hint_text_complete}>비밀번호가 일치합니다.</div>
                             }
                         </div>
                     </div>

@@ -1,16 +1,75 @@
 @import "./configs.scss";
 
 .b24 {
-    font-weight: bold;
+    font-family: "Spoqa Han Sans Neo";
+    font-weight: 700;
     font-size: 24px;
+    font-style: normal;
     line-height: 130%;
     color: $gray_6;
 }
 
 .n13 {
-    font-weight: normal;
+    font-family: 'Spoqa Han Sans Neo';
+    font-weight: 400;
     font-size: 13px;
     color: $gray_4;
+}
+
+.example_text_err {
+    font-family: 'Spoqa Han Sans Neo';
+    font-weight: 400;
+    font-size: 12px;
+    color: #F43333;
+}
+
+.example_text_focus {
+    font-family: 'Spoqa Han Sans Neo';
+    font-weight: 400;
+    font-size: 12px;
+    color: #3380F4;
+}
+
+.example_text_default {
+    font-family: 'Spoqa Han Sans Neo';
+    font-weight: 400;
+    font-size: 12px;
+    color: #616161;
+}
+
+.example_text_complete {
+    font-family: 'Spoqa Han Sans Neo';
+    font-weight: 400;
+    font-size: 12px;
+    color: #25D38A;
+}
+
+.hint_text_err {
+    font-family: 'Spoqa Han Sans Neo';
+    font-weight: 400;
+    font-size: 13px;
+    color: #F43333;
+}
+
+.hint_text_focus {
+    font-family: 'Spoqa Han Sans Neo';
+    font-weight: 400;
+    font-size: 13px;
+    color: #3380F4;
+}
+
+.hint_text_default {
+    font-family: 'Spoqa Han Sans Neo';
+    font-weight: 400;
+    font-size: 13px;
+    color: #616161;
+}
+
+.hint_text_complete {
+    font-family: 'Spoqa Han Sans Neo';
+    font-weight: 400;
+    font-size: 13px;
+    color: #25D38A;
 }
 
 .main {

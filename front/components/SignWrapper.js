@@ -13,11 +13,11 @@ export default function SignWrapper(props) {
                         <Image src={image_logo_white}/>
                     </div>
                 </div>
-                <div className={styles.sign_children}>
+                <aside className={styles.sign_children} style={{overflowY:"scroll", overflowX:"hidden"}}>
                     <div>
                         {props.children}
                     </div>
-                </div>
+                </aside>
             </div>
 
         </>

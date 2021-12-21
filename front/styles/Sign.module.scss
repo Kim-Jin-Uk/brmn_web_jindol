@@ -51,6 +51,9 @@
 }
 
 .signin {
+    font-family: "Spoqa Han Sans Neo";
+    font-weight: 400;
+    font-style: normal;
     text-decoration: none;
     border-bottom: 1px solid black;
     margin: 0;
@@ -64,11 +67,19 @@
     text-align: center;
     margin-top: 30px;
     font-size: 13px;
+    > span{
+        font-family: "Spoqa Han Sans Neo";
+        font-weight: 400;
+    }
 }
 
 .create_btn {
     width: 100%;
     margin-top: 20px;
+    font-style: normal;
+    font-family: "Spoqa Han Sans Neo";
+    font-weight: 500;
+    font-size: 16px;
 }
 
 .input_non_autofill  {
@@ -79,6 +90,20 @@
     font-weight: 500;
     font-size: 16px;
     line-height: 130%;
+    font-family: "Spoqa Han Sans Neo";
     color: #1D1D1D;
+}
 
+.timer_default{
+    font-size:14px;
+    font-family:"Spoqa Han Sans Neo";
+    margin-right:8px;
+    color: #3380F4;
+}
+
+.timer_error{
+    font-size:14px;
+    font-family:"Spoqa Han Sans Neo";
+    margin-right:8px;
+    color: #F43333;
 }
