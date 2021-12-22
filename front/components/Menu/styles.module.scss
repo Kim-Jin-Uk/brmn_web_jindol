@@ -135,5 +135,72 @@
 }
 
 .dropdown {
-    padding-left: 4px;
+    width: 280px;
+    height: 261px;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+    background: #ffffff;
+    border-radius: 4px;
+}
+
+.dropdown_top {
+    width: 280px;
+    height: 104px;
+    border-bottom: 1px solid #E8E8E8;
+}
+
+.dropdown_bottom {
+    width: 280px;
+    height: 156px;
+    padding-top: 12px;
+    padding-left: 16px;
+}
+
+.dropdown_item_top{
+    margin-left: 12px;
+    display: inline-block;
+    width: 120px;
+    vertical-align: top;
+    margin-top: 20px;
+    >span{
+        display: inline-block;
+    }
+}
+
+.dropdown_item_bottom {
+    display: block;
+    height: 24px;
+    margin: 4px;
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 170%;
+    color: #1D1D1D;
+}
+
+.dropdown_item_top_first{
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 130%;
+    color: #1D1D1D;
+}
+
+.dropdown_item_top_second{
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 170%;
+    color: #616161;
+}
+
+.dropdown_button{
+    background: rgba(255, 255, 255, 0);
+    border: 0px;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    padding: 0;
 }

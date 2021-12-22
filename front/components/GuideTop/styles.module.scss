@@ -1,0 +1,29 @@
+.intro_top{
+  width: 100%;
+  background: #FAFAFA;
+  text-align: center;
+}
+
+@media (max-width: 360px) {
+  .intro_top{
+    height: 380px;
+    padding-top: 40px;
+    padding-bottom: 60px;
+  }
+}
+
+@media (min-width:360px) and (max-width: 640px) {
+  .intro_top{
+    height: 440px;
+    padding-top: 60px;
+    padding-bottom: 80px;
+  }
+}
+
+@media (min-width:640px) {
+  .intro_top{
+    height: 800px;
+    padding-top: 120px;
+    padding-bottom: 185px;
+  }
+}

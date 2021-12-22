@@ -1,12 +1,14 @@
 import React from "react";
 import Link from 'next/link';
 import Header from "../components/Header";
+import ServiceIntro from "../components/ServiceIntro";
 
 const Home = () => {
     return(
         <>
             <Header param={"guide"}/>
             <h1>설명 페이지</h1>
+            <ServiceIntro></ServiceIntro>
             <div><Link href={"/project"}><a>프로젝트</a></Link></div>
             <div><Link href={"/portfolio"}><a>포트폴리오</a></Link></div>
             <Link href={"/upload/contents"}><a>무언가1</a></Link>
