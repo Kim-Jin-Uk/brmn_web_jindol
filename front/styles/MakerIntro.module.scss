@@ -61,64 +61,20 @@
 }
 
 .content_1_middle{
-  background: #E8E8E8;
+  min-width: 320px;
+  background: #1D1D1D;
 }
 
-.sub_1_1_middle{
+.content_4_middle{
   background: #ffffff;
-  border-radius: 10px;
-  height: 84px;
 }
 
-.sub_1_1{
-  display: block;
+.sub_1_img{
+
 }
 
-.sub_icon_1{
-  background: url(../images/intro/sub_1_1_icon.svg);
-}
-.sub_icon_2{
-  background: url(../images/intro/sub_1_2_icon.svg);
-}
-.sub_icon_3{
-  background: url(../images/intro/sub_1_3_icon.svg);
-}
-.sub_icon_4{
-  background: url(../images/intro/sub_1_4_icon.svg);
-}
-
-.sub_1_1_icon{
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  vertical-align: middle;
-  float: left;
-}
-
-.sub_1_1_title{
-  width: 45px;
-  display: inline-block;
-  font-family: Spoqa Han Sans Neo;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 150%;
-  color: #1D1D1D;
-  vertical-align: middle;
-  margin-left: 8px;
-  float: left;
-  text-align: left;
-}
-
-.sub_1_1_content{
-  font-family: Spoqa Han Sans Neo;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 150%;
-  color: #404040;
-  float: left;
-  display: block;
+.sub_4_img{
+  background: url(../images/makerIntro/sub_1_4.svg);
 }
 
 .sub_1_text{
@@ -126,19 +82,28 @@
   font-style: normal;
   font-weight: bold;
   line-height: 150%;
-  color: #000000;
+  color: #ffffff;
+}
+
+.sub_4_text{
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 150%;
+  color: #1d1d1d;
 }
 
 .contents_sub_middle{
-
+  min-width: 320px;
 }
 
 .content_sub_1{
-  background: #FFF8DC;
+  background: #FFF06A;
 }
 
 .content_sub_2{
-  background: #555BD6;
+  background: #2D60E4;
+  overflow: hidden;
 }
 
 .contents_sub_text{
@@ -158,12 +123,12 @@
 }
 
 .content_img_1{
-  background: url(../images/intro/sub_1_1.svg);
+  background: url(../images/makerIntro/sub_1_1.svg);
   background-size: contain;
 }
 
 .content_img_2{
-  background: url(../images/intro/sub_1_2.svg);
+  background: url(../images/makerIntro/sub_1_2.svg);
   background-size: contain;
 }
 
@@ -179,7 +144,7 @@
 }
 
 .steps_group_middle{
-  background: #3380F4;
+  background: #1d1d1d;
   width: 100%;
   min-width: 346px;
 }
@@ -206,35 +171,35 @@
   width: 12px;
   height: 12px;
   border-radius: 6px;
-  background: #70A6F7;
+  background: #404040;
 }
 
 .small_dots{
   width: 12px;
   height: 12px;
   border-radius: 6px;
-  background: #70A6F7;
+  background: #404040;
   margin-left: 4px;
 }
 
 .first_line{
   width: 2px;
   height: 101px;
-  background: #70A6F7;
+  background: #404040;
   margin-left: 9px;
 }
 
 .after_line{
   width: 2px;
   height: 105px;
-  background: #70A6F7;
+  background: #404040;
   margin-left: 9px;
 }
 
 .finish_line{
   width: 2px;
-  height: 71px;
-  background: #70A6F7;
+  height: 112px;
+  background: #404040;
   margin-left: 9px;
 }
 
@@ -255,82 +220,9 @@
     font-weight: bold;
     font-size: 20px;
     line-height: 130%;
-    color: #70A6F7;
+    color: #404040;
     margin-bottom: 88.8px;
   }
-}
-
-.manual_group{
-  width: 1500px;
-  height: 280px;
-  text-align: left;
-  margin-top: 60px;
-  margin-left: calc(50% - 750px);
-  margin-right: calc(50% - 750px);
-  >div{
-    display: inline-block;
-    width: 280px;
-    height: 280px;
-    margin-right: 10px;
-    margin-left: 10px;
-    border-radius: 20px;
-  }
-}
-
-.manu_back1{
-  background: #629AF9;
-}
-.manu_back2{
-  background: #DCB859;
-}
-.manu_back3{
-  background: #EC8783;
-}
-.manu_back4{
-  background: #60BDB7;
-}
-.manu_back5{
-  background: #343BAC;
-}
-
-.manual_grouper{
-  width: 100%;
-  text-align: center;
-  margin-bottom: 160px;
-}
-
-.manual_text{
-  font-family: Spoqa Han Sans Neo;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 22px;
-  line-height: 130%;
-  color: #FFFFFF;
-  margin: 24px;
-  height: 58px;
-}
-
-.manual_img{
-  width: 160px;
-  height: 160px;
-  margin-top: 18px;
-  margin-left: 100px;
-}
-
-.manu1{
-  background: url(../images/intro/manual_1.svg);
-}
-.manu2{
-  background: url(../images/intro/manual_2.svg);
-}
-.manu3{
-  background: url(../images/intro/manual_3.svg);
-}
-.manu4{
-  background: url(../images/intro/manual_4.svg);
-}
-.manu5{
-  background: url(../images/intro/manual_5.svg);
 }
 
 .background_bottom{
@@ -389,11 +281,15 @@
   display: inline-block;
 }
 
+.question_wrapper{
+
+}
+
 
 @media (max-width: 600px) {
   .background_top{
     height: 600px;
-    background-image: url(../images/intro/client_background_top_small.png);
+    background-image: url(../images/makerIntro/maker_background_top_small.png);
   }
 
   .content_cover_top{
@@ -454,37 +350,41 @@
   }
 
   .content_1_middle{
-    height: 612px;
-    padding-top: 40px;
+    height: 652px;
+    padding-top: 35px;
   }
 
-  .sub_1_1_middle{
-    margin: 0px 24px 12px;
-    width: auto;
+  .content_4_middle{
+    height: 400px;
+    padding-top: 48px;
   }
 
-  .sub_1_1{
-    display: block;
-  }
-
-  .sub_1_1_icon{
-    margin-top: 18px;
-    margin-left: 20px;
-  }
-
-  .sub_1_1_title{
-    margin-top: 16px;
-  }
-
-  .sub_1_1_content{
-    width: 100%;
+  .sub_1_img{
+    width: 276px;
+    height: 417px;
     margin-left: 24px;
-    margin-top: 4px;
+    background-size: 276px;
+    background: url(../images/makerIntro/content_1_2x3.svg) no-repeat;
+  }
+
+  .sub_4_img{
+    width: 208px;
+    height: 92px;
+    overflow: auto;
+    margin-top: 86px;
+    float: right;
+    margin-right: 40px;
   }
 
   .sub_1_text{
     font-size: 24px;
     margin-top: 32px;
+    margin-left: 24px;
+  }
+
+  .sub_4_text{
+    font-size: 24px;
+    margin-top: 0px;
     margin-left: 24px;
   }
 
@@ -507,10 +407,13 @@
   }
 
   .content_img_2{
-    width: 240px;
-    height: 240px;
-    background-size: 240px;
-    margin: 6px auto auto;
+    width: 300px;
+    height: 254px;
+    margin: 32px auto 0;
+  }
+  .content_text_sub_2{
+    width: 220px;
+    height: 90px;
   }
 
   .manual_title{
@@ -523,16 +426,9 @@
   }
 
   .steps_group_middle{
-    height: 1076px;
+    height: 1014px;
     padding-top: 80px;
-  }
-
-  .manual_group{
-    margin-top: 40px;
-  }
-
-  .manual_grouper{
-    margin-bottom: 100px;
+    margin-top: 100px;
   }
 
   .question_card{
@@ -585,17 +481,12 @@
   .question_wrapper{
     margin-top: 32px;
   }
-
-  .question_wrapper2{
-    margin-top: 32px;
-  }
-
 }
 
 @media (min-width:600px) and (max-width: 1024px) {
   .background_top{
     height: 700px;
-    background-image: url(../images/intro/client_background_top_middle.png);
+    background-image: url(../images/makerIntro/maker_background_top_middle.png);
   }
 
   .content_cover_top{
@@ -647,35 +538,39 @@
     padding-top: 64px;
   }
 
-  .sub_1_1_middle{
-    margin: 0px 48px 12px;
-    width: 400px;
+  .content_4_middle{
+    height: 600px;
   }
 
-  .sub_1_1{
-    display: inline-block;
-    float: left;
-    vertical-align: center;
+  .sub_1_img{
+    width: 480px;
+    height: 324px;
+    margin: 0 auto;
+    background-size: 480px;
+    background: url(../images/makerIntro/content_1_3x2.svg) no-repeat;
   }
 
-  .sub_1_1_icon{
-    margin-left: 24px;
-    margin-top: 32px;
-  }
-
-  .sub_1_1_title{
-    margin-top: 30px;
-  }
-
-  .sub_1_1_content{
-    margin-top: 30px;
-    display: inline-block;
-    margin-left: 34px;
+  .sub_4_img{
+    width: 354px;
+    height: 157px;
+    background-size: 354px;
+    overflow: auto;
+    margin-top: 123.5px;
+    float: right;
+    margin-right: 44px;
   }
 
   .sub_1_text{
     font-size: 32px;
-    margin-top: 40px;
+    margin-top: 88px;
+    margin-left: 48px;
+    float: left;
+    text-align: left;
+  }
+
+  .sub_4_text{
+    font-size: 32px;
+    margin-top: 0px;
     margin-left: 48px;
     float: left;
     text-align: left;
@@ -701,10 +596,14 @@
   }
 
   .content_img_2{
-    width: 300px;
-    height: 300px;
-    background-size: 300px;
-    margin: 112px auto auto;
+    width: 400px;
+    height: 338px;
+    margin: 122px auto 0;
+    background-size: 400px;
+  }
+  .content_text_sub_2{
+    width: 414px;
+    height: 72px;
   }
 
   .manual_title{
@@ -713,9 +612,10 @@
   }
 
   .steps_group_middle{
-    height: 1240px;
+    height: 1134px;
     padding-top: 120px;
     text-align: center;
+    margin-top: 120px;
   }
 
   .first_line{
@@ -727,7 +627,7 @@
   }
 
   .finish_line{
-    height: 81px;
+    height: 102px;
   }
 
   .steps_number{
@@ -807,16 +707,12 @@
   .question_wrapper{
     margin-top: 40px;
   }
-
-  .question_wrapper2{
-    margin-top: 32px;
-  }
 }
 
 @media (min-width:1024px){
   .background_top{
     height: 800px;
-    background-image: url(../images/intro/client_background_top_large.png);
+    background-image: url(../images/makerIntro/maker_background_top_large.png);
   }
 
   .content_cover_top{
@@ -865,35 +761,34 @@
 
   .content_1_middle{
     height: 500px;
-    padding-top: 64px;
+    padding-top: 48px;
   }
 
-  .sub_1_1_middle{
+  .content_4_middle{
+    padding-top: 60px;
+  }
+
+  .sub_1_img{
+    width: 580px;
+    height: 392px;
+    margin-left: 60px;
+    background-size: 580px;
+    background: url(../images/makerIntro/content_1_3x2.svg) no-repeat;
     display: inline-block;
-    margin: 0px 48px 12px;
-    width: 400px;
+    background-size: 580px;
     float: left;
   }
 
-  .sub_1_1{
+  .sub_4_img{
     display: inline-block;
-    float: left;
-    vertical-align: center;
-  }
-
-  .sub_1_1_icon{
-    margin-left: 24px;
-    margin-top: 32px;
-  }
-
-  .sub_1_1_title{
-    margin-top: 30px;
-  }
-
-  .sub_1_1_content{
-    margin-top: 30px;
-    display: inline-block;
-    margin-left: 34px;
+    width: 395px;
+    height: 175px;
+    background-repeat: no-repeat;
+    background-size: 395px;
+    overflow: auto;
+    margin-top: 218px;
+    float: right;
+    margin-right: 62px;
   }
 
   .sub_1_text{
@@ -905,6 +800,15 @@
     transform: translateY(-50%);
     margin-top: -40px;
     margin-left: -24px;
+  }
+
+  .sub_4_text{
+    display: inline-block;
+    float: left;
+    margin-top: 0px;
+    text-align: left;
+    font-size: 32px;
+    margin-left: 60px;
   }
 
   .contents_sub_middle{
@@ -932,10 +836,14 @@
   }
 
   .content_img_2{
-    width: 300px;
-    height: 300px;
-    background-size: 300px;
-    margin: 112px auto auto;
+    width: 400px;
+    height: 338px;
+    margin: 122px auto 0;
+    background-size: 400px;
+  }
+  .content_text_sub_2{
+    width: 339px;
+    height: 108px;
   }
 
   .manual_title{
@@ -944,9 +852,10 @@
   }
 
   .steps_group_middle{
-    height: 1240px;
+    height: 1134px;
     padding-top: 120px;
     text-align: center;
+    margin-top: 160px;
   }
 
   .first_line{
@@ -958,7 +867,7 @@
   }
 
   .finish_line{
-    height: 81px;
+    height: 102px;
   }
 
   .steps_number{
@@ -1036,10 +945,6 @@
   }
 
   .question_wrapper{
-    margin-top: 40px;
-  }
-
-  .question_wrapper2{
     margin-top: 40px;
   }
 }
