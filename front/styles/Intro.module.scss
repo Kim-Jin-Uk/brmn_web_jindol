@@ -8,10 +8,11 @@
   padding-left: 20px;
   padding-right: 20px;
   min-width: 340px;
+  height: calc(100vh - 56px) !important;
 }
 
 .content_cover_top{
-  margin: 0 auto;
+  margin: auto;
   vertical-align: middle;
   background: rgba(82, 82, 82, 0.5);
   backdrop-filter: blur(20px);
@@ -392,7 +393,6 @@
 
 @media (max-width: 600px) {
   .background_top{
-    height: 600px;
     background-image: url(../images/intro/client_background_top_small.svg);
   }
 
@@ -594,7 +594,6 @@
 
 @media (min-width:600px) and (max-width: 1024px) {
   .background_top{
-    height: 700px;
     background-image: url(../images/intro/client_background_top_middle.svg);
   }
 
@@ -602,7 +601,7 @@
     width: 560px;
     height: 300px;
     border-radius: 40px;
-    margin-top: 200px;
+    margin: auto;
   }
 
   .content_top{
@@ -815,7 +814,6 @@
 
 @media (min-width:1024px){
   .background_top{
-    height: 800px;
     background-image: url(../images/intro/client_background_top_large.svg);
   }
 
@@ -823,7 +821,7 @@
     width: 700px;
     height: 261px;
     border-radius: 40px;
-    margin-top: 250px;
+    margin: auto;
   }
 
   .content_top{
