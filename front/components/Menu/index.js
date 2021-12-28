@@ -76,50 +76,50 @@ export default function Menu(param) {
                             ? <MenuItem href="/" active>이용안내</MenuItem>
                             : <MenuItem href="/">이용안내</MenuItem>
                     }
-                    {
-                        param.param && param.param === "project"
-                        ? <MenuItem href="/project" active>프로젝트</MenuItem>
-                        : <MenuItem href="/project">프로젝트</MenuItem>
-                    }
+                    {/*{*/}
+                    {/*    param.param && param.param === "project"*/}
+                    {/*    ? <MenuItem href="/project" active>프로젝트</MenuItem>*/}
+                    {/*    : <MenuItem href="/project">프로젝트</MenuItem>*/}
+                    {/*}*/}
                 </div>
             </div>
 
-            <div className={styles.right}>
-                {
-                    param.param ? (
-                        <>
-                            <Button upload className={styles.create} onClick={()=>router.push("/project/create")}>프로젝트 업로드</Button>
-                            {/*
-                            <IconButton src={image_message} onClick={() => alert("준비중인 기능입니다.")}/>
-                            <IconButton src={image_bell} onClick={() => alert("준비중인 기능입니다.")}/>
- */}
+ {/*           <div className={styles.right}>*/}
+ {/*               {*/}
+ {/*                   param.param ? (*/}
+ {/*                       <>*/}
+ {/*                           <Button upload className={styles.create} onClick={()=>router.push("/project/create")}>프로젝트 업로드</Button>*/}
+ {/*                           /!**/}
+ {/*                           <IconButton src={image_message} onClick={() => alert("준비중인 기능입니다.")}/>*/}
+ {/*                           <IconButton src={image_bell} onClick={() => alert("준비중인 기능입니다.")}/>*/}
+ {/**!/*/}
 
-                            <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
-                                <AntBtn className={styles.dropdown_button}>
-                                    <Link href={"/"}>
-                                        <div style={{cursor: "pointer", display: "flex"}}>
-                                            <ProfileThumbnail circle size={40} image={
-                                                "https://www.walkerhillstory.com/wp-content/uploads/2020/09/2-1.jpg"
-                                            }/>
-                                        </div>
-                                    </Link>
-                                </AntBtn>
-                            </Dropdown>
+ {/*                           <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>*/}
+ {/*                               <AntBtn className={styles.dropdown_button}>*/}
+ {/*                                   <Link href={"/"}>*/}
+ {/*                                       <div style={{cursor: "pointer", display: "flex"}}>*/}
+ {/*                                           <ProfileThumbnail circle size={40} image={*/}
+ {/*                                               "https://www.walkerhillstory.com/wp-content/uploads/2020/09/2-1.jpg"*/}
+ {/*                                           }/>*/}
+ {/*                                       </div>*/}
+ {/*                                   </Link>*/}
+ {/*                               </AntBtn>*/}
+ {/*                           </Dropdown>*/}
 
 
-                        </>
-                    ) : (
-                        <>
-                            <Button login className={styles.login} onClick={()=>router.push("/login")}>로그인</Button>
-                            <Button signup className={styles.signup} onClick={()=>router.push("/signup")}>회원가입</Button>
-                        </>
-                    )
-                }
-            </div>
-            <div className={styles.right_mobile}>
-                <IconButton src={image_search}/>
-                <IconButton src={image_menu}/>
-            </div>
+ {/*                       </>*/}
+ {/*                   ) : (*/}
+ {/*                       <>*/}
+ {/*                           <Button login className={styles.login} onClick={()=>router.push("/login")}>로그인</Button>*/}
+ {/*                           <Button signup className={styles.signup} onClick={()=>router.push("/signup")}>회원가입</Button>*/}
+ {/*                       </>*/}
+ {/*                   )*/}
+ {/*               }*/}
+ {/*           </div>*/}
+ {/*           <div className={styles.right_mobile}>*/}
+ {/*               <IconButton src={image_search}/>*/}
+ {/*               <IconButton src={image_menu}/>*/}
+ {/*           </div>*/}
         </div>
     )
 }

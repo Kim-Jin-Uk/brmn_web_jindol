@@ -150,14 +150,14 @@ const Intro = () => {
     return(
         <>
             <Global/>
-            <Header></Header>
+            <Header param={"guide"}></Header>
             <div style={{background:"e5e5e5"}}>
                 <div className={styles.background_top}>
                     <div className={styles.content_cover_top}>
                         <div className={styles.content_top}>
                             믿을 수 있는 역량을 지닌 메이커들과 콘텐츠를 제작해 보세요. 메이커를 구하는 데에 시간을 쏟을 필요 없이 조건에 맞게 선별된 메이커를 추천받을 수 있습니다.
                         </div>
-                        <Link href={"/"}><a className={styles.link_top}>메이커 매칭 신청하기 ></a></Link>
+                        <Link href={"https://melon-railway-ee2.notion.site/brmn-db4220eec1f44a5db4239e09dad53614"}><a className={styles.link_top}>메이커 매칭 신청하기 ></a></Link>
                     </div>
                 </div>
                 <div className={styles.contents_cover_middle}>
@@ -360,7 +360,12 @@ const Intro = () => {
                         </div>
                     </div>
 
-                    <Link href={"/"}><a><div className={styles.match_btn}></div></a></Link>
+                    <Link href={"https://melon-railway-ee2.notion.site/brmn-db4220eec1f44a5db4239e09dad53614"}><a>
+                        <div className={styles.match_btn}>
+                            <div className={styles.btn_text_1}></div>
+                            <div className={styles.btn_text_2}></div>
+                        </div>
+                    </a></Link>
                 </div>
             </div>
         </>

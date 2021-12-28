@@ -150,14 +150,14 @@ const Intro = () => {
     return(
         <>
             <Global/>
-            <Header></Header>
+            <Header param={"guide"}></Header>
             <div style={{background:"#e5e5e5"}}>
                 <div className={styles.background_top}>
                     <div className={styles.content_cover_top}>
                         <div className={styles.content_top}>
                             파트너스에 가입해 콘텐츠 참여를 시작하세요. 콘텐츠 매칭부터 계약조건 협의, 계약서 작성 과정을 도와 콘텐츠 제작에만 집중할 수 있도록 함께 하겠습니다
                         </div>
-                        <Link href={"/"}><a className={styles.link_top}>파트너스 신청하기 ></a></Link>
+                        <Link href={"https://melon-railway-ee2.notion.site/brmn-db4220eec1f44a5db4239e09dad53614"}><a className={styles.link_top}>파트너스 신청하기 ></a></Link>
                     </div>
                 </div>
                 <div className={styles.contents_cover_middle}>
@@ -280,7 +280,12 @@ const Intro = () => {
                         </div>
                     </div>
 
-                    <Link href={"/"}><a><div className={styles.match_btn}></div></a></Link>
+                    <Link href={"https://melon-railway-ee2.notion.site/brmn-db4220eec1f44a5db4239e09dad53614"}><a>
+                        <div className={styles.match_btn}>
+                            <div className={styles.btn_text_1}></div>
+                            <div className={styles.btn_text_2}></div>
+                        </div>
+                    </a></Link>
                 </div>
             </div>
 
