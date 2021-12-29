@@ -8,6 +8,7 @@ const NodeBird = function ({ Component }) {
     return (
         <>
             <Head>
+                <meta charSet={"utf-8"}/>
                 <title>brmn music</title>
             </Head>
             <Component />

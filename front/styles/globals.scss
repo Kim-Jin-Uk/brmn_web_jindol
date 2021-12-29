@@ -1,5 +1,5 @@
-@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
-@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css);
+//@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+//@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css);
 @import "./configs.scss";
 
 html, body {
@@ -26,4 +26,41 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 100;
+  src: url(../styles/fonts/SpoqaHanSansNeo-Light.woff2) format('woff2'),
+  url(../styles/fonts/SpoqaHanSansNeo-Light.woff) format('woff'),
+  url(../styles/fonts/SpoqaHanSansNeo-Light.otf) format('truetype')
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: normal;
+  src: url(../styles/fonts/SpoqaHanSansNeo-Regular.woff2) format('woff2'),
+  url(../styles/fonts/SpoqaHanSansNeo-Regular.woff) format('woff'),
+  url(../styles/fonts/SpoqaHanSansNeo-Regular.otf) format('truetype')
+}
+
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 500;
+  src: url(../styles/fonts/SpoqaHanSansNeo-Medium.woff2) format('woff2'),
+  url(../styles/fonts/SpoqaHanSansNeo-Medium.woff) format('woff'),
+  url(../styles/fonts/SpoqaHanSansNeo-Medium.otf) format('truetype')
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: bold;
+  src: url(../styles/fonts/SpoqaHanSansNeo-Bold.woff2) format('woff2'),
+  url(../styles/fonts/SpoqaHanSansNeo-Bold.woff) format('woff'),
+  url(../styles/fonts/SpoqaHanSansNeo-Bold.otf) format('truetype')
 }

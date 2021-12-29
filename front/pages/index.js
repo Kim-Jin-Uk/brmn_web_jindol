@@ -55,7 +55,7 @@ const Home = () => {
                     </div>
                 </div>
                 {/*intro bottom btn*/}
-                <Link href={"https://melon-railway-ee2.notion.site/brmn-db4220eec1f44a5db4239e09dad53614"}><a>
+                <Link href={"https://melon-railway-ee2.notion.site/brmn-db4220eec1f44a5db4239e09dad53614"} target="_blank" rel="noreferrer noopener"><a>
                     <div className={styles.match_btn}>
                         <div className={styles.btn_text_1}></div>
                         <div className={styles.btn_text_2}></div>
