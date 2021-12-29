@@ -7,6 +7,10 @@
     >a{
       width: 100%;
       height: 100%;
+      &:hover .content_text {
+        text-decoration-line: underline;
+        text-underline-position: under;
+      }
     }
   }
 }
@@ -56,7 +60,7 @@
   background: url(../images/intro/btn_text_2.svg) no-repeat;
   width: 110px;
   height: 21px;
-  margin: 45px auto 0;
+  margin: 33px auto 0;
   display: none;
 }
 
@@ -70,7 +74,7 @@
     height: calc((100vw - 40px) / 1.26);
     background: url(../images/mainIntro/main_title_small.svg) no-repeat;
     background-size: contain;
-    min-width: 320px;
+    min-width: 280px;
     min-height: 254px;
     margin: 60px 20px 20px;
   }
@@ -78,11 +82,12 @@
   .main_contents_wrapper{
     margin-top: 70px;
     >div{
+      min-width: 280px;
       padding-top: 24px;
       padding-right: 24px;
       padding-left: 24px;
-      height: calc((100vw - 40px)*1.375);
-      width: auto;
+      height: calc((100vw - 40px)*1.375) !important;
+      width: auto !important;
       min-height: 440px;
       margin-right: 20px;
       margin-left: 20px;
@@ -95,7 +100,7 @@
     display: none;
   }
   .content_img{
-    display: none;
+    display: none !important;
   }
   .content_text{
     display: none;
@@ -134,8 +139,8 @@
     margin: 100px 20px 0;
     border-radius: 20px;
     background: url(../images/intro/btn_small.svg) center;
-    padding-top: 48px;
-    min-width: 340px;
+    padding-top: 60px;
+    min-width: 280px;
   }
 
   .btn_text_1{
@@ -185,7 +190,7 @@
     height: 23px;
     position: relative;
     left: 282px;
-    top: 68px
+    top: 68px;
   }
   .content_img{
     width: 280px;
@@ -206,6 +211,14 @@
     height: 300px;
     margin: 160px auto 0;
     background: url(../images/intro/btn_middle.svg);
+  }
+
+  .btn_text_1{
+    display: none;
+  }
+
+  .btn_text_2{
+    display: none;
   }
 
   .bmcc{
@@ -253,17 +266,20 @@
   .content_title{
     height: 21px;
     text-align: left;
+    position: static;
   }
   .content_img{
     width: 100%;
     height: 218px;
     margin-top: -4px;
     background-size: 218px;
+    position: static;
   }
   .content_text{
     margin-top: -4px;
     text-align: left;
     font-size: 26px;
+    position: static;
   }
 
   .match_btn{
@@ -324,6 +340,7 @@
     width: 300px;
     height: 300px;
     margin: -5px auto 0;
+    background-size: 300px;
   }
   .content_text{
     margin-top: -6px;

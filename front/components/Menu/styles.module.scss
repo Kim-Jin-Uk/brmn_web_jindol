@@ -69,8 +69,11 @@
     .menu {
         padding: 10px 20px;
     }
-    .menu_items, .right, .searchWrapper, .logo {
+    .menu_items, .right, .searchWrapper {
         display: none;
+    }
+    .logo{
+        display: flex;
     }
     .right_mobile {
         display: block;
@@ -80,7 +83,7 @@
         }
     }
     .logo_small {
-        display: block;
+        display: none;
     }
 }
 

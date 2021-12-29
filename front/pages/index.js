@@ -7,7 +7,7 @@ const Home = () => {
     return(
         <>
             <Header param={"guide"}/>
-            <div style={{minWidth:"360px"}}>
+            <div style={{minWidth:"320px"}}>
                 {/*main title*/}
                 <div className={styles.main_title}></div>
                 {/*intro top btn*/}
@@ -41,7 +41,8 @@ const Home = () => {
                     </div>
 
                     <div className={styles.content_3}>
-                        <Link href={"https://melon-railway-ee2.notion.site/brmn-db4220eec1f44a5db4239e09dad53614"}><a>
+                        <Link href={"https://melon-railway-ee2.notion.site/brmn-db4220eec1f44a5db4239e09dad53614"}
+                              target="_blank" rel="noreferrer noopener"><a>
                             <div className={styles.content_title}>회사 소개</div>
                             <div className={`${styles.content_img} ${styles.img_3}`}></div>
                             <div className={styles.content_text}>
@@ -55,7 +56,7 @@ const Home = () => {
                     </div>
                 </div>
                 {/*intro bottom btn*/}
-                <Link href={"https://melon-railway-ee2.notion.site/brmn-db4220eec1f44a5db4239e09dad53614"} target="_blank" rel="noreferrer noopener"><a>
+                <Link href={"https://forms.gle/ccVtiCpFjYtmWs1y8"} target="_blank" rel="noreferrer noopener"><a>
                     <div className={styles.match_btn}>
                         <div className={styles.btn_text_1}></div>
                         <div className={styles.btn_text_2}></div>
