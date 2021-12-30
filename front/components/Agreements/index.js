@@ -4,6 +4,7 @@ import styles from "./style.module.scss"
 import btn_styles from "../../styles/Sign.module.scss"
 import Button from "../Button";
 import {Modal} from "antd";
+import Router from 'next/router'
 
 export default function Agreements(props) {
     const [hidden, setHidden] = useState(true)
@@ -27,11 +28,7 @@ export default function Agreements(props) {
             if (!props.passwordErr){
                 if (!props.passwordCheckErr){
                     if (requiredToggle){
-                        Modal.success({
-                            title:"brmn 인증",
-                            content: "테스트 가입",
-                            okText:"확인"
-                        });
+                        Router.push("complete")
                     }else {
                         Modal.error({
                             title: '회원가입 실패',

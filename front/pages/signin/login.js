@@ -1,22 +1,24 @@
 import React, {memo, useCallback, useState} from "react";
 import Image from "next/image"
 import Link from "next/link"
-import image_logo from "../images/logo.svg"
-import image_google from "../images/user/Group 1300.svg"
-import image_google_hover from "../images/user/Group1300_hover.svg"
-import image_naver from "../images/user/Group 1301.svg"
-import image_naver_hover from "../images/user/Group_1301_hover.svg"
-import image_kakao from "../images/user/Group 1302.svg"
-import image_kakao_hover from "../images/user/Group1302_hover.svg"
-import styles from "../styles/Sign.module.scss"
-import inputStyles from '../components/Input/style.module.scss'
-import fontStyles from "../styles/font.module.scss"
+import image_logo from "../../images/logo.svg"
+import image_google from "../../images/user/Group 1300.svg"
+import image_google_hover from "../../images/user/Group1300_hover.svg"
+import image_naver from "../../images/user/Group 1301.svg"
+import image_naver_hover from "../../images/user/Group_1301_hover.svg"
+import image_kakao from "../../images/user/Group 1302.svg"
+import image_kakao_hover from "../../images/user/Group1302_hover.svg"
+import styles from "../../styles/Sign.module.scss"
+import inputStyles from '../../components/Input/style.module.scss'
+import fontStyles from "../../styles/font.module.scss"
 
-import SignWrapper from "../components/SignWrapper";
+import SignWrapper from "../../components/SignWrapper";
 import Agreements from "/components/Agreements"
-import btn_styles from "../styles/Sign.module.scss";
-import Button from "../components/Button";
+import btn_styles from "../../styles/Sign.module.scss";
+import Button from "../../components/Button";
 import {Modal} from "antd";
+import {useRouter} from "next/router";
+import Router from "next/router";
 
 const SignUp = memo(() => {
     const [isGoogleHover, setIsGoogleHover] = useState(false);
@@ -69,11 +71,7 @@ const SignUp = memo(() => {
             setEmailErr2(false)
             if (tester.password === passwordText){
                 setPasswordErr(false)
-                Modal.success({
-                    title:"brmn 인증",
-                    content: "테스트 가입",
-                    okText:"확인"
-                });
+                Router.push("/")
             }else {
                 setPasswordErr(true)
             }
@@ -89,9 +87,9 @@ const SignUp = memo(() => {
                 <div className={fontStyles.b24} style={{ marginTop: 20 }}>
                     로그인
                 </div>
-                <div className={fontStyles.n13} style={{ marginTop: 5 }}>
+                <div className={fontStyles.n13} style={{ marginTop: 8 }}>
                     신규 사용자이신가요?&nbsp;
-                    <Link href="/signup">
+                    <Link href="signup">
                         <a className={styles.signin} ><span className={fontStyles.main_dark} style={{ marginLeft: 5 }}>계정 만들기</span></a>
                     </Link>
                 </div>

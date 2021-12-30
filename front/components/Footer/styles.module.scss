@@ -1,0 +1,94 @@
+@import "/styles/configs.scss";
+
+.container {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    height: auto;
+}
+
+.box {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-width: 500px;
+    width: 100%;
+    // margin-bottom: -90px;
+    background-color: #fff;
+}
+
+.link {
+    cursor: pointer;
+}
+
+.background {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    cursor: pointer;
+    // background-color: rgba(0, 0, 0, 0.8);
+}
+
+.component {
+    z-index: 9999;
+    width: 100%;
+    height: 36px;
+    background-color: #fff;
+    border-top: 1px solid $gray_2;
+    // margin-top: 100px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: $gray_6;
+    >div {
+        user-select: none;
+    }
+    >div:first-child {
+        margin-left: 20px;
+        display: flex;
+        height: 100%;
+        align-items: center;
+        >div:first-child{
+            margin-right: 100px;
+        }
+        a {
+            text-decoration: none;
+            color: $gray_6;
+            margin-right: 10px;
+        }
+    }
+    >div:last-child {
+        margin-left: auto;
+        margin-right: 20px;
+        display: flex;
+        height: 100%;
+        align-items: center;
+        >* {
+            display: flex;
+            margin-left: 15px;
+            &:last-child {
+                margin-left: 64px !important;
+            }
+        }
+    }
+}
+
+.footer_wrapper{
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .footer_wrapper{
+        display: none !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .footer_wrapper{
+        display: block;
+    }
+}

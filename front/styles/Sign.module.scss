@@ -10,6 +10,9 @@
 
 .create_btn_group {
     width: 100%;
+    > div{
+        height: 40px;
+    }
 }
 
 .sns_button_group {
@@ -74,7 +77,7 @@
 }
 
 .create_btn {
-    width: 100%;
+    width: 100% !important;
     margin-top: 20px;
     font-style: normal;
     font-family: "Spoqa Han Sans Neo";
@@ -106,4 +109,29 @@
     font-family:"Spoqa Han Sans Neo";
     margin-right:8px;
     color: #F43333;
+}
+
+.complete_btn_top {
+    width: 100% !important;
+    margin-top: 48px;
+    font-style: normal;
+    font-family: "Spoqa Han Sans Neo";
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.complete_btn_bottom {
+    width: 100% !important;
+    margin-top: 12px;
+    font-style: normal;
+    font-family: "Spoqa Han Sans Neo";
+    font-weight: 500;
+    font-size: 16px;
+    background: #ffffff;
+    color: #1d1d1d;
+    border: 1px solid #e8e8e8;
+    &:hover {
+        background: #1d1d1d;
+        color: #ffffff;
+    }
 }

@@ -1,18 +1,18 @@
 import React, {memo, useCallback, useEffect, useState} from "react";
 import Image from "next/image"
 import Link from "next/link"
-import image_logo from "../images/logo.svg"
-import image_google from "../images/user/Group 1300.svg"
-import image_google_hover from "../images/user/Group1300_hover.svg"
-import image_naver from "../images/user/Group 1301.svg"
-import image_naver_hover from "../images/user/Group_1301_hover.svg"
-import image_kakao from "../images/user/Group 1302.svg"
-import image_kakao_hover from "../images/user/Group1302_hover.svg"
-import styles from "../styles/Sign.module.scss"
-import inputStyles from '../components/Input/style.module.scss'
-import fontStyles from "../styles/font.module.scss"
+import image_logo from "../../images/logo.svg"
+import image_google from "../../images/user/Group 1300.svg"
+import image_google_hover from "../../images/user/Group1300_hover.svg"
+import image_naver from "../../images/user/Group 1301.svg"
+import image_naver_hover from "../../images/user/Group_1301_hover.svg"
+import image_kakao from "../../images/user/Group 1302.svg"
+import image_kakao_hover from "../../images/user/Group1302_hover.svg"
+import styles from "../../styles/Sign.module.scss"
+import inputStyles from '../../components/Input/style.module.scss'
+import fontStyles from "../../styles/font.module.scss"
 
-import SignWrapper from "../components/SignWrapper";
+import SignWrapper from "../../components/SignWrapper";
 import Agreements from "/components/Agreements"
 
 
@@ -149,9 +149,9 @@ const SignUp = memo(() => {
                 <div className={fontStyles.b24} style={{ marginTop: 20 }}>
                     계정 만들기
                 </div>
-                <div className={fontStyles.n13} style={{ marginTop: 5 }}>
+                <div className={fontStyles.n13} style={{ marginTop: 8 }}>
                     이미 계정이 있으십니까?&nbsp;
-                    <Link href="/login">
+                    <Link href="login">
                         <a className={styles.signin} ><span className={fontStyles.main_dark} style={{ marginLeft: 5 }}>로그인</span></a>
                     </Link>
                 </div>
