@@ -60,7 +60,6 @@ export default function Menu(param) {
     const router = useRouter()
 
     const onClickMenu = useCallback(() => {
-        console.log(param)
         if (param.openAble){
             param.setOpenAble(false)
         }else {

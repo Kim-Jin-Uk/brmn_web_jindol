@@ -1,0 +1,335 @@
+@import "./configs.scss";
+
+.profile_wrapper{
+}
+
+.profile_top_wrapper{
+  width: 100%;
+  height: 279px;
+  border-bottom: 1px solid #E8E8E8;
+  min-width: 280px;
+  background:#ffffff;
+}
+
+.profile_top_icon_wrapper{
+  width: 112px;
+  height: 112px;
+  margin: 28px auto 0;
+}
+
+.profile_top_icon_img{
+  width: 112px;
+  height: 112px;
+  object-fit: cover;
+  border-radius: 56px;
+}
+
+.profile_top_icon_change{
+  background: url(../images/profile/change.svg);
+  width: 28px;
+  height: 28px;
+  background-size: 28px;
+  position: relative;
+  display: inline-block;
+  top: -30px;
+  left: 82px;
+  cursor: pointer;
+}
+
+.profile_top_name{
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 130%;
+  text-align: center;
+  color: #1D1D1D;
+  text-align: center;
+  margin: 12px auto 0;
+}
+
+.profile_top_sub{
+  display: none;
+}
+
+.profile_top_button{
+  width: auto;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+  height: 40px;
+}
+
+.profile_top_button_icon{
+  width: 24px;
+  height: 24px;
+  background: url(../images/profile/edit.svg);
+}
+
+.profile_top_button_text{
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  text-align: center;
+  color: #33F4A3;
+  margin-left: 4px;
+}
+
+.profile_top_button_not_me{
+  width: auto;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+  height: 40px;
+  background: #33F4A3;
+}
+
+.profile_top_button_icon_not_me{
+  width: 24px;
+  height: 24px;
+  background: url(../images/profile/add.svg);
+}
+
+.profile_top_button_text_not_me{
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  text-align: center;
+  color: #1D1D1D;
+  margin-left: 4px;
+}
+
+.profile_top_follow{
+  display: none;
+}
+.profile_top_follow_num{
+  display: none;
+}
+
+.side_sns_wrapper{
+  display: none;
+}
+
+.nav_wrapper{
+  margin-top: 24px;
+  margin-left: 16px;
+  height: 32px;
+}
+
+.nav{
+  height: 32px;
+  border-radius: 16px;
+  border: none;
+  background: none;
+  padding: 9px 16px;
+  margin-left: 4px;
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+  text-align: center;
+  color: #1D1D1D;
+  cursor: pointer;
+  &:hover{
+    background: #E8E8E8;
+    color:#1d1d1d;
+  }
+}
+
+.nav_active{
+  height: 32px;
+  border-radius: 16px;
+  border: none;
+  background: #1D1D1D;
+  padding: 9px 16px;
+  margin-left: 4px;
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+  text-align: center;
+  color: #FFFFFF;
+  cursor: pointer;
+  &:hover{
+    background: #E8E8E8;
+    color:#1d1d1d;
+  }
+}
+
+
+@media (min-width: 1025px){
+  .profile_wrapper{
+    display: inline-block;
+    margin-top: 60px;
+    margin-left: 40px;
+  }
+  .profile_top_wrapper{
+    width: 380px;
+    height: auto;
+    border: 1px solid #E8E8E8;
+    border-radius: 4px;
+    padding: 28px 28px 36px;
+  }
+
+  .profile_top_icon_wrapper{
+    width: 112px;
+    height: 112px;
+    margin: 0 auto;
+  }
+
+  .profile_top_icon_img{
+    width: 112px;
+    height: 112px;
+    object-fit: cover;
+    border-radius: 56px;
+  }
+
+  .profile_top_icon_change{
+    background: url(../images/profile/change.svg);
+    width: 28px;
+    height: 28px;
+    background-size: 28px;
+    position: relative;
+    display: inline-block;
+    top: -30px;
+    left: 82px;
+    cursor: pointer;
+  }
+
+  .profile_top_name{
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 130%;
+    text-align: center;
+    color: #1D1D1D;
+    text-align: center;
+    margin: 12px auto;
+  }
+
+  .profile_top_sub{
+    display: block;
+    text-align: center;
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 170%;
+    text-align: center;
+    color: #1D1D1D;
+    height: 24px;
+  }
+
+  .profile_top_button{
+    width: auto;
+    margin: 20px;
+    height: 40px;
+  }
+
+  .profile_top_button_not_me{
+    width: auto;
+    margin: 20px;
+    height: 40px;
+  }
+
+  .profile_top_follow{
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 170%;
+    color: #616161;
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: 1px;
+    height: 27px;
+  }
+  .profile_top_follow_num{
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 170%;
+    text-align: right;
+    color: #1D1D1D;
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: 1px;
+    height: 27px;
+  }
+
+  .side_sns_wrapper{
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: -6px;
+    height: 24px;
+    > a{
+      width: 24px;
+      height: 24px;
+      margin-left: 6px;
+      margin-right: 6px;
+      display: inline-block;
+      >div{
+        width: 24px;
+        height: 24px;
+        object-fit: cover;
+        background-position: center;
+        background-size: 37px;
+      }
+    }
+  }
+
+  .middle_wrapper{
+    display: inline-block;
+    width: calc(100% - 420px);
+    vertical-align: top;
+    padding-right: 16px;
+  }
+
+  .nav_wrapper{
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    margin-top: 60px;
+    margin-left: 40px;
+  }
+
+  .card_wrapper{
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+    margin-top: 16px;
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1280px){
+  .card_group{
+    width: calc(100% / 2);
+    padding: 10px;
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1680px){
+  .card_group{
+    width: calc(100% / 3);
+    padding: 10px;
+  }
+}
+
+@media (min-width: 1680px){
+  .card_group{
+    width: calc(100% / 4);
+    padding: 10px;
+  }
+}
