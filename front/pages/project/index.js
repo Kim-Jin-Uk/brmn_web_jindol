@@ -54,7 +54,7 @@ function MainCard(props) {
 
 const Index = () =>{
     const [openAble,setOpenAble] = useState(true)
-    const [isLoggedin,setIsLoggedin] = useState(true)
+    const [isLoggedin,setIsLoggedin] = useState(false)
     const [navActive,setNavActive] = useState({
         "n1": true,
         "n2": false,
@@ -80,7 +80,14 @@ const Index = () =>{
 
     const onCLickNav = useCallback((name) => {
         const field = {}
-        field[name] = !navActive[name]
+        for ( let i in navActive ){
+            if (i === name){
+                field[i] = true
+            }else {
+                field[i] = false
+            }
+
+        }
         setNavActive({...navActive, ...field})
     },[navActive])
 
@@ -322,7 +329,7 @@ const Index = () =>{
                                             :(
                                                 <>
                                                     <div style={{height:"100vh"}}  className={styles.side_wrapper}>
-                                                        <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble}/>
+                                                        <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble} side={true}/>
                                                         <div className={styles.side_title} style={{minWidth:"320px"}}>
                                                             회원가입하고 다양한 메이커들과
                                                             <br/>

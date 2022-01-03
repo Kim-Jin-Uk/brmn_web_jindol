@@ -5,6 +5,10 @@ import Button from "../../components/Button";
 import sideStyles from "../../styles/Project.module.scss";
 import styles from "../../styles/Profile.module.scss"
 import cardStyle from '../../styles/Project.module.scss'
+import Footer from "../../components/Footer";
+import {Card, Dropdown, Menu as antMenu} from "antd";
+import ProfileThumbnail from "../../components/ProfileThumbnail";
+import {fa} from "faker/lib/locales";
 
 function MainCard(props) {
     return(
@@ -30,10 +34,57 @@ function MainCard(props) {
     )
 }
 
+function InfoCard(props) {
+    return(
+        <div style={{marginBottom:"22px"}}>
+            <div>
+                <div className={styles.info_title}>{props.props.title}</div>
+                {
+                    props.props.date !== undefined && props.props.date !== null
+                    ?(
+                            <div className={styles.info_date}>{props.props.date}</div>
+                        )
+                    :(
+                            <></>
+                        )
+                }
+            </div>
+            {
+                props.props.subtitle !== undefined && props.props.subtitle !== null
+                ?(
+                        <div className={styles.info_subtitle}>{props.props.subtitle}</div>
+                    )
+                :(
+                        <></>
+                    )
+            }
+            {
+                props.props.content !== undefined && props.props.content !== null
+                    ?(
+                        <div className={styles.info_content}>{props.props.content}</div>
+                    )
+                    :(
+                        <></>
+                    )
+            }
+        </div>
+    )
+
+}
+
+const ProfileMenu = (
+    <antMenu>
+        <div style={{background:"#FFFFFF", boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.2)", borderRadius:"4px"}}>
+            <div className={styles.hover_btn}>프로필 사진 변경</div>
+            <div className={styles.hover_btn}>기본 이미지로 변경</div>
+        </div>
+    </antMenu>
+)
+
 const ProfileProject = () => {
     const [openAble,setOpenAble] = useState(true)
-    const [isLoggedin,setIsLoggedin] = useState(true)
-    const [isMe,setIsMe] = useState(false)
+    const [isLoggedin,setIsLoggedin] = useState(false)
+    const [isMe,setIsMe] = useState(true)
     const [navActive,setNavActive] = useState({
         "n1": true,
         "n2": false,
@@ -50,6 +101,60 @@ const ProfileProject = () => {
         ,card,card,card,card,card,card,card,card,card
         ,card,card,card,card,card,card,card,card,card
     ])
+
+    const [equipList,setEquipList] = useState([
+        {title:"기타",content:"EPIPHONE 어쿠스틱기타 EL-00 Pro"},
+        {title:"믹서",content:"Yamaha MG166CX-USB"},
+    ])
+    const [equipOpen,setEquipOpen] = useState(true)
+
+    const [techList,setTechList] = useState([
+        {title:"Logic Pro X",content:"협업 시 원활한 소통이 가능합니다."},
+        {title:"피아노 연주",content:"다양한 장르의 연주가 가능합니다."},
+    ])
+
+    const [techOpen,setTechOpen] = useState(true)
+
+    const [careerList,setCareerListList] = useState([
+        {title:"SM 엔터테인먼트",date:"2020.05 - 현재",subtitle:"사운드 엔지니어",content:"녹음기기 전반을 조작하며 음의 캐릭터, 밸런스를 결정하는 일을 담당했습니다."},
+        {title:"음악 입시 작곡 학원",date:"2018.02",subtitle:"작곡 선생님",content:"입시 학원에서 학생들을 지도했습니다."},
+        {title:"SM 엔터테인먼트",date:"2020.05 - 현재",subtitle:"사운드 엔지니어",content:"녹음기기 전반을 조작하며 음의 캐릭터, 밸런스를 결정하는 일을 담당했습니다."},
+        {title:"음악 입시 작곡 학원",date:"2018.02",subtitle:"작곡 선생님",content:"입시 학원에서 학생들을 지도했습니다."},
+        {title:"SM 엔터테인먼트",date:"2020.05 - 현재",subtitle:"사운드 엔지니어",content:"녹음기기 전반을 조작하며 음의 캐릭터, 밸런스를 결정하는 일을 담당했습니다."},
+        {title:"음악 입시 작곡 학원",date:"2018.02",subtitle:"작곡 선생님",content:"입시 학원에서 학생들을 지도했습니다."},
+    ])
+
+    const [careerOpen,setCareerOpen] = useState(true)
+
+    const [eduList,setEduListList] = useState([
+        {title:"건국대학교",date:"2020.05 - 0000.00",subtitle:"전공학과"},
+        {title:"안녕고등학교",date:"2018.02 - 0000.00",subtitle:"전공학과"},
+    ])
+
+    const [eduOpen,setEduOpen] = useState(true)
+
+    const [awardList,setAwardListList] = useState([
+        {title:"건국대학교",date:"2020.05 - 0000.00",subtitle:"사운드 엔지니어",content:"녹음기기 전반을 조작하며 음의 캐릭터, 밸런스를 결정하는 일을 담당했습니다."},
+        {title:"안녕고등학교",date:"2018.02 - 0000.00",subtitle:"작곡 선생님",content:"입시 학원에서 학생들을 지도했습니다."},
+    ])
+
+    const [awardOpen,setAwardOpen] = useState(true)
+
+    const [createList,setCreateListList] = useState([
+        {title:"건국대학교",date:"2020.05 - 0000.00",subtitle:"사운드 엔지니어",content:"녹음기기 전반을 조작하며 음의 캐릭터, 밸런스를 결정하는 일을 담당했습니다."},
+        {title:"안녕고등학교",date:"2018.02 - 0000.00",subtitle:"작곡 선생님",content:"입시 학원에서 학생들을 지도했습니다."},
+    ])
+
+    const [createOpen,setCreateOpen] = useState(true)
+
+
+    const onClickMoreBtn = useCallback((setOpen) => {
+        setOpen(false)
+    },[equipOpen,techOpen,careerOpen,eduOpen,awardOpen,createOpen])
+
+    const onClickUnMoreBtn = useCallback((setOpen) => {
+        setOpen(true)
+    },[equipOpen,techOpen,careerOpen,eduOpen,awardOpen,createOpen])
 
     const onClickClose = useCallback(() => {
         setOpenAble(!openAble)
@@ -70,7 +175,7 @@ const ProfileProject = () => {
     return(
         <>
             <Header openAble = {openAble} setOpenAble={setOpenAble}></Header>
-            <div style={{background:"#C7C7C7"}}>
+            <div style={{background:"#FAFAFA", minHeight:"calc(100vh - 92px)"}}>
                 {
                     isMe
                         ?(
@@ -78,7 +183,10 @@ const ProfileProject = () => {
                                 <div className={styles.profile_top_wrapper}>
                                     <div className={styles.profile_top_icon_wrapper}>
                                         <img className={styles.profile_top_icon_img} src="https://file.mk.co.kr/meet/neds/2020/12/image_readtop_2020_1292239_16081264164474583.jpg"/>
-                                        <div className={styles.profile_top_icon_change}></div>
+                                        <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
+                                            <div className={styles.profile_top_icon_change}></div>
+                                        </Dropdown>
+
                                     </div>
                                     <div className={styles.profile_top_name}>권태익</div>
                                     <div className={styles.profile_top_sub}>position</div>
@@ -184,7 +292,356 @@ const ProfileProject = () => {
                                 </div>
                             )
                             :(
-                                <></>
+                                <div style={{paddingBottom:"80px"}} className={styles.profile_info_wrapper}>
+                                    <div className={styles.profile_profile_wrapper}>
+                                        <div className={styles.profile_profile_top_wrapper}>
+                                            <div className={styles.profile_profile_top_name}>권태익</div>
+                                            <div className={styles.profile_profile_top_sub}>position</div>
+                                            <div className={styles.profile_profile_top_sub}>job</div>
+                                            <div className={styles.profile_profile_top_sub}>location</div>
+                                            <div style={{marginTop:"24px"}}>
+                                                <div className={styles.profile_profile_top_follow}>팔로워</div>
+                                                <div className={styles.profile_profile_top_follow_num}>number</div>
+                                            </div>
+                                            <div style={{marginTop:"1px"}}>
+                                                <div className={styles.profile_profile_top_follow}>팔로잉</div>
+                                                <div className={styles.profile_profile_top_follow_num}>number</div>
+                                            </div>
+                                            <div className={styles.profile_sns_wrapper}>
+                                                <Link href={"/"}><a><div className={sideStyles.side_sns_1}></div></a></Link>
+                                                <Link href={"/"}><a><div className={sideStyles.side_sns_2}></div></a></Link>
+                                                <Link href={"/"}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
+                                                <Link href={"/"}><a><div className={sideStyles.side_sns_3}></div></a></Link>
+                                                <Link href={"/"}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.info_card}>
+                                        <div className={styles.info_card_title}>소개</div>
+                                        <div className={styles.info_card_content}>가장 낮은 곳에 닿기 전, 2층과3층사이입니다가장 낮은 곳에 닿기 전, 2층과3층사이입니다가장 낮은 곳에 닿기 전, 2층과3층사이입니다가장 낮은 곳에 닿기 전, 2층과3층사이입니다가장 낮은 곳에 닿기 전, 2층과3층사이입니다</div>
+                                    </div>
+                                    {/*equip*/}
+                                    {
+                                        equipList.length < 1
+                                            ?(
+                                                <></>
+                                            )
+                                            :(
+                                                equipList.length < 3
+                                                    ?(
+                                                        <div className={styles.info_card}>
+                                                            <div className={styles.info_card_title}>장비</div>
+                                                            <div style={{marginTop:"20px"}}></div>
+                                                            <InfoCard props={equipList[0]}></InfoCard>
+                                                            <InfoCard props={equipList[1]}></InfoCard>
+                                                        </div>
+                                                    )
+                                                    :(
+                                                        <div className={styles.info_card}>
+                                                            <div className={styles.info_card_title}>장비</div>
+                                                            <div style={{marginTop:"20px"}}></div>
+                                                            {
+                                                                equipOpen
+                                                                    ?(
+                                                                       <>
+                                                                           <InfoCard props={equipList[0]}></InfoCard>
+                                                                           <InfoCard props={equipList[1]}></InfoCard>
+                                                                           <div className={styles.more_btn} onClick={() => onClickMoreBtn(setEquipOpen)}>
+                                                                               <div>더보기</div>
+                                                                               <div className={styles.more_btn_icon}></div>
+                                                                           </div>
+                                                                       </>
+                                                                    )
+                                                                    :(
+                                                                        <>
+                                                                            {equipList.map((props, index) => (
+                                                                                <>
+                                                                                    <InfoCard props={props}></InfoCard>
+                                                                                </>
+                                                                            ))}
+                                                                            <div className={styles.un_more_btn} onClick={() => onClickUnMoreBtn(setEquipOpen)}>
+                                                                                <div>접기</div>
+                                                                                <div className={styles.un_more_btn_icon}></div>
+                                                                            </div>
+                                                                        </>
+                                                                    )
+                                                            }
+
+
+                                                        </div>
+                                                    )
+                                            )
+                                    }
+
+                                    {/*tech*/}
+                                    {
+                                        techList.length < 1
+                                            ?(
+                                                <></>
+                                            )
+                                            :(
+                                                techList.length < 3
+                                                    ?(
+                                                        <div className={styles.info_card}>
+                                                            <div className={styles.info_card_title}>기술</div>
+                                                            <div style={{marginTop:"20px"}}></div>
+                                                            <InfoCard props={techList[0]}></InfoCard>
+                                                            <InfoCard props={techList[1]}></InfoCard>
+                                                        </div>
+                                                    )
+                                                    :(
+                                                        <div className={styles.info_card}>
+                                                            <div className={styles.info_card_title}>기술</div>
+                                                            <div style={{marginTop:"20px"}}></div>
+                                                            {
+                                                                techOpen
+                                                                    ?(
+                                                                        <>
+                                                                            <InfoCard props={techList[0]}></InfoCard>
+                                                                            <InfoCard props={techList[1]}></InfoCard>
+                                                                            <div className={styles.more_btn} onClick={() => onClickMoreBtn(setTechOpen)}>
+                                                                                <div>더보기</div>
+                                                                                <div className={styles.more_btn_icon}></div>
+                                                                            </div>
+                                                                        </>
+                                                                    )
+                                                                    :(
+                                                                        <>
+                                                                            {techList.map((props, index) => (
+                                                                                <>
+                                                                                    <InfoCard props={props}></InfoCard>
+                                                                                </>
+                                                                            ))}
+                                                                            <div className={styles.un_more_btn} onClick={() => onClickUnMoreBtn(setTechOpen)}>
+                                                                                <div>접기</div>
+                                                                                <div className={styles.un_more_btn_icon}></div>
+                                                                            </div>
+                                                                        </>
+                                                                    )
+                                                            }
+
+
+                                                        </div>
+                                                    )
+                                            )
+                                    }
+
+                                    {/*career*/}
+                                    {
+                                        careerList.length < 1
+                                            ?(
+                                                <></>
+                                            )
+                                            :(
+                                                careerList.length < 3
+                                                    ?(
+                                                        <div className={styles.info_card}>
+                                                            <div className={styles.info_card_title}>근무 경력</div>
+                                                            <div style={{marginTop:"20px"}}></div>
+                                                            <InfoCard props={careerList[0]}></InfoCard>
+                                                            <InfoCard props={careerList[1]}></InfoCard>
+                                                        </div>
+                                                    )
+                                                    :(
+                                                        <div className={styles.info_card}>
+                                                            <div className={styles.info_card_title}>근무 경력</div>
+                                                            <div style={{marginTop:"20px"}}></div>
+                                                            {
+                                                                careerOpen
+                                                                    ?(
+                                                                        <>
+                                                                            <InfoCard props={careerList[0]}></InfoCard>
+                                                                            <InfoCard props={careerList[1]}></InfoCard>
+                                                                            <div className={styles.more_btn} onClick={() => onClickMoreBtn(setCareerOpen)}>
+                                                                                <div>더보기</div>
+                                                                                <div className={styles.more_btn_icon}></div>
+                                                                            </div>
+                                                                        </>
+                                                                    )
+                                                                    :(
+                                                                        <>
+                                                                            {careerList.map((props, index) => (
+                                                                                <>
+                                                                                    <InfoCard props={props}></InfoCard>
+                                                                                </>
+                                                                            ))}
+                                                                            <div className={styles.un_more_btn} onClick={() => onClickUnMoreBtn(setCareerOpen)}>
+                                                                                <div>접기</div>
+                                                                                <div className={styles.un_more_btn_icon}></div>
+                                                                            </div>
+                                                                        </>
+                                                                    )
+                                                            }
+
+
+                                                        </div>
+                                                    )
+                                            )
+                                    }
+
+                                    {/*edu*/}
+                                    {
+                                        eduList.length < 1
+                                            ?(
+                                                <></>
+                                            )
+                                            :(
+                                                eduList.length < 3
+                                                    ?(
+                                                        <div className={styles.info_card}>
+                                                            <div className={styles.info_card_title}>학력</div>
+                                                            <div style={{marginTop:"20px"}}></div>
+                                                            <InfoCard props={eduList[0]}></InfoCard>
+                                                            <InfoCard props={eduList[1]}></InfoCard>
+                                                        </div>
+                                                    )
+                                                    :(
+                                                        <div className={styles.info_card}>
+                                                            <div className={styles.info_card_title}>학력</div>
+                                                            <div style={{marginTop:"20px"}}></div>
+                                                            {
+                                                                eduOpen
+                                                                    ?(
+                                                                        <>
+                                                                            <InfoCard props={eduList[0]}></InfoCard>
+                                                                            <InfoCard props={eduList[1]}></InfoCard>
+                                                                            <div className={styles.more_btn}  onClick={() => onClickMoreBtn(setEduOpen)}>
+                                                                                <div>더보기</div>
+                                                                                <div className={styles.more_btn_icon}></div>
+                                                                            </div>
+                                                                        </>
+                                                                    )
+                                                                    :(
+                                                                        <>
+                                                                            {eduList.map((props, index) => (
+                                                                                <>
+                                                                                    <InfoCard props={props}></InfoCard>
+                                                                                </>
+                                                                            ))}
+                                                                            <div className={styles.un_more_btn} onClick={() => onClickUnMoreBtn(setEduOpen)}>
+                                                                                <div>접기</div>
+                                                                                <div className={styles.un_more_btn_icon}></div>
+                                                                            </div>
+                                                                        </>
+                                                                    )
+                                                            }
+
+
+                                                        </div>
+                                                    )
+                                            )
+                                    }
+
+                                    {/*award*/}
+                                    {
+                                        awardList.length < 1
+                                            ?(
+                                                <></>
+                                            )
+                                            :(
+                                                awardList.length < 3
+                                                    ?(
+                                                        <div className={styles.info_card}>
+                                                            <div className={styles.info_card_title}>수상</div>
+                                                            <div style={{marginTop:"20px"}}></div>
+                                                            <InfoCard props={awardList[0]}></InfoCard>
+                                                            <InfoCard props={awardList[1]}></InfoCard>
+                                                        </div>
+                                                    )
+                                                    :(
+                                                        <div className={styles.info_card}>
+                                                            <div className={styles.info_card_title}>수상</div>
+                                                            <div style={{marginTop:"20px"}}></div>
+                                                            {
+                                                                awardOpen
+                                                                    ?(
+                                                                        <>
+                                                                            <InfoCard props={awardList[0]}></InfoCard>
+                                                                            <InfoCard props={awardList[1]}></InfoCard>
+                                                                            <div className={styles.more_btn} onClick={() => onClickMoreBtn(setAwardOpen)}>
+                                                                                <div>더보기</div>
+                                                                                <div className={styles.more_btn_icon}></div>
+                                                                            </div>
+                                                                        </>
+                                                                    )
+                                                                    :(
+                                                                        <>
+                                                                            {awardList.map((props, index) => (
+                                                                                <>
+                                                                                    <InfoCard props={props}></InfoCard>
+                                                                                </>
+                                                                            ))}
+                                                                            <div className={styles.un_more_btn} onClick={() => onClickUnMoreBtn(setAwardOpen)}>
+                                                                                <div>접기</div>
+                                                                                <div className={styles.un_more_btn_icon}></div>
+                                                                            </div>
+                                                                        </>
+                                                                    )
+                                                            }
+
+
+                                                        </div>
+                                                    )
+                                            )
+                                    }
+
+                                    {/*create*/}
+                                    {
+                                        createList.length < 1
+                                            ?(
+                                                <></>
+                                            )
+                                            :(
+                                                createList.length < 3
+                                                    ?(
+                                                        <div className={styles.info_card}>
+                                                            <div className={styles.info_card_title}>제작</div>
+                                                            <div style={{marginTop:"20px"}}></div>
+                                                            <InfoCard props={createList[0]}></InfoCard>
+                                                            <InfoCard props={createList[1]}></InfoCard>
+                                                        </div>
+                                                    )
+                                                    :(
+                                                        <div className={styles.info_card}>
+                                                            <div className={styles.info_card_title}>제작</div>
+                                                            <div style={{marginTop:"20px"}}></div>
+                                                            {
+                                                                createOpen
+                                                                    ?(
+                                                                        <>
+                                                                            <InfoCard props={createList[0]}></InfoCard>
+                                                                            <InfoCard props={createList[1]}></InfoCard>
+                                                                            <div className={styles.more_btn} onClick={() => onClickMoreBtn(setCreateOpen)}>
+                                                                                <div>더보기</div>
+                                                                                <div className={styles.more_btn_icon}></div>
+                                                                            </div>
+                                                                        </>
+                                                                    )
+                                                                    :(
+                                                                        <>
+                                                                            {createList.map((props, index) => (
+                                                                                <>
+                                                                                    <InfoCard props={props}></InfoCard>
+                                                                                </>
+                                                                            ))}
+                                                                            <div className={styles.un_more_btn} onClick={() => onClickUnMoreBtn(setCreateOpen)}>
+                                                                                <div>접기</div>
+                                                                                <div className={styles.un_more_btn_icon}></div>
+                                                                            </div>
+                                                                        </>
+                                                                    )
+                                                            }
+
+
+                                                        </div>
+                                                    )
+                                            )
+                                    }
+
+
+
+                                </div>
                             )
                     }
                 </div>
@@ -269,7 +726,7 @@ const ProfileProject = () => {
                                     :(
                                         <>
                                             <div style={{height:"100vh"}}  className={sideStyles.side_wrapper}>
-                                                <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble}/>
+                                                <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble} side={true}/>
                                                 <div className={sideStyles.side_title} style={{minWidth:"320px"}}>
                                                     회원가입하고 다양한 메이커들과
                                                     <br/>
@@ -324,6 +781,7 @@ const ProfileProject = () => {
                         </div>
                     )
             }
+            <Footer></Footer>
         </>
     )
 }
