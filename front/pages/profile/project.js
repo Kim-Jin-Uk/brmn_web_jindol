@@ -179,72 +179,79 @@ const ProfileProject = () => {
                 {
                     isMe
                         ?(
-                            <div className={styles.profile_wrapper}>
-                                <div className={styles.profile_top_wrapper}>
-                                    <div className={styles.profile_top_icon_wrapper}>
-                                        <img className={styles.profile_top_icon_img} src="https://file.mk.co.kr/meet/neds/2020/12/image_readtop_2020_1292239_16081264164474583.jpg"/>
-                                        <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
-                                            <div className={styles.profile_top_icon_change}></div>
-                                        </Dropdown>
+                            <>
+                                <div className={styles.profile_wrapper}>
+                                    <div className={styles.profile_top_wrapper}>
+                                        <div className={styles.profile_top_icon_wrapper}>
+                                            <img className={styles.profile_top_icon_img} src="https://file.mk.co.kr/meet/neds/2020/12/image_readtop_2020_1292239_16081264164474583.jpg"/>
+                                            <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
+                                                <div className={styles.profile_top_icon_change}></div>
+                                            </Dropdown>
 
-                                    </div>
-                                    <div className={styles.profile_top_name}>권태익</div>
-                                    <div className={styles.profile_top_sub}>position</div>
-                                    <div className={styles.profile_top_sub}>job</div>
-                                    <div className={styles.profile_top_sub}>location</div>
-                                    <Button className={styles.profile_top_button}>
-                                        <div className={styles.profile_top_button_icon}></div>
-                                        <div className={styles.profile_top_button_text}>프로필 편집</div>
-                                    </Button>
-                                    <div>
-                                        <div className={styles.profile_top_follow}>팔로워</div>
-                                        <div className={styles.profile_top_follow_num}>follower number</div>
-                                    </div>
-                                    <div>
-                                        <div className={styles.profile_top_follow}>팔로잉</div>
-                                        <div className={styles.profile_top_follow_num}>following number</div>
-                                    </div>
-                                    <div className={styles.side_sns_wrapper}>
-                                        <Link href={"/"}><a><div className={sideStyles.side_sns_1}></div></a></Link>
-                                        <Link href={"/"}><a><div className={sideStyles.side_sns_2}></div></a></Link>
-                                        <Link href={"/"}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
-                                        <Link href={"/"}><a><div className={sideStyles.side_sns_3}></div></a></Link>
-                                        <Link href={"/"}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                        </div>
+                                        <div className={styles.profile_top_name}>권태익</div>
+                                        <div className={styles.profile_top_sub}>position</div>
+                                        <div className={styles.profile_top_sub}>job</div>
+                                        <div className={styles.profile_top_sub}>location</div>
+                                        <Button className={styles.profile_top_button}>
+                                            <div className={styles.profile_top_button_icon}></div>
+                                            <div className={styles.profile_top_button_text}>프로필 편집</div>
+                                        </Button>
+                                        <div>
+                                            <div className={styles.profile_top_follow}>팔로워</div>
+                                            <div className={styles.profile_top_follow_num}>follower number</div>
+                                        </div>
+                                        <div>
+                                            <div className={styles.profile_top_follow}>팔로잉</div>
+                                            <div className={styles.profile_top_follow_num}>following number</div>
+                                        </div>
+                                        <div className={styles.side_sns_wrapper}>
+                                            <Link href={"/"}><a><div className={sideStyles.side_sns_1}></div></a></Link>
+                                            <Link href={"/"}><a><div className={sideStyles.side_sns_2}></div></a></Link>
+                                            <Link href={"/"}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
+                                            <Link href={"/"}><a><div className={sideStyles.side_sns_3}></div></a></Link>
+                                            <Link href={"/"}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div className={styles.profile_wrapper_clone}></div>
+                            </>
                         )
                         :(
-                            <div className={styles.profile_wrapper}>
-                                <div className={styles.profile_top_wrapper}>
-                                    <div className={styles.profile_top_icon_wrapper}>
-                                        <img className={styles.profile_top_icon_img} src="https://file.mk.co.kr/meet/neds/2020/12/image_readtop_2020_1292239_16081264164474583.jpg"/>
-                                    </div>
-                                    <div className={styles.profile_top_name}>권태익</div>
-                                    <div className={styles.profile_top_sub}>position</div>
-                                    <div className={styles.profile_top_sub}>job</div>
-                                    <div className={styles.profile_top_sub}>location</div>
-                                    <Button className={styles.profile_top_button_not_me}>
-                                        <div className={styles.profile_top_button_icon_not_me}></div>
-                                        <div className={styles.profile_top_button_text_not_me}>팔로우</div>
-                                    </Button>
-                                    <div>
-                                        <div className={styles.profile_top_follow}>팔로워</div>
-                                        <div className={styles.profile_top_follow_num}>follower number</div>
-                                    </div>
-                                    <div>
-                                        <div className={styles.profile_top_follow}>팔로잉</div>
-                                        <div className={styles.profile_top_follow_num}>following number</div>
-                                    </div>
-                                    <div className={styles.side_sns_wrapper}>
-                                        <Link href={"/"}><a><div className={sideStyles.side_sns_1}></div></a></Link>
-                                        <Link href={"/"}><a><div className={sideStyles.side_sns_2}></div></a></Link>
-                                        <Link href={"/"}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
-                                        <Link href={"/"}><a><div className={sideStyles.side_sns_3}></div></a></Link>
-                                        <Link href={"/"}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                            <>
+                                <div className={styles.profile_wrapper}>
+                                    <div className={styles.profile_top_wrapper}>
+                                        <div className={styles.profile_top_icon_wrapper}>
+                                            <img className={styles.profile_top_icon_img} src="https://file.mk.co.kr/meet/neds/2020/12/image_readtop_2020_1292239_16081264164474583.jpg"/>
+                                        </div>
+                                        <div className={styles.profile_top_name}>권태익</div>
+                                        <div className={styles.profile_top_sub}>position</div>
+                                        <div className={styles.profile_top_sub}>job</div>
+                                        <div className={styles.profile_top_sub}>location</div>
+                                        <Button className={styles.profile_top_button_not_me}>
+                                            <div className={styles.profile_top_button_icon_not_me}></div>
+                                            <div className={styles.profile_top_button_text_not_me}>팔로우</div>
+                                        </Button>
+                                        <div>
+                                            <div className={styles.profile_top_follow}>팔로워</div>
+                                            <div className={styles.profile_top_follow_num}>follower number</div>
+                                        </div>
+                                        <div>
+                                            <div className={styles.profile_top_follow}>팔로잉</div>
+                                            <div className={styles.profile_top_follow_num}>following number</div>
+                                        </div>
+                                        <div className={styles.side_sns_wrapper}>
+                                            <Link href={"/"}><a><div className={sideStyles.side_sns_1}></div></a></Link>
+                                            <Link href={"/"}><a><div className={sideStyles.side_sns_2}></div></a></Link>
+                                            <Link href={"/"}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
+                                            <Link href={"/"}><a><div className={sideStyles.side_sns_3}></div></a></Link>
+                                            <Link href={"/"}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div className={styles.profile_wrapper_clone}></div>
+                            </>
+
                         )
                 }
                 <div className={styles.middle_wrapper}>
@@ -283,7 +290,7 @@ const ProfileProject = () => {
                     {
                         navActive["n1"]
                             ?(
-                                <div className={`${cardStyle.card_wrapper} ${styles.card_wrapper}`}>
+                                <div style={{paddingLeft:"14px", marginTop:"4px"}} className={`${cardStyle.card_wrapper} ${styles.card_wrapper}`}>
                                     {cardList.map((card, index) => (
                                         <>
                                             <MainCard card={card}></MainCard>

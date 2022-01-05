@@ -195,6 +195,14 @@
   width: auto;
 }
 
+.profile_profile_wrapper_clone{
+  min-width: 280px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 24px;
+  width: auto;
+}
+
 .profile_profile_top_wrapper{
   width: 100%;
   height: 100%;
@@ -397,7 +405,7 @@
   width: 100%;
   background: #ffffff;
   height: 61px;
-  position: sticky;
+  position: absolute;
   top: 56px;
   z-index: 1000;
   border-bottom: 1px solid #E8E8E8;
@@ -655,6 +663,14 @@
   margin-left: 12px;
 }
 
+.add_input{
+  width: 200%;
+}
+
+.add_input_double{
+  width: 100%;
+}
+
 
 .add_card_bottom_wrapper{
   background: #FAFAFA;
@@ -738,12 +754,21 @@
 .edit_top{
   width: 100%;
   margin: 0 auto;
-  max-width: 1161px;
+  max-width: 1181px;
+  padding-right: 21px;
   height: 100%;
 }
 
 @media (min-width: 1025px){
   .profile_wrapper{
+    display: inline-block;
+    margin-top: 60px;
+    margin-left: 40px;
+    position: absolute;
+  }
+
+  .profile_wrapper_clone{
+    width: 380px;
     display: inline-block;
     margin-top: 60px;
     margin-left: 40px;
@@ -967,6 +992,14 @@
     display: inline-block;
     margin-top: 60px;
     margin-left: 160px;
+    position: absolute;
+  }
+
+  .profile_wrapper_clone{
+    width: 380px;
+    display: inline-block;
+    margin-top: 60px;
+    margin-left: 160px;
   }
 
   .card_group{
@@ -1004,11 +1037,52 @@
   .edit_main_wrapper{
     padding: 40px 24px 80px;
   }
+
+  .edit_card_input{
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 16px;
+    margin-right: 60px!important;
+    max-width: 100% !important;
+    width: calc(100% - 72px) !important;
+  }
+
+  .add_input{
+    width: calc(200% - 48px);
+    div{
+      max-width: 100% !important;
+    }
+  }
 }
 
 @media (min-width: 840px) and (max-width: 1200px) {
   .edit_main_wrapper{
     padding: 40px 30px 80px;
+  }
+
+  .edit_subset{
+    width: 780px;
+    margin: 0 auto;
+    height: auto;
+  }
+
+  .edit_card_input{
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 16px;
+    width: 688px !important;
+    max-width: 100% !important;
+  }
+
+  .add_input{
+    width: 1424px;
+    div{
+      max-width: 100% !important;
+    }
+  }
+
+  .add_input_double{
+    width: 712px;
   }
 }
 
@@ -1025,16 +1099,40 @@
 
   .edit_side_menu{
     width: 320px;
-    height: 571px;
+    height: 342px;
     display: inline-block;
     background: #ffffff;
     vertical-align: top;
     float: left;
+    top: 157px;
+    position: absolute;
+    border: 1px solid #E8E8E8;
+    border-radius: 4px;
+    overflow: hidden;
   }
 
   .edit_side_main{
     display: inline-block;
     vertical-align: top;
     float: right;
+  }
+
+  .edit_card_input{
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 16px;
+    width: 688px !important;
+    max-width: 100% !important;
+  }
+
+  .add_input{
+    width: 1424px;
+    div{
+      max-width: 100% !important;
+    }
+  }
+
+  .add_input_double{
+    width: 712px;
   }
 }

@@ -617,6 +617,7 @@
     background: url(../images/icons/close.svg);
 }
 
+
 @media (max-width: 600px) {
     .card_wrapper{
         width: 100%;
@@ -768,7 +769,7 @@
 
     .card_wrapper{
         width: 100%;
-        padding: 14px;
+        padding: 14px 60px;
         margin-top: 12px;
     }
 
@@ -782,6 +783,7 @@
     }
 
     .nav_desktop_wrapper{
+        margin-left: 70px;
         display: block;
     }
 }

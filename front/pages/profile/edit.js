@@ -3,7 +3,7 @@ import Header from "../../components/Header";
 import styles from "../../styles/Profile.module.scss"
 import Button from "../../components/Button";
 import Footer from "../../components/Footer";
-import {Checkbox, Input, Select} from "antd";
+import {Checkbox, Input, Select, Menu} from "antd";
 import {createGlobalStyle} from "styled-components";
 const { Option } = Select;
 import DatePicker, {registerLocale} from "react-datepicker";
@@ -11,62 +11,63 @@ import "react-datepicker/dist/react-datepicker.css";
 import ko from 'date-fns/locale/ko';
 
 
-
 const Global = createGlobalStyle`
-  .react-datepicker__triangle{
+  .react-datepicker__triangle {
     transform: translate3d(52.8px, 0px, 0px) !important;
   }
-  
-  .react-datepicker__year-read-view--down-arrow, .react-datepicker__month-read-view--down-arrow, .react-datepicker__month-year-read-view--down-arrow, .react-datepicker__navigation-icon::before{
+
+  .react-datepicker__year-read-view--down-arrow, .react-datepicker__month-read-view--down-arrow, .react-datepicker__month-year-read-view--down-arrow, .react-datepicker__navigation-icon::before {
     top: 13px !important;
   }
-  
-  .ant-select-selector{
+
+  .ant-select-selector {
     height: 36px !important;
     border: 1px solid #CCCCCC !important;
     border-radius: 4px !important;
     box-shadow: none !important;
   }
-  
-  .ant-select-selection-search{
+
+  .ant-select-selection-search {
     padding-top: 4px;
   }
 
-  .ant-select-selection-item{
+  .ant-select-selection-item {
     font-family: Spoqa Han Sans Neo;
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
     line-height: 150% !important;
     color: #1D1D1D;
-    padding-top: 8px!important;
+    padding-top: 8px !important;
   }
 
-  .ant-checkbox-checked::after{
+  .ant-checkbox-checked::after {
     border: none;
   }
 
-  .ant-checkbox-checked .ant-checkbox-inner{
+  .ant-checkbox-checked .ant-checkbox-inner {
     background: #1d1d1d;
     border: 1px solid #1d1d1d;
-    outline: none!important;
+    outline: none !important;
   }
 
-  .ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner{
+  .ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner {
     border: 1px solid #1d1d1d;
-    outline: none!important;
+    outline: none !important;
   }
 
-  .react-datepicker-wrapper{
+  .react-datepicker-wrapper {
     width: calc(50% - 24px);
     margin-left: 12px;
     margin-right: 12px;
     margin-top: 6px;
     max-width: 464px;
-    >div{
+
+    > div {
       width: 100%;
     }
-    input{
+
+    input {
       width: 100%;
       height: 36px;
       border: 1px solid #CCCCCC;
@@ -82,17 +83,96 @@ const Global = createGlobalStyle`
       color: #1D1D1D;
     }
   }
-  
-  .react-datepicker__tab-loop{
+
+  .react-datepicker__tab-loop {
     display: inline-block;
   }
 
-  body{
+  body {
     background: #fafafa;
   }
+
+  .ant-menu-item {
+    background: #ffffff;
+    width: auto;
+    height: 57px !important;
+    border-bottom: 1px solid #E8E8E8;
+    padding: 0 0 0 20px !important;
+    margin: 0 !important;
+    border-left: 2px solid #ffffff;
+    span {
+      display: block;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: Spoqa Han Sans Neo;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 130%;
+    }
+  }
+
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    border-left: 2px solid #33F4A3;
+    background: #ffffff;
+    color:#15C07E !important;
+  }
+  
+  .ant-menu-item:hover{
+    background: #FAFAFA;
+    border-left: 2px solid #FAFAFA;
+    margin-left: 0px !important;
+    color: #1d1d1d !important;
+  }
+  
+  .ant-menu-item-selected{
+    color:#15C07E !important;
+  }
+
+  .ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left{
+    border: none;
+  }
+  
+  .ant-menu-light .ant-menu-item:hover, .ant-menu-light .ant-menu-item-active, .ant-menu-light .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open, .ant-menu-light .ant-menu-submenu-active, .ant-menu-light .ant-menu-submenu-title:hover{
+    color:#1d1d1d;
+  }
+
+  @media (min-width: 600px) and (max-width: 840px){
+    .react-datepicker-wrapper {
+      width: calc(50% - 48px);
+      margin-left: 12px;
+      margin-right: 12px;
+      margin-top: 6px;
+      max-width: 464px;
+
+      > div {
+        width: 100%;
+      }
+
+      input {
+        width: 100%;
+        height: 36px;
+        border: 1px solid #CCCCCC;
+        outline: none;
+        border-radius: 4px;
+        padding-left: 12px;
+        padding-right: 12px;
+        font-family: Spoqa Han Sans Neo;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 150%;
+        color: #1D1D1D;
+      }
+    }
+
+    .react-datepicker__tab-loop {
+      display: inline-block;
+    }
+  }
+
 `
-
-
 
 function ValueCard(value) {
     return(
@@ -123,7 +203,6 @@ function ValueCard(value) {
         </>
     )
 }
-
 
 function AddCard(value) {
     registerLocale('ko', ko)
@@ -168,10 +247,7 @@ function AddCard(value) {
                         ?(
                             <div>
                                 <div className={styles.add_card_text}>{value.value.col_2}</div>
-                                <div style={{
-                                    width:"100%",
-                                    maxWidth:"488px"
-                                }}>
+                                <div className={styles.add_input_double}>
                                     <DatePicker
                                         locale={ko}// 언어설정 기본값은 영어
                                         dateFormat="yyyy/MM"    // 날짜 형식 설정
@@ -235,9 +311,7 @@ function AddCard(value) {
                         ?(
                             <div>
                                 <div className={styles.add_card_text}>{value.value.col_4}</div>
-                                <div style={{
-                                    width:"calc(200%)"
-                                }}>
+                                <div className={styles.add_input}>
                                     <DatePicker
                                         locale={ko}// 언어설정 기본값은 영어
                                         dateFormat="yyyy/MM"    // 날짜 형식 설정
@@ -300,10 +374,48 @@ function AddCard(value) {
 const Edit = () => {
     const [select, setSelect] = useState(true)
     const ref = useRef(null);
+
+    const [menuList, setMenuList] = useState({
+        "basic":true,
+        "info":false,
+        "field":false,
+        "tech":false,
+        "equip":false,
+        "career":false,
+        "award":false,
+        "edu":false,
+        "create":false,
+        "show":false,
+    })
+    const basicRef = useRef(null)
+    const infoRef = useRef(null)
+    const fieldRef = useRef(null)
+    const techRef = useRef(null)
+    const equipRef = useRef(null)
+    const careerRef = useRef(null)
+    const onClickScroll = useCallback((ref) => {
+        ref.current?.scrollIntoView({
+            behavior: 'smooth',
+            block:"center",
+        });
+        console.log(ref.current?.scrollHeight)
+    },[basicRef,infoRef,fieldRef,techRef,equipRef,careerRef])
+
+    const onClickSideMenu = useCallback((menu) => {
+        const field = {}
+        for ( let i in menuList ){
+            if (i === name){
+                field[i] = true
+            }else {
+                field[i] = false
+            }
+        }
+        setMenuList({...menuList, ...field})
+    },[menuList])
+
     const [tech, setTech] = useState(false)
     const [equip, setEquip] = useState(false)
     const [career, setCareer] = useState(false)
-
     const [award, setAward] = useState(false)
     const [edu, setEdu] = useState(false)
     const [create, setCreate] = useState(false)
@@ -412,7 +524,6 @@ const Edit = () => {
     </>
 
     const onSelcetChange = useCallback(() => {
-        console.log("log")
         setSelect(!select)
     })
 
@@ -432,8 +543,12 @@ const Edit = () => {
         ref.current.style.height = ref.current.scrollHeight + "px"
     }, [])
 
+    const onClickLogger = useCallback((value) => {
+        console.log(value)
+    })
+
     return(
-        <>
+        <div>
             <Global></Global>
             <Header></Header>
             <div className={styles.edit_top_wrapper}>
@@ -443,14 +558,24 @@ const Edit = () => {
                 </div>
             </div>
 
+            <div style={{height:"61px"}}></div>
+
             <div className={styles.edit_main_wrapper}>
                 <div className={styles.edit_subset}>
                     <div className={styles.edit_side_menu}>
+                        <Menu>
+                            <Menu.Item key="basic" onClick={() => onClickScroll(basicRef)}>기본정보</Menu.Item>
+                            <Menu.Item key="info" onClick={() => onClickScroll(infoRef)}>소개</Menu.Item>
+                            <Menu.Item key="field" onClick={() => onClickScroll(fieldRef)}>분야</Menu.Item>
+                            <Menu.Item key="tech" onClick={() => onClickScroll(techRef)}>기술</Menu.Item>
+                            <Menu.Item key="equip" onClick={() => onClickScroll(equipRef)}>장비</Menu.Item>
+                            <Menu.Item key="career" onClick={() => onClickScroll(careerRef)}>이력</Menu.Item>
+                        </Menu>
 
                     </div>
-                    <div className={styles.edit_side_main}>
+                    <div className={styles.edit_side_main} >
                         {/*info*/}
-                        <div className={styles.edit_card_wrapper}>
+                        <div className={styles.edit_card_wrapper}  ref={basicRef}>
                             <div className={styles.edit_card_title}>기본 정보</div>
                             <div style={{marginBottom:"5px"}}>
                                 <div className={styles.edit_card_sub_title}>이름</div>
@@ -487,7 +612,7 @@ const Edit = () => {
 
                         </div>
                         {/*introduction*/}
-                        <div className={styles.edit_card_wrapper}>
+                        <div className={styles.edit_card_wrapper} ref={infoRef}>
                             <div className={styles.edit_card_title}>소개</div>
                             <div style={{marginBottom:"6px"}}>
                                 <div className={styles.edit_card_sub_title}>자기소개</div>
@@ -500,7 +625,7 @@ const Edit = () => {
                             />
                         </div>
 
-                        <div className={styles.edit_card_wrapper}>
+                        <div className={styles.edit_card_wrapper} ref={fieldRef}>
                             <div className={styles.edit_card_title}>분야</div>
                             <div style={{marginBottom:"6px"}}>
                                 <div className={styles.edit_card_sub_explain}>어떤 분야에서 활동 중입니까?</div>
@@ -519,7 +644,7 @@ const Edit = () => {
 
                         </div>
 
-                        <div className={styles.edit_card_wrapper}>
+                        <div className={styles.edit_card_wrapper} ref={techRef}>
                             <div className={styles.edit_card_title}>기술</div>
                             {
                                 techList.map((value, index) => (
@@ -544,7 +669,7 @@ const Edit = () => {
                                  onClick={() => onClickAddText(tech,setTech)}>+  기술 추가</div>
                         </div>
 
-                        <div className={styles.edit_card_wrapper}>
+                        <div className={styles.edit_card_wrapper} ref={equipRef}>
                             <div className={styles.edit_card_title}>장비</div>
                             {
                                 equipList.map((value, index) => (
@@ -569,7 +694,7 @@ const Edit = () => {
                                  onClick={() => onClickAddText(equip,setEquip)}>+  장비 추가</div>
                         </div>
 
-                        <div className={styles.edit_card_wrapper}>
+                        <div className={styles.edit_card_wrapper} ref={careerRef}>
                             <div className={styles.edit_card_title}>근무 경력</div>
                             {
                                 careerList.map((value, index) => (
@@ -685,7 +810,7 @@ const Edit = () => {
                 </div>
             </div>
             <Footer></Footer>
-        </>
+        </div>
     )
 }
 

@@ -6,9 +6,8 @@ import Button from "../../components/Button";
 import Link from "next/link"
 import Footer from "../../components/Footer";
 
-import { Select  } from 'antd';
+import {Modal, Select} from 'antd';
 import {createGlobalStyle} from "styled-components";
-import CircleMenu from "../../components/CircleMenu";
 
 const { Option } = Select;
 const Global = createGlobalStyle`
@@ -26,13 +25,35 @@ const Global = createGlobalStyle`
   .ant-select-selection-item{
     margin-top: 5px !important;
   }
+
+  @media (min-width: 1024px){
+    .ant-modal{
+      width: 100% !important;
+      margin: 0;
+      padding: 0;
+      max-width: 100%;
+      height: 100%;
+      top: 0;
+    }
+    
+    .ant-modal-content{
+      width: 100%;
+      height: 100%;
+    }
+  }
+  
+  
 `;
 
 function MainCard(props) {
+    const onClickCard = useCallback(() => {
+
+    },[props])
+
     return(
         <>
             <div className={styles.card_group}>
-                <button className={styles.card_button}>
+                <button className={styles.card_button} onClick={onClickCard}>
                     <div className={styles.card_main}>
                         <img src={props.card.imgUrl} className={styles.card_main_img}></img>
                         <div className={styles.card_main_background}>
@@ -54,7 +75,7 @@ function MainCard(props) {
 
 const Index = () =>{
     const [openAble,setOpenAble] = useState(true)
-    const [isLoggedin,setIsLoggedin] = useState(false)
+    const [isLoggedin,setIsLoggedin] = useState(true)
     const [navActive,setNavActive] = useState({
         "n1": true,
         "n2": false,
@@ -96,7 +117,7 @@ const Index = () =>{
     },[openAble])
 
     return(
-        <>
+        <div>
             <Global />
             <Head>
                 <title>brmn music | project</title>
@@ -389,7 +410,7 @@ const Index = () =>{
 
             }
             <Footer></Footer>
-        </>
+        </div>
     )
 }
 
