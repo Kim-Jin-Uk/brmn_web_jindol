@@ -46,14 +46,12 @@ const Global = createGlobalStyle`
 `;
 
 function MainCard(props) {
-    const onClickCard = useCallback(() => {
-
-    },[props])
-
+    console.log(props.card.id)
     return(
         <>
             <div className={styles.card_group}>
-                <button className={styles.card_button} onClick={onClickCard}>
+                <Link href={`/project/${props.card.id}`}><a>
+                    <button className={styles.card_button}>
                     <div className={styles.card_main}>
                         <img src={props.card.imgUrl} className={styles.card_main_img}></img>
                         <div className={styles.card_main_background}>
@@ -68,6 +66,7 @@ function MainCard(props) {
                         </div>
                     </div>
                 </button>
+                </a></Link>
             </div>
         </>
     )
@@ -87,7 +86,8 @@ const Index = () =>{
         "n8": false,
     })
     const card = {
-        imgUrl:"http://blog.jinbo.net/attach/615/200937431.jpg",
+        id:"1",
+        imgUrl:"https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/9dEO/image/_Xi6E6YOQ22VUzRkRtyy0_6Rvak.png",
         title:"사랑하긴 했었나요 스쳐가는 인연이었나요 짧지않은 쿠쿠루 삥뽕",
         profImg:"https://bit.ly/2V1ipNj",
         nickname:"2층과3층사이"

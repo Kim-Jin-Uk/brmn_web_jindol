@@ -6,7 +6,7 @@ import Button from "../../components/Button";
 import Footer from "../../components/Footer";
 import {createGlobalStyle} from "styled-components";
 import sideStyles from "../../styles/Project.module.scss";
-import ke from "react-datepicker";
+import Image from "next/image"
 
 const Global = createGlobalStyle`
   body{
@@ -16,7 +16,7 @@ const Global = createGlobalStyle`
 
 function ProjectCard(props){
     const [youtubeUrl, setYoutubeUrl] = useState("")
-
+    const [textList, setTextList] = useState([])
     useEffect(() => {
         if (props.props.type === "youtube"){
             const propList = props.props.url.toString().split("/")
@@ -25,11 +25,9 @@ function ProjectCard(props){
             }else {
                 setYoutubeUrl(`https://www.youtube.com/embed/${propList[propList.length-1]}`)
             }
-            console.log(youtubeUrl)
         }
     },[props])
 
-    console.log("check",props.props)
     return(
         <>
             {{
@@ -44,25 +42,62 @@ function ProjectCard(props){
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen></iframe>
                     </>
+                ),"text":(
+                    <>
+                        <div className={styles.card_img}>{props.props.url}</div>
+                    </>
                 )
             }[props.props.type]}
         </>
     )
 }
 
+function TechBtn(props){
+    return(
+        <>
+            <Button className={styles.tech_btn}>{props.props}</Button>
+        </>
+    )
+}
+
+function CopyrightBtn(props){
+    return(
+        <div style={{marginLeft:"4px",marginRight:"4px",display:"inline-block"}}>
+            <Image src={require(`../../images/project/${props.props}.svg`).default}></Image>
+        </div>
+    )
+}
+
 const ProjectPage = () => {
     const [openAble,setOpenAble] = useState(true)
     const [isLoggedin,setIsLoggedin] = useState(true)
+    const [isMe,setIsMe] = useState(true)
     const onClickClose = useCallback(() => {
         setOpenAble(!openAble)
     },[openAble])
 
     const [projectList,setProjectList] = useState([
-        {type:"img",url:"https://t1.daumcdn.net/cfile/tistory/22165B3F55BA279E22"},
+        {type:"img",url:"https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg"},
+        {type:"text",
+            url:"텍스트 입력텍[스트 입력텍###스트 <b>입력      음악의 가사를 입력합니다\n" +
+                ".<br>음\n" +
+                "악의 가사를 입]력합니다.음악의 가사를 입#력합니다. 음악의 가사를 입력합니다.음악의 가사를 입력합니다.<b>음악의 가사를 입력합니다.음악의 가사를 입력합니<br>다.<b>음\t악의 가사를 #[입력합니다. 음악의 #가사를 ]<br>입력합니다. 음악의 가사를 입력합니다."
+        },
         {type:"img",url:"https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg"},
         {type:"youtube",url:"https://www.youtube.com/watch?v=A4RDyzQsI7U"},
+        {type:"text",
+            url:"텍스트 입력텍스트 입력텍스트 입력 음악의 가사를 입력합니다.음악의 가사를 입력합니다.음악의 가사를 입력합니다. 음악의 가사를 입력합니다.음악의 가사를 입력합니다.음악의 가사를 입력합니다.음악의 가사를 입력합니다.음악의 가사를 입력합니다. 음악의 가사를 입력합니다. 음악의 가사를 입력합니다."
+        },
         {type:"img",url:"https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg"},
         {type:"youtube",url:"https://youtu.be/A4RDyzQsI7U"},
+    ])
+
+    const [techList, setTechList] = useState([
+        "Logic Pro X", "신디사이저", "Cubase"
+    ])
+
+    const [copyrightList, setCopyrightList] = useState([
+        "cc", "by", "sa", "nd", "nc",
     ])
 
     return(
@@ -78,7 +113,59 @@ const ProjectPage = () => {
                         <ProjectCard props={props}></ProjectCard>
                     </>
                 ))}
+                <ul className={styles.main_hashtag_wrapper}>
+                    <li><Link href={"/"}><a>#2층과3층사이</a></Link></li>
+                    <li><Link href={"/"}><a>#2f3f</a></Link></li>
+                    <li><Link href={"/"}><a>#발라드</a></Link></li>
+                    <li><Link href={"/"}><a>#영어가사</a></Link></li>
+                    <li><Link href={"/"}><a>#커버</a></Link></li>
+                    <li><Link href={"/"}><a>#노래영상</a></Link></li>
+                </ul>
+                <div className={styles.main_title}
+                     style={{marginTop:"4px", fontSize:"20px"}}
+                >프로젝트 제목</div>
+                <div className={styles.main_info}>
+                    <div>디자인</div>
+                    <div>조회수 44,592회</div>
+                    <div>2021. 5. 8.</div>
+                    <div className={styles.main_btn_group}>
+                        <div className={styles.main_share_btn}></div>
+                        {isMe
+                                ? <div className={styles.main_info_btn}></div>
+                                : <></>
+                        }
+                    </div>
+                </div>
+
+                <div className={styles.main_artist}>
+                    <div className={styles.main_artist_title}>참여 아티스트</div>
+                    <div className={styles.main_artist_name}>권태익</div>
+                    <div className={styles.main_artist_info}>작곡가, 작사가, 프로듀서, 보컬</div>
+                    <img className={styles.main_artist_img} src={"https://cdn.crowdpic.net/list-thumb/thumb_l_D623AE308211C3678E61EC0E3FF3C969.jpg"}></img>
+                </div>
+
+                <div className={styles.main_artist}>
+                    <div className={styles.main_artist_title}>기술</div>
+                    <div style={{marginTop:"16px", marginLeft:"-3px"}}>
+                        {techList.map((props, index) => (
+                            <>
+                                <TechBtn props={props}></TechBtn>
+                            </>
+                        ))}
+                    </div>
+                </div>
+
+                <div className={styles.main_img_wrapper}>
+                    {copyrightList.map((props, index) => (
+                        <>
+                            <CopyrightBtn props={props}></CopyrightBtn>
+                        </>
+                    ))}
+                </div>
+
             </div>
+
+            <Link href={"/project"}><a><div className={styles.back_btn}></div></a></Link>
 
             <>
                 {

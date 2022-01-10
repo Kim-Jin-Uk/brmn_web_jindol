@@ -169,67 +169,85 @@ export default function Menu(param) {
                                         <Image width="86px" height={"19px"} src={logo}/>
                                     </div>
                                 </Link>
-                                <div className={styles.menu_items}>
-                                    {
-                                        param.param && param.param === "guide"
-                                            ? <MenuItem href="/" active>이용안내</MenuItem>
-                                            : <MenuItem href="/">이용안내</MenuItem>
-                                    }
-                                    {
-                                        param.param && param.param === "project"
-                                            ? <MenuItem href="/project" active>프로젝트</MenuItem>
-                                            : <MenuItem href="/project">프로젝트</MenuItem>
-                                    }
-                                </div>
+                                {
+                                    param.btnType !== undefined && param.btnType === "upload"
+                                        ?(<></>)
+                                        :(<div className={styles.menu_items}>
+                                            {
+                                                param.param && param.param === "guide"
+                                                    ? <MenuItem href="/" active>이용안내</MenuItem>
+                                                    : <MenuItem href="/">이용안내</MenuItem>
+                                            }
+                                            {
+                                                param.param && param.param === "project"
+                                                    ? <MenuItem href="/project" active>프로젝트</MenuItem>
+                                                    : <MenuItem href="/project">프로젝트</MenuItem>
+                                            }
+                                        </div>)
+                                }
                             </div>
 
-                            <div className={styles.right}>
-                                {
-                                    param.param ? (
+                            {
+                                param.btnType !== undefined && param.btnType === "upload"
+                                    ?(
                                         <>
-                                            <Button upload className={styles.create} onClick={()=>router.push("/project/create")}>프로젝트 업로드</Button>
-                                            {/*
+                                            <Link href={"/projrct/upload/detail"}><a><Button className={styles.upload}>계속</Button></a></Link>
+                                        </>
+                                    )
+                                    :(
+                                        <>
+                                            <div className={styles.right}>
+                                                {
+                                                    param.param ? (
+                                                        <>
+                                                            <Button upload className={styles.create} onClick={()=>router.push("/project/create")}>프로젝트 업로드</Button>
+                                                            {/*
                             <IconButton src={image_message} onClick={() => alert("준비중인 기능입니다.")}/>
                             <IconButton src={image_bell} onClick={() => alert("준비중인 기능입니다.")}/>
  */}
 
-                                            <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
-                                                <AntBtn className={styles.dropdown_button}>
-                                                    <Link href={"/"}>
-                                                        <div style={{cursor: "pointer", display: "flex"}}>
-                                                            <ProfileThumbnail circle size={40} image={
-                                                                "https://www.walkerhillstory.com/wp-content/uploads/2020/09/2-1.jpg"
-                                                            }/>
-                                                        </div>
-                                                    </Link>
-                                                </AntBtn>
-                                            </Dropdown>
+                                                            <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
+                                                                <AntBtn className={styles.dropdown_button}>
+                                                                    <Link href={"/"}>
+                                                                        <div style={{cursor: "pointer", display: "flex"}}>
+                                                                            <ProfileThumbnail circle size={40} image={
+                                                                                "https://www.walkerhillstory.com/wp-content/uploads/2020/09/2-1.jpg"
+                                                                            }/>
+                                                                        </div>
+                                                                    </Link>
+                                                                </AntBtn>
+                                                            </Dropdown>
 
 
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Button login className={styles.login} onClick={()=>router.push("/signin/login")}>로그인</Button>
-                                            <Button signup className={styles.signup} onClick={()=>router.push("/signin/signup")}>회원가입</Button>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <Button login className={styles.login} onClick={()=>router.push("/signin/login")}>로그인</Button>
+                                                            <Button signup className={styles.signup} onClick={()=>router.push("/signin/signup")}>회원가입</Button>
+                                                        </>
+                                                    )
+                                                }
+                                            </div>
+                                            <div className={styles.right_mobile}>
+                                                <IconButton src={image_search}/>
+                                                {
+                                                    param.openAble
+                                                        ? (
+                                                            <div className={`${icon_styles.button}`} onClick={onClickMenu}>
+                                                                <Image src={image_menu} width={24} height={24}/>
+                                                            </div>
+                                                        ) : (
+                                                            <div className={`${icon_styles.button}`} onClick={onClickMenu}>
+                                                                <Image src={image_close} width={24} height={24}/>
+                                                            </div>
+                                                        )
+                                                }
+                                            </div>
                                         </>
                                     )
-                                }
-                            </div>
-                            <div className={styles.right_mobile}>
-                                <IconButton src={image_search}/>
-                                {
-                                    param.openAble
-                                        ? (
-                                            <div className={`${icon_styles.button}`} onClick={onClickMenu}>
-                                                <Image src={image_menu} width={24} height={24}/>
-                                            </div>
-                                        ) : (
-                                            <div className={`${icon_styles.button}`} onClick={onClickMenu}>
-                                                <Image src={image_close} width={24} height={24}/>
-                                            </div>
-                                        )
-                                }
-                            </div>
+                            }
+
+
                         </div>
                     )
             }

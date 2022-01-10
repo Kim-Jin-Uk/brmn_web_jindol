@@ -2,6 +2,8 @@
   background: #ffffff;
   width: 100%;
   padding-top: 40px;
+  padding-bottom: 100px;
+  min-width: 320px;
 }
 
 .main_title{
@@ -12,6 +14,11 @@
   color: #1D1D1D;
   font-size: 20px;
   margin-left: 40px;
+}
+
+.main_img_wrapper{
+  margin-top: 28px;
+  margin-left: 36px;
 }
 
 .main_field{
@@ -38,6 +45,137 @@
   margin-bottom: 40px;
 }
 
+.main_hashtag_wrapper{
+  list-style: none;
+  padding: 0px;
+  margin: -12px 38px 0;
+
+  > li {
+    display: inline-block;
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 170%;
+    color: #3380F4;
+    margin-left: 2px;
+    margin-right: 2px;
+  }
+}
+
+.main_info{
+  margin: 12px 40px 0;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e8e8e8;
+  > div{
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 170%;
+    color: #1D1D1D;
+  }
+}
+
+.main_btn_group{
+  position: relative;
+  height: 48px;
+  bottom: 48px;
+  float: right;
+  margin-right: -5px;
+  > div{
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+}
+
+.main_share_btn{
+  background: url(../images/project/share.svg);
+  &:hover{
+    background: url(../images/project/share_active.svg);
+  }
+}
+
+.main_info_btn{
+  background: url(../images/project/info.svg);
+  &:hover{
+    background: url(../images/project/info_active.svg);
+  }
+}
+
+.main_artist{
+  padding-top: 28px;
+  margin-right: 40px;
+  margin-left: 40px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.main_artist_title{
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 170%;
+  color: #616161;
+}
+
+.main_artist_name{
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  color: #1D1D1D;
+  margin-left: 60px;
+  margin-top: 16px;
+}
+
+.main_artist_info{
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 170%;
+  color: #616161;
+  margin-left: 60px;
+  margin-top: 4px;
+}
+
+.main_artist_img{
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  object-fit: cover;
+  position: relative;
+  bottom: 48px;
+  float: left;
+}
+
+.tech_btn{
+  border-radius: 4px;
+  height: 24px;
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 100%;
+  color: #FFFFFF;
+  width: auto;
+  display: inline-block;
+  padding: 6px 12px;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.back_btn{
+  display: none;
+}
+
 @media (max-width: 600px){
   .main_wrapper{
     padding-top: 28px;
@@ -48,10 +186,24 @@
     margin-left: 20px;
   }
 
+  .main_info{
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
   .main_field{
     font-size: 12px;
     margin-left: 20px;
     margin-bottom: 24px;
+  }
+
+  .main_artist{
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+
+  .main_img_wrapper{
+    margin-left: 16px;
   }
 
   .card_img{
@@ -60,6 +212,12 @@
 
   .card_youtube{
     margin-bottom: 20px;
+  }
+
+  .main_hashtag_wrapper{
+    margin-top: 8px;
+    margin-left: 18px;
+    margin-right: 18px;
   }
 }
 
@@ -71,6 +229,26 @@
   .main_field{
     margin-left: 24px;
   }
+
+  .main_info{
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+
+  .main_artist{
+    margin-right: 24px;
+    margin-left: 24px;
+  }
+
+  .main_img_wrapper{
+    margin-left: 20px;
+  }
+
+  .main_hashtag_wrapper{
+    margin-top: 8px;
+    margin-left: 22px;
+    margin-right: 22px;
+  }
 }
 
 @media (min-width: 1024px) and (max-width: 1680px){
@@ -79,11 +257,23 @@
     margin: 40px 140px 100px;
     border: 1px solid #E8E8E8;
     border-radius: 20px;
+    padding-bottom: 80px;
   }
 
   .card_youtube{
     width: 100%;
     height: calc((100vw - 280px) * 117.5 / 210);
+  }
+
+  .back_btn{
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 96px;
+    left: 40px;
+    background: url(../images/project/back_btn.svg);
+    cursor: pointer;
   }
 }
 
@@ -93,10 +283,22 @@
     margin: 40px auto 100px;
     border: 1px solid #E8E8E8;
     border-radius: 20px;
+    padding-bottom: 80px;
   }
 
   .card_youtube{
     width: 100%;
     height: calc(1400px * 117.5 / 210);
+  }
+
+  .back_btn{
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 96px;
+    left: 40px;
+    background: url(../images/project/back_btn.svg);
+    cursor: pointer;
   }
 }
