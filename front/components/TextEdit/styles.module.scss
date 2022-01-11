@@ -81,6 +81,14 @@
   }
 }
 
+.popover{
+  background: url(./delete_popover.svg);
+  width: 89px;
+  height: 38px;
+  background-size: 89px;
+  cursor: pointer;
+}
+
 @media (min-width: 600px){
   .modal{
     width: 500px !important;

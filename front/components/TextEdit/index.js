@@ -3,7 +3,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import {createGlobalStyle} from "styled-components";
 import styles from './styles.module.scss'
-import {Modal} from "antd";
+import {Modal, Popover} from "antd";
 import Button from "../Button";
 import {func} from "prop-types";
 
@@ -85,6 +85,19 @@ const Global = createGlobalStyle`
     border-top: 1px solid #E8E8E8;
     height: 60px;
   }
+
+  @media (min-width: 600px){
+    .ql-editor {
+      padding: 61px 40px 20px;
+    }
+  }
+
+  @media (min-width: 960px){
+    .ql-toolbar.ql-snow {
+      width: 958px;
+    }
+  }
+  
 `
 
 function BtnCancle(onClickBtnCancle){
@@ -107,12 +120,12 @@ function BtnOk(onClickBtnOk){
 const TextEdit = () => {
     const [value, setValue] = useState("");
     const [img, setImg] = useState("")
-    const [video, setVideo] = useState("")
     const [visible, setVisible] = useState(false);
     const [youtube, setYoutube] = useState("");
     const [imgList, setImgList] = useState([])
-    const [videoList, setVideoList] = useState([])
-    const [isOverIframe, setIsOverIframe] = useState(false)
+    const [view, setView] = useState("none")
+    const [index, setIndex] = useState(null)
+    const Ref = useRef(null)
 
     useEffect(()=>{
         setValue(value + img)
@@ -120,58 +133,36 @@ const TextEdit = () => {
         setImg("")
     },[img])
 
-    useEffect(()=>{
-        setValue(value + video)
-        setVideoList([...videoList,video])
-        setImg("")
-    },[video])
-
-    function processMouseOut(){
-        setIsOverIframe(false)
-        top.focus()
-    }
-    function processMouseOver(){
-        setIsOverIframe(true)
-    }
-
-    const onBackgroundClick = useCallback(()=> {
-        console.log(isOverIframe)
-    },[isOverIframe])
-
     useEffect(() => {
-        const videoItems = document.getElementsByTagName("iframe")
-        const imgItems = document.getElementsByTagName("img")
-        for (let i = 0; i < videoItems.length; i++) {
-            const videoItem = videoItems[i]
-            videoItem.onmouseover = processMouseOver
-            videoItem.onmouseout = processMouseOut
-            videoItem.contentWindow.document.getElementsByTagName("body")[0].addEventListener("click",function(){
-                    console.log("clickclick")
-                })
-            window.onclick = onBackgroundClick
-            videoItem.contentWindow.addEventListener("blur",function(){
-                setValue(value.replace(videoList[i],""))
-                setVideoList(videoList.filter((value,index) => index !== i))
-            })
-            videoItem.contentWindow.addEventListener("focus",function(){
-                setValue(value.replace(videoList[i],""))
-                setVideoList(videoList.filter((value,index) => index !== i))
-            })
-        }
-
-        if (imgItems.length > 4){
-            for (let i = 0; i < imgItems.length - 4; i++) {
-                const imgArray = imgList.filter((value) => value != '')
-                const imgItem = imgItems.item(i+4)
-                imgItem.addEventListener("click",function(){
-                    setValue(value.replace(imgArray[i],""))
-                    setImgList(imgArray.filter((value,index) => index !== i))
-                })
+        document.body.onclick = function (e) {
+            if (e.target.id){
+                if (parseInt(e.target.id, 10) >= 0){
+                    console.log(e.target.id)
+                }else {
+                    setView("none")
+                }
+            }else {
+                setView("none")
             }
         }
 
-        console.log(imgItems,videoItems)
-    },[imgList,videoList])
+        const imgItems = document.getElementsByTagName("img")
+
+        if (imgItems.length > 4){
+            for (let i = 0; i < imgItems.length - 4; i++) {
+                const imgItem = imgItems.item(i+4)
+                imgItem.id = i
+                imgItem.addEventListener("click",function(x){
+                    setView("inline-block")
+                    const positionLeft = x.clientX;
+                    const positionTop = x.clientY;
+                    document.getElementById('result').style.left = positionLeft - 20 + "px";
+                    document.getElementById('result').style.top = positionTop - 50 +"px";
+                    setIndex(i)
+                })
+            }
+        }
+    })
 
     const imageHandler = () => {
         const input = document.createElement("input")
@@ -192,13 +183,14 @@ const TextEdit = () => {
         let url = ""
         const propList = youtube.toString().split("/")
         if (propList[propList.length-1].includes("watch?v=")){
-            url = `https://www.youtube.com/embed/${propList[propList.length-1].replace("watch?v=","")}`
+            url = `${propList[propList.length-1].replace("watch?v=","")}`
         }else {
-            url = `https://www.youtube.com/embed/${propList[propList.length-1]}`
+            url = `${propList[propList.length-1]}`
         }
+
         setVisible(false)
-        const videoString = `<iframe width="100%" height="calc(100% * 210 / 117.5)" src="${url}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-        setVideo(videoString)
+        const videoString = `<img src="https://i.ytimg.com/vi/${url}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBEsg2dBu3QxwppLU0hIrT3b00q3g">`
+        setImg(videoString)
     }
     const onClickBtnCancle = () => {
         setVisible(false)
@@ -234,11 +226,23 @@ const TextEdit = () => {
         'video', 'image',
     ]
 
-    document.addEventListener("click", function () {
-        if (isOverIframe){
-            console.log(true)
+    const onClickPopOver = () => {
+        const imgArray = imgList.filter((value) => value != '')
+        console.log(value)
+        let slicer = imgArray[index]
+        if (imgArray.length === 1){
+            if (slicer.includes("&rs")){
+                slicer = slicer.replace("&rs","&amp;rs")
+                console.log(slicer)
+            }
         }
-    })
+
+        setValue(value.replace(slicer,""))
+        setImgList(imgArray.filter((value,i) => i !== index))
+        setView("none")
+
+    }
+
     return(
         <>
             <Global></Global>
@@ -259,6 +263,13 @@ const TextEdit = () => {
                     <input className={styles.input} type="text" value={youtube} onChange={handleChange} placeholder={"유튜브 주소를 입력해 주세요"}/>
                 </Modal>
             </div>
+
+            <div id="result"
+                 className={styles.popover}
+                 style={{position: "absolute", display:`${view}`}}
+                onClick={onClickPopOver}
+            > </div>
+
         </>
     )
 }

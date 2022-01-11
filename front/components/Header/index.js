@@ -19,7 +19,8 @@ export default function Header(param) {
                             top: "0px",
                             zIndex: 1000,
                         }}>
-                            <Menu param={param.param} openAble={param.openAble} setOpenAble={param.setOpenAble} side={side}/>
+                            <Menu param={param.param} openAble={param.openAble} setOpenAble={param.setOpenAble} side={side}
+                                  btnType={param.btnType} upload={param.upload} setUpload={param.setUpload}/>
                         </div>
                     )
                     : (
@@ -30,7 +31,7 @@ export default function Header(param) {
                                 top: "0px",
                                 zIndex: 1000,
                             }}>
-                                <Menu param={param.param} openAble={param.openAble} setOpenAble={param.setOpenAble} side={side} btnType={param.btnType}/>
+                                <Menu param={param.param} openAble={param.openAble} setOpenAble={param.setOpenAble} side={side} btnType={param.btnType}  upload={param.upload} setUpload={param.setUpload}/>
                             </div>
                             <div style={{height:"56px"}}></div>
                         </>
