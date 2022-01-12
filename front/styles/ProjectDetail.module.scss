@@ -176,6 +176,170 @@
   display: none;
 }
 
+.popover_content{
+  height: 30px;
+  width: 150px;
+  padding: 4px 20px 2px;
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 170%;
+  color: #1D1D1D;
+  background: #ffffff;
+  &:hover{
+    background: #E8E8E8;
+  }
+}
+
+.pop_btn{
+  display: inline-block;
+  float: right;
+  width: 66px;
+  height: 36px;
+  text-align: center;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  vertical-align: top;
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 100%;
+  text-align: center;
+  border-radius: 2px;
+}
+
+.delete_btn{
+  background: #FFFFFF;
+  border: 1px solid #E8E8E8;
+  color: #F43333;
+  &:hover{
+    background: #F43333;
+    color: #ffffff;
+  }
+}
+
+.cancle_btn{
+  background: #fafafa;
+  border: 1px solid #fafafa;
+  color: #1D1D1D;
+  &:hover{
+    background: #E8E8E8;
+    border: 1px solid #e8e8e8;
+  }
+}
+
+.facebook_icon{
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background: url(../images/project/facebook.svg);
+}
+
+.twitter_icon{
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background: url(../images/project/twitter.svg);
+}
+
+.kakao_icon{
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background: url(../images/project/kakao.svg);
+}
+
+.kakako_wrapper{
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  margin-right: 20px;
+}
+
+.kakao_btn{
+  width: 48px;
+  height: 48px;
+  background: none;
+  outline: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.default_icon{
+  width: 48px;
+  height: 48px;
+  margin-right: 20px;
+  display: inline-block;
+  background: url(../images/project/default_share.svg);
+  cursor: pointer;
+}
+
+.delete_contents{
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 150%;
+  color: #1D1D1D;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.share_title{
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 130%;
+  text-align: center;
+  color: #1D1D1D;
+  padding-top: 24px;
+}
+
+.share_wrapper{
+  display: inline-block;
+  width: 252px;
+  margin: 24px auto 12px;
+  display: flex;
+}
+
+.name_wrapper{
+  display: inline-block;
+  width: 272px;
+  margin: 0 auto;
+  display: flex;
+  > div{
+    width: 68px;
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 100%;
+    text-align: center;
+    color: #1D1D1D;
+  }
+}
+
+.link{
+  background: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-radius: 4px;
+  width: calc(100% - 40px);
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 150%;
+  color: #616161;
+  padding: 8px 10px;
+  height: 36px;
+  margin: 24px 20px 12px;
+}
+
 @media (max-width: 600px){
   .main_wrapper{
     padding-top: 28px;

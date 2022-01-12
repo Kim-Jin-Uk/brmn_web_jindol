@@ -3,7 +3,7 @@ import Header from "../../components/Header";
 import styles from "../../styles/Profile.module.scss"
 import Button from "../../components/Button";
 import Footer from "../../components/Footer";
-import {Checkbox, Input, Select, Menu} from "antd";
+import {Checkbox, Input, Select, Menu, Modal} from "antd";
 import {createGlobalStyle} from "styled-components";
 const { Option } = Select;
 import DatePicker, {registerLocale} from "react-datepicker";
@@ -172,6 +172,57 @@ const Global = createGlobalStyle`
     }
   }
 
+  .ant-modal-content {
+    border-radius: 4px;
+  }
+
+  .ant-modal {
+    background: none;
+    width: calc(100% - 32px) !important;
+    max-width: 500px;
+    min-width: 280px;
+    margin: 0 auto;
+  }
+
+  .ant-modal-close {
+    display: none;
+  }
+
+  .ant-modal-header {
+    padding: 28px 0 8px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-bottom: 1px solid #e8e8e8;
+
+    > div {
+      font-family: Spoqa Han Sans Neo;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 18px;
+      line-height: 130%;
+      color: #1D1D1D;
+    }
+  }
+
+  .ant-modal-body {
+    padding: 12px 20px 28px;
+    border-bottom: 1px solid #e8e8e8;
+    >div{
+      font-family: Spoqa Han Sans Neo;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 150%;
+      color: #1D1D1D;
+    }
+  }
+
+  .ant-modal-footer{
+    background: #fafafa;
+    height: 60px;
+    padding: 12px 20px;
+  }
+  
 `
 
 function ValueCard(value) {
@@ -375,6 +426,30 @@ const Edit = () => {
     const [select, setSelect] = useState(true)
     const ref = useRef(null);
 
+    const [modalVisible, setModalVisible] = useState(false)
+    const [fieldName, setFieldName] = useState("")
+    const [fieldList, setFieldList] = useState([
+        "보컬","랩","작곡","연주","디자인","영상제작","작사","음향 엔지니어",
+    ])
+
+    const onClickAddField = () => {
+        setModalVisible(true)
+    }
+
+    const onClickCloseAddField = () => {
+        setModalVisible(false)
+    }
+
+    const onChangeFieldName = (e) =>{
+        setFieldName(e.target.value)
+    }
+
+    const addFieldItem = () =>{
+        setFieldList([...fieldList, fieldName])
+        setFieldName("")
+        setModalVisible(false)
+    }
+
     const [menuList, setMenuList] = useState({
         "basic":true,
         "info":false,
@@ -560,6 +635,22 @@ const Edit = () => {
 
             <div style={{height:"61px"}}></div>
 
+            <Modal
+                visible={modalVisible}
+                title="기타 분야 작성"
+                footer={[
+                    <Button className={`${styles.pop_btn} ${styles.save_btn}`} onClick={addFieldItem}>
+                        저장
+                    </Button>,
+                    <Button className={`${styles.pop_btn} ${styles.cancle_btn}`} onClick={onClickCloseAddField}>
+                        취소
+                    </Button>,
+                ]}
+            >
+                <div>분야 이름</div>
+                <input className={styles.add_field_input} onChange={onChangeFieldName} value={fieldName} type="text" placeholder={"분야 이름을 입력합니다."}/>
+            </Modal>
+
             <div className={styles.edit_main_wrapper}>
                 <div className={styles.edit_subset}>
                     <div className={styles.edit_side_menu}>
@@ -631,15 +722,12 @@ const Edit = () => {
                                 <div className={styles.edit_card_sub_explain}>어떤 분야에서 활동 중입니까?</div>
                             </div>
                             <Checkbox.Group style={{ width: '100%' }}>
-                                <Checkbox className={styles.edit_card_checkbox} value="보컬">보컬</Checkbox>
-                                <Checkbox className={styles.edit_card_checkbox} value="랩">랩</Checkbox>
-                                <Checkbox className={styles.edit_card_checkbox} value="작곡">작곡</Checkbox>
-                                <Checkbox className={styles.edit_card_checkbox} value="연주">연주</Checkbox>
-                                <Checkbox className={styles.edit_card_checkbox} value="디자인">디자인</Checkbox>
-                                <Checkbox className={styles.edit_card_checkbox} value="영상제작">영상제작</Checkbox>
-                                <Checkbox className={styles.edit_card_checkbox} value="작사">작사</Checkbox>
-                                <Checkbox className={styles.edit_card_checkbox} value="음향 엔지니어">음향 엔지니어</Checkbox>
-                                <div className={styles.edit_card_add_link}>기타 작성하기</div>
+                                {
+                                    fieldList.map((v) => (
+                                        <Checkbox className={styles.edit_card_checkbox} value={v}>{v}</Checkbox>
+                                    ))
+                                }
+                                <div className={styles.edit_card_add_link} onClick={onClickAddField}>기타 작성하기</div>
                             </Checkbox.Group>
 
                         </div>

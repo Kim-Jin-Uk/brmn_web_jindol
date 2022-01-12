@@ -757,6 +757,39 @@
     };
 }
 
+.add_field_input{
+    width: calc(100% - 81px);
+    height: 36px;
+    outline: none;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    margin-top: 6px;
+    padding: 8px 10px;
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+}
+
+.add_field_button{
+    margin-top: 12px;
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 170%;
+    color: #3380F4;
+    cursor: pointer;
+    display: block;
+    width: 69px;
+    margin-left: 12px;
+    margin-right: 20px;
+    &:hover{
+        color: #3380F4;
+    }
+}
+
 @media (max-width: 600px) {
     .card_wrapper{
         width: 100%;

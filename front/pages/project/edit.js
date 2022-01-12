@@ -3,8 +3,7 @@ import Header from "../../components/Header";
 import dynamic from "next/dynamic";
 import {createGlobalStyle} from "styled-components";
 import styles from "../../styles/Project.module.scss"
-import {Select, Divider, Input} from "antd";
-import { PlusOutlined } from '@ant-design/icons';
+import {Select} from "antd";
 import Image from "next/image";
 import Button from "../../components/Button";
 const { Option } = Select;
@@ -62,19 +61,6 @@ const Upload = () => {
     const [imgSet,setImgSet] = useState(false)
     const [hashList,setHashList] = useState([])
     const [techList,setTechList] = useState([])
-    const [fieldList, setFieldList] = useState([
-        "전체","보컬","랩","작사","작곡","연주","음향 엔지니어","디자인"
-    ])
-    const [fieldName, setFieldName] = useState("")
-
-    const onFieldNameChange = (e) => {
-        setFieldName(e.target.value)
-    }
-
-    const addFieldItem = () => {
-        setFieldList([...fieldList,fieldName])
-        setFieldName("")
-    }
 
     const imgUpload = () =>{
         const input = document.createElement("input")
@@ -136,25 +122,15 @@ const Upload = () => {
                                             </div>
                                             <div className={styles.detail_box}>
                                                 <div className={styles.detail_title}>분야*</div>
-                                                <Select defaultValue="분야"
-                                                        dropdownRender={menu => (
-                                                            <div>
-                                                                {menu}
-                                                                <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 8, borderTop:"1px solid #e8e8e8"}}>
-                                                                    <input className={styles.add_field_input} value={fieldName} onChange={onFieldNameChange} placeholder={"내용"} />
-                                                                    <a
-                                                                        className={styles.add_field_button}
-                                                                        onClick={addFieldItem}
-                                                                    >
-                                                                        +  분야 추가
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                >
-                                                    {fieldList.map(item => (
-                                                        <Option key={item}>{item}</Option>
-                                                    ))}
+                                                <Select defaultValue="분야">
+                                                    <Option value="전체">전체</Option>
+                                                    <Option value="보컬">보컬</Option>
+                                                    <Option value="랩">랩</Option>
+                                                    <Option value="작사">작사</Option>
+                                                    <Option value="작곡">작곡</Option>
+                                                    <Option value="연주">연주</Option>
+                                                    <Option value="음향 엔지니어">음향 엔지니어</Option>
+                                                    <Option value="디자인">디자인</Option>
                                                 </Select>
                                             </div>
                                             <div className={styles.detail_box} style={{height:"240px"}}>

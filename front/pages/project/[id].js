@@ -7,10 +7,102 @@ import Footer from "../../components/Footer";
 import {createGlobalStyle} from "styled-components";
 import sideStyles from "../../styles/Project.module.scss";
 import Image from "next/image"
+import {Modal, Popover} from "antd";
+import Router from "next/router";
+
+
+import {
+    FacebookShareButton,
+    TwitterShareButton,
+} from "react-share";
+import useScript from "../../hooks/use-script";
+import KakaoShareButton from "../../components/ShareBtn/KakaoShareButton";
+
+function ShareGroup(props){
+    useScript('https://developers.kakao.com/sdk/js/kakao.js')
+    const currentUrl = window.location.href
+    const handleCopyClipBoard = async () => {
+        try {
+            await navigator.clipboard.writeText(currentUrl);
+            alert('링크가 복사되었습니다');
+        } catch (error) {
+            console.log(error)
+        }
+    };
+    return(
+        <div className={styles.share_wrapper}>
+            <div className={styles.default_icon} onClick={handleCopyClipBoard}></div>
+            <KakaoShareButton title={props.title} hash={props.hash} />
+            <FacebookShareButton style={{ marginRight: "20px" }} url={currentUrl}>
+                <div className={styles.facebook_icon}></div>
+            </FacebookShareButton>
+            <TwitterShareButton url={currentUrl}>
+                <div className={styles.twitter_icon}></div>
+            </TwitterShareButton>
+        </div>
+    )
+}
 
 const Global = createGlobalStyle`
-  body{
+  body {
     background: #fafafa;
+  }
+
+  .ant-popover-inner-content {
+    height: 76px;
+    padding: 8px 0;
+  }
+
+  .ant-modal-content {
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .ant-modal {
+    background: none;
+    width: calc(100% - 32px) !important;
+    max-width: 500px;
+    min-width: 280px;
+    margin: 0 auto;
+  }
+
+  .ant-modal-close {
+    display: none;
+  }
+
+  .ant-modal-header {
+    padding: 28px 0 8px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-bottom: 1px solid #e8e8e8;
+
+    > div {
+      font-family: Spoqa Han Sans Neo;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 18px;
+      line-height: 130%;
+      color: #1D1D1D;
+    }
+  }
+
+  .ant-modal-body {
+    padding: 12px 0px 20px;
+    border-bottom: 1px solid #e8e8e8;
+    >span{
+      font-family: Spoqa Han Sans Neo;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 150%;
+      color: #1D1D1D;
+    }
+  }
+  
+  .ant-modal-footer{
+    background: #fafafa;
+    height: 60px;
+    padding: 12px 20px;
   }
 `
 
@@ -72,6 +164,13 @@ const ProjectPage = () => {
     const [openAble,setOpenAble] = useState(true)
     const [isLoggedin,setIsLoggedin] = useState(true)
     const [isMe,setIsMe] = useState(true)
+    const [deleteVisible,setDeleteVisible] = useState(false)
+    const [shareVisible,setShareVisible] = useState(false)
+    const [popVisible,setPopVisible] = useState(false)
+    const [hashList, setHashList] = useState([
+        "#2층과3층사이","#2f3f","#발라드","#영어가사","#커버","#노래영상"
+    ])
+    const [defaultUrl, setDefaultUrl] = useState("")
     const onClickClose = useCallback(() => {
         setOpenAble(!openAble)
     },[openAble])
@@ -100,6 +199,55 @@ const ProjectPage = () => {
         "cc", "by", "sa", "nd", "nc",
     ])
 
+    const handleVisibleChange = (e) => {
+        setPopVisible(e);
+    };
+
+    const onClickEditBtn = () => {
+        setPopVisible(false)
+        Router.push("/project/edit")
+    }
+
+    const onClickRemoveBtn = () => {
+        setPopVisible(false)
+        setDeleteVisible(true)
+    }
+
+    const onClickCloseBtn = () => {
+        setDeleteVisible(false)
+    }
+
+    const onClickDeleteBtn = () => {
+        setDeleteVisible(false)
+    }
+
+    const handleShareOk = () => {
+        setShareVisible(false)
+    }
+
+    const handleShareCancel = () => {
+        setShareVisible(false)
+    }
+
+    const handleDeleteOk = () => {
+        setDeleteVisible(false)
+    }
+
+    const handleDeleteCancel = () => {
+        setDeleteVisible(false)
+    }
+
+    const onClickShareBtn = () => {
+        setShareVisible(true)
+    }
+
+    useEffect(() => {
+        setDefaultUrl(window.location.href)
+    })
+
+
+    useScript('https://developers.kakao.com/sdk/js/kakao.js')
+
     return(
         <>
             <Global></Global>
@@ -114,12 +262,11 @@ const ProjectPage = () => {
                     </>
                 ))}
                 <ul className={styles.main_hashtag_wrapper}>
-                    <li><Link href={"/"}><a>#2층과3층사이</a></Link></li>
-                    <li><Link href={"/"}><a>#2f3f</a></Link></li>
-                    <li><Link href={"/"}><a>#발라드</a></Link></li>
-                    <li><Link href={"/"}><a>#영어가사</a></Link></li>
-                    <li><Link href={"/"}><a>#커버</a></Link></li>
-                    <li><Link href={"/"}><a>#노래영상</a></Link></li>
+                    {
+                        hashList.map((v) => (
+                            <li><Link href={"/"}><a>{v}</a></Link></li>
+                        ))
+                    }
                 </ul>
                 <div className={styles.main_title}
                      style={{marginTop:"4px", fontSize:"20px"}}
@@ -129,9 +276,24 @@ const ProjectPage = () => {
                     <div>조회수 44,592회</div>
                     <div>2021. 5. 8.</div>
                     <div className={styles.main_btn_group}>
-                        <div className={styles.main_share_btn}></div>
-                        {isMe
-                                ? <div className={styles.main_info_btn}></div>
+                        <div className={styles.main_share_btn} onClick={onClickShareBtn}></div>
+                        {
+                            isMe
+                                ? (
+                                    <Popover placement="bottomRight" title={""} content={
+                                        <>
+                                            <div className={styles.popover_content}
+                                            onClick={onClickEditBtn}>편집</div>
+                                            <div className={styles.popover_content}
+                                            onClick={onClickRemoveBtn}>삭제</div>
+                                        </>
+                                    } trigger="click"
+                                         visible={popVisible}
+                                         onVisibleChange={handleVisibleChange}
+                                    >
+                                        <div className={styles.main_info_btn}></div>
+                                    </Popover>
+                                )
                                 : <></>
                         }
                     </div>
@@ -166,6 +328,48 @@ const ProjectPage = () => {
             </div>
 
             <Link href={"/project"}><a><div className={styles.back_btn}></div></a></Link>
+
+            <Modal
+                visible={deleteVisible}
+                title="삭제하기"
+                onOk={handleDeleteOk}
+                onCancel={handleDeleteCancel}
+                footer={[
+                    <Button className={`${styles.pop_btn} ${styles.delete_btn}`} onClick={onClickDeleteBtn}>
+                        삭제
+                    </Button>,
+                    <Button className={`${styles.pop_btn} ${styles.cancle_btn}`} onClick={onClickCloseBtn}>
+                        취소
+                    </Button>,
+                ]}
+            >
+                <div className={styles.delete_contents}>
+                    해당 내용을 삭제하시겠습니까?
+                    <br/>삭제된 정보는 다시 복구하실 수 없습니다.
+                </div>
+            </Modal>
+
+            <Modal
+                visible={shareVisible}
+                title=""
+                footer=""
+                onOk={handleShareOk}
+                onCancel={handleShareCancel}
+            >
+                <div>
+                    <div className={styles.share_title}>프로젝트 공유</div>
+                    <ShareGroup title={"프로젝트 제목"} hash={hashList.join(" ")}></ShareGroup>
+                    <div className={styles.name_wrapper}>
+                        <div>퍼가기</div>
+                        <div>카카오톡</div>
+                        <div>facebook</div>
+                        <div>twitter</div>
+                    </div>
+                    <div>
+                        <div className={styles.link}>{defaultUrl}</div>
+                    </div>
+                </div>
+            </Modal>
 
             <>
                 {
@@ -295,13 +499,13 @@ const ProjectPage = () => {
                                             </>
                                         )
                                 }
-
-
                             </div>
                         )
                 }
             </>
             <Footer></Footer>
+
+
         </>
     )
 }

@@ -20,14 +20,14 @@ const Global = createGlobalStyle`
     font-size: 14px;
     line-height: 150%;
     color: #1D1D1D;
-    padding: 61px 20px 20px;
-    min-height: 400px;
+    padding: 61px 20px 100px;
+    min-height: calc(100vh - 61px);
 
   }
 
   .ql-container {
     border: none !important;
-    min-height: 400px;
+    min-height: calc(100vh - 61px);
   }
 
   .ql-toolbar.ql-snow {
@@ -88,7 +88,7 @@ const Global = createGlobalStyle`
 
   @media (min-width: 600px){
     .ql-editor {
-      padding: 61px 40px 20px;
+      padding: 61px 40px 100px;
     }
   }
 
@@ -230,17 +230,20 @@ const TextEdit = () => {
         const imgArray = imgList.filter((value) => value != '')
         console.log(value)
         let slicer = imgArray[index]
-        if (imgArray.length === 1){
+
+        if (value.includes(slicer)){
+            setValue(value.replace(slicer,""))
+        }else {
             if (slicer.includes("&rs")){
                 slicer = slicer.replace("&rs","&amp;rs")
+                setValue(value.replace(slicer,""))
                 console.log(slicer)
+                console.log(value.replace(slicer,""))
             }
         }
 
-        setValue(value.replace(slicer,""))
         setImgList(imgArray.filter((value,i) => i !== index))
         setView("none")
-
     }
 
     return(

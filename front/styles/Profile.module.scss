@@ -979,6 +979,57 @@
   }
 }
 
+.add_field_input{
+  width: 100%;
+  height: 36px;
+  outline: none;
+  border: 1px solid #CCCCCC;
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin-top: 6px;
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+}
+
+.pop_btn{
+  display: inline-block;
+  float: right;
+  width: 66px;
+  height: 36px;
+  text-align: center;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  vertical-align: top;
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 100%;
+  text-align: center;
+  border-radius: 2px;
+}
+
+.cancle_btn{
+  background: #fafafa;
+  border: 1px solid #fafafa;
+  color: #1D1D1D;
+  &:hover{
+    background: #E8E8E8;
+    border: 1px solid #e8e8e8;
+  }
+}
+
+.save_btn{
+  background: #33F4A3;
+  color: #1D1D1D;
+  &:hover{
+    background: #15C07E;
+  }
+}
+
 @media (min-width: 1680px){
 
   .profile_info_wrapper{
