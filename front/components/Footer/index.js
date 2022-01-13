@@ -42,7 +42,8 @@ export default function Footer(props) {
                     <div>
                         <div className={styles.link} onClick={toggle}>브레멘 사업자정보</div>
                         <div><Link href="/agreements/use">이용약관</Link></div>
-                        <div><Link href="/agreements/privacy">개인정보처리방침</Link></div>
+                        <div><Link href="/agreements/privacy">개인정보</Link></div>
+                        <div><Link href="/agreements/service">고객센터</Link></div>
                     </div>
                     <div>
                         <a href="https://www.youtube.com/channel/UCCkwGVEZn-c6udCK-RXO2ig" target="_blank" rel="noreferrer"><Image src={icon_youtube} /></a>

@@ -138,7 +138,7 @@ export default function Menu(param) {
                                                 <div className={styles.right}>
                                                     param.param ? (
                                                     <>
-                                                        <Button upload className={styles.create} onClick={()=>router.push("/project/create")}>프로젝트 업로드</Button>
+                                                        <Button upload className={styles.create} onClick={()=>router.push("/project/create").then((() =>window.scrollTo(0,0) ))}>프로젝트 업로드</Button>
                                                         {/*
                             <IconButton src={image_message} onClick={() => alert("준비중인 기능입니다.")}/>
                             <IconButton src={image_bell} onClick={() => alert("준비중인 기능입니다.")}/>
@@ -160,8 +160,8 @@ export default function Menu(param) {
                                                     </>
                                                     ) : (
                                                     <>
-                                                        <Button login className={styles.login} onClick={()=>router.push("/signin/login")}>로그인</Button>
-                                                        <Button signup className={styles.signup} onClick={()=>router.push("/signin/signup")}>회원가입</Button>
+                                                        <Button login className={styles.login} onClick={()=>router.replace("/signin/login")}>로그인</Button>
+                                                        <Button signup className={styles.signup} onClick={()=>router.replace("/signin/signup")}>회원가입</Button>
                                                     </>
                                                     )
                                                 </div>
@@ -231,7 +231,7 @@ export default function Menu(param) {
                                                 {
                                                     param.param ? (
                                                         <>
-                                                            <Button upload className={styles.create} onClick={()=>router.push("/project/create")}>프로젝트 업로드</Button>
+                                                            <Button upload className={styles.create} onClick={()=>router.push("/project/create").then((() =>window.scrollTo(0,0) ))}>프로젝트 업로드</Button>
                                                             {/*
                             <IconButton src={image_message} onClick={() => alert("준비중인 기능입니다.")}/>
                             <IconButton src={image_bell} onClick={() => alert("준비중인 기능입니다.")}/>
@@ -253,8 +253,8 @@ export default function Menu(param) {
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <Button login className={styles.login} onClick={()=>router.push("/signin/login")}>로그인</Button>
-                                                            <Button signup className={styles.signup} onClick={()=>router.push("/signin/signup")}>회원가입</Button>
+                                                            <Button login className={styles.login} onClick={()=>router.replace("/signin/login")}>로그인</Button>
+                                                            <Button signup className={styles.signup} onClick={()=>router.replace("/signin/signup")}>회원가입</Button>
                                                         </>
                                                     )
                                                 }

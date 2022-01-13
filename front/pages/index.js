@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import styles from "../styles/MainIntro.module.scss";
 import sideStyles from "../styles/Project.module.scss";
 import Button from "../components/Button";
+import Router from "next/router";
 
 const Home = () => {
     const [openAble,setOpenAble] = useState(true)
@@ -12,6 +13,15 @@ const Home = () => {
     const onClickClose = useCallback(() => {
         setOpenAble(!openAble)
     },[openAble])
+
+    const onClickClient = () => {
+        Router.push("/service/client").then((() =>window.scrollTo(0,0) ))
+    }
+
+    const onClickMaker = () => {
+        Router.push("/service/maker").then((() =>window.scrollTo(0,0) ))
+    }
+
     return(
         <>
             <Header param={"guide"} openAble = {openAble} setOpenAble={setOpenAble}/>
@@ -20,8 +30,8 @@ const Home = () => {
                 <div className={styles.main_title}></div>
                 {/*intro top btn*/}
                 <div className={styles.main_contents_wrapper}>
-                    <div className={styles.content_1}>
-                        <Link href={"/service/client/intro"}><a>
+                    <div className={styles.content_1} onClick={() => onClickMaker()}>
+                        <a>
                             <div className={styles.content_title}>메이커 채용하기</div>
                             <div className={`${styles.content_img} ${styles.img_1}`}></div>
                             <div className={styles.content_text}>
@@ -31,11 +41,11 @@ const Home = () => {
                                 <br/>
                                 메이커를 만나보세요
                             </div>
-                        </a></Link>
+                        </a>
                     </div>
 
-                    <div className={styles.content_2}>
-                        <Link href={"/service/maker/intro"}><a>
+                    <div className={styles.content_2} onClick={() => onClickClient()}>
+                        <a>
                             <div className={styles.content_title}>메이커 파트너스</div>
                             <div className={`${styles.content_img} ${styles.img_2}`}></div>
                             <div className={styles.content_text}>
@@ -45,7 +55,7 @@ const Home = () => {
                                 <br/>
                                 콘텐츠를 시작하세요
                             </div>
-                        </a></Link>
+                        </a>
                     </div>
 
                     <div className={styles.content_3}>

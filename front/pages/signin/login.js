@@ -71,7 +71,7 @@ const SignUp = memo(() => {
             setEmailErr2(false)
             if (tester.password === passwordText){
                 setPasswordErr(false)
-                Router.push("/")
+                Router.replace("/")
             }else {
                 setPasswordErr(true)
             }

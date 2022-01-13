@@ -10,11 +10,11 @@ import Router from 'next/router'
 const Complete = () => {
 
     const onCLickTop = useCallback(() => {
-        Router.push("/project")
+        Router.replace("/project")
     })
 
     const onCLickBottom = useCallback(() => {
-        Router.push("/project")
+        Router.replace("/project")
     })
 
     return(

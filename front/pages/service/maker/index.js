@@ -127,7 +127,7 @@ const Global = createGlobalStyle`
   }
 `;
 
-const Intro = () => {
+const Index = () => {
     const [openAble,setOpenAble] = useState(true)
     const [isLoggedin,setIsLoggedin] = useState(true)
 
@@ -434,4 +434,4 @@ const Intro = () => {
     )
 }
 
-export default Intro
+export default Index

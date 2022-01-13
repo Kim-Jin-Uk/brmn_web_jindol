@@ -53,12 +53,12 @@
         height: 100%;
         align-items: center;
         >div:first-child{
-            margin-right: 100px;
+            margin-right: 40px;
         }
         a {
             text-decoration: none;
             color: $gray_6;
-            margin-right: 10px;
+            margin-right: 20px;
         }
     }
     >div:last-child {
@@ -69,9 +69,9 @@
         align-items: center;
         >* {
             display: flex;
-            margin-left: 15px;
+            margin-left: 4px;
             &:last-child {
-                margin-left: 64px !important;
+                margin-left: 60px !important;
             }
         }
     }
