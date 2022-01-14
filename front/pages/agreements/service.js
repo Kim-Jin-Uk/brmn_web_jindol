@@ -25,16 +25,16 @@ const Service = () => {
         Router.push("/")
     }
     const onClickNotice = () => {
-        Router.replace("notice")
+        Router.push("notice")
     }
     const onClickReport = () => {
-        Router.replace("report")
+        Router.push("report")
     }
     const onClickQuestion = () => {
-        Router.replace("question")
+        Router.push("question")
     }
     const onClickFrequency = () => {
-        Router.replace("frequency")
+        Router.push("frequency")
     }
 
     return(

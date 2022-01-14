@@ -461,7 +461,7 @@
   border: 1px solid #E8E8E8;
   border-radius: 4px;
   margin-bottom: 20px;
-  min-width: 265px;
+  min-width: 300px;
 }
 
 .edit_card_title{
@@ -759,6 +759,209 @@
   height: 100%;
 }
 
+.sns_edit_wrapper{
+  height: 46px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e8e8e8;
+  margin-top: 20px;
+  > div{
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
+.sns_tail{
+  width: 20px;
+  height: 20px;
+  background: url(../images/sns/trail.svg);
+  margin-top: 3px;
+  margin-left: 27px;
+  display: none !important;
+}
+
+.insta_icon{
+  width: 26px;
+  height: 26px;
+  background: url(../images/sns/insta.svg);
+  margin-left: 0;
+}
+
+.youtube_icon{
+  width: 26px;
+  height: 26px;
+  background: url(../images/sns/youtube.svg);
+  margin-left: 0;
+}
+
+.soundcloud_icon{
+  width: 26px;
+  height: 26px;
+  background: url(../images/sns/soundcloud.svg);
+  margin-left: 0;
+}
+
+.facebook_icon{
+  width: 26px;
+  height: 26px;
+  background: url(../images/sns/facebook.svg);
+  margin-left: 0;
+}
+
+.twitter_icon{
+  width: 26px;
+  height: 26px;
+  background: url(../images/sns/twitter.svg);
+  margin-left: 0;
+}
+
+.sns_title{
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  color: #000000;
+  margin-top: 2.5px;
+  margin-left: 8px;
+}
+
+.sns_title_eidt{
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  color: #000000;
+  margin-top: 2.5px;
+  margin-left: 8px;
+  display: none !important;
+}
+
+.sns_link_btn{
+  width: 60px;
+  height: 26px;
+  background: #E8E8E8;
+  border-radius: 13.5px;
+  float: right;
+  text-align: center;
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 170%;
+  color: #000000;
+  cursor: pointer;
+  padding-top: 2px;
+}
+
+.sns_edit_input{
+  border: 1px solid #CCCCCC;
+  outline: none;
+  width: 142px;
+  height: 36px;
+  border-radius: 4px;
+  margin-top: -5px;
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  padding-left: 10px;
+  padding-right: 10px;
+  float: right;
+  &:focus{
+    border: 1px solid #33F4A3;
+  }
+}
+
+.sns_edit_btn{
+  width: 26px;
+  height: 24px;
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 170%;
+  color: #000000;
+  cursor: pointer;
+  margin-top: 1px;
+  float: right;
+  margin-left: 18px;
+}
+
+.sns_edit_close{
+  background: url(../images/sns/close.svg);
+  width: 16px;
+  height: 16px;
+  margin-top: 5px;
+  float: right;
+  margin-left: 17px;
+  cursor: pointer;
+}
+
+.sns_save_text{
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 170%;
+  color: #000000;
+  height: 24px;
+  margin-top: 1px;
+  float: right;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  max-width: calc(100% - 230px);
+}
+
+
+@media (min-width: 600px) {
+  .insta_icon{
+    margin-left: 28px;
+  }
+  .youtube_icon{
+    margin-left: 28px;
+  }
+
+  .soundcloud_icon{
+    margin-left: 28px;
+  }
+
+  .facebook_icon{
+    margin-left: 28px;
+  }
+
+  .twitter_icon{
+    margin-left: 28px;
+  }
+
+
+  .sns_title{
+    margin-left: 12px;
+  }
+
+  .sns_title_eidt{
+    margin-left: 12px;
+  }
+
+  .edit_card_wrapper{
+    padding-right: 28px;
+    padding-left: 28px;
+  }
+
+  .sns_edit_wrapper{
+    margin-right: 36px;
+  }
+
+  .sns_link_btn{
+    margin-right: 28px;
+  }
+
+  .sns_title_eidt{
+    display: inline-block !important;
+  }
+}
+
 @media (min-width: 1025px){
   .profile_wrapper{
     display: inline-block;
@@ -947,6 +1150,10 @@
     width: calc((100%) / 3);
     display: inline-block;
   }
+
+  .sns_tail{
+    display: inline-block !important;
+  }
 }
 
 @media (min-width: 1025px) and (max-width: 1280px){
@@ -962,6 +1169,10 @@
     width: calc((100%) / 3);
     display: inline-block;
   }
+
+  .sns_tail{
+    display: inline-block !important;
+  }
 }
 
 @media (min-width: 1280px) and (max-width: 1680px){
@@ -976,6 +1187,10 @@
   .edit_card_add_link{
     width: calc((100%) / 3);
     display: inline-block;
+  }
+
+  .sns_tail{
+    display: inline-block !important;
   }
 }
 
@@ -1080,6 +1295,10 @@
   .edit_card_add_link{
     width: calc((100%) / 3);
     display: inline-block;
+  }
+
+  .sns_tail{
+    display: inline-block !important;
   }
 }
 

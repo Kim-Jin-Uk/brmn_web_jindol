@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import Header from "../../../components/Header";
 import styles from '../../../styles/Intro.module.scss'
 import { Steps } from 'antd';
@@ -8,6 +8,8 @@ import sideStyles from "../../../styles/Project.module.scss";
 import Button from "../../../components/Button";
 
 const { Step } = Steps;
+
+import Router from "next/router"
 
 const Global = createGlobalStyle`
   *{
@@ -130,10 +132,12 @@ const Global = createGlobalStyle`
 const Index = () => {
     const [openAble,setOpenAble] = useState(true)
     const [isLoggedin,setIsLoggedin] = useState(true)
+    const Ref = useRef(null)
 
     const onClickClose = useCallback(() => {
         setOpenAble(!openAble)
     },[openAble])
+
     const customDot = (dot, { status, index }) => (
         index === 0
         ?
@@ -161,7 +165,7 @@ const Index = () => {
         <>
             <Global/>
             <Header param={"guide"} openAble = {openAble} setOpenAble={setOpenAble}></Header>
-            <div style={{background:"fafafa"}}>
+            <div style={{background:"fafafa"}} ref={Ref}>
                 <div className={styles.background_top}>
                     <div className={styles.content_cover_top}>
                         <div className={styles.content_top}>

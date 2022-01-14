@@ -648,6 +648,19 @@
     display: inline-block;
 }
 
+.detail_sub_title{
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 170%;
+    color: #616161;
+    display: inline-block;
+    margin-left: 16px;
+    margin-top: 8px;
+    margin-bottom: 4px;
+}
+
 .detail_edit{
     width: calc(100% - 76px);
     display: inline-block;
@@ -772,6 +785,21 @@
     line-height: 150%;
 }
 
+.add_field_input2{
+    width: 100%;
+    height: 36px;
+    outline: none;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    padding: 8px 10px;
+    margin-top: 6px;
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+}
+
 .add_field_button{
     margin-top: 12px;
     font-family: Spoqa Han Sans Neo;
@@ -787,6 +815,76 @@
     margin-right: 20px;
     &:hover{
         color: #3380F4;
+    }
+}
+
+.edit_card_checkbox{
+    display: inline-block;
+    width: calc((100%) / 2);
+    margin-right: 0px !important;
+    height: 24px;
+    margin-left: 0px !important;
+    span{
+        display: inline-block;
+        height: 16px ;
+        font-family: Spoqa Han Sans Neo;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 170%;
+        color: #1D1D1D;
+        padding-left: 2px;
+    }
+}
+
+.edit_card_add_link{
+    margin-top: 6px;
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 170%;
+    color: #3380F4;
+    cursor: pointer;
+    &:hover{
+        text-decoration-line: underline;
+        text-underline-position:under;
+    }
+}
+
+.pop_btn{
+    display: inline-block;
+    float: right;
+    width: 66px;
+    height: 36px;
+    text-align: center;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    vertical-align: top;
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 100%;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.cancle_btn{
+    background: #fafafa;
+    border: 1px solid #fafafa;
+    color: #1D1D1D;
+    &:hover{
+        background: #E8E8E8;
+        border: 1px solid #e8e8e8;
+    }
+}
+
+.save_btn{
+    background: #33F4A3;
+    color: #1D1D1D;
+    &:hover{
+        background: #15C07E;
     }
 }
 
@@ -816,6 +914,10 @@
         width: calc(100% / 2);
         padding: 10px;
     }
+
+    .edit_card_checkbox{
+        width: calc((100%) / 3);
+    }
 }
 
 @media (min-width: 840px) and (max-width: 1024px) {
@@ -842,6 +944,10 @@
     .card_group{
         width: calc(100% / 3);
         padding: 10px;
+    }
+
+    .edit_card_checkbox{
+        width: calc((100%) / 3);
     }
 }
 
@@ -895,6 +1001,10 @@
     .nav_desktop_wrapper{
        display: block;
     }
+
+    .edit_card_checkbox{
+        width: calc((100%) / 3);
+    }
 }
 
 @media (min-width: 1440px) and (max-width: 1828px) {
@@ -925,6 +1035,10 @@
 
     .nav_desktop_wrapper{
         display: block;
+    }
+
+    .edit_card_checkbox{
+        width: calc((100%) / 3);
     }
 }
 
@@ -957,6 +1071,10 @@
     .nav_desktop_wrapper{
         margin-left: 70px;
         display: block;
+    }
+
+    .edit_card_checkbox{
+        width: calc((100%) / 3);
     }
 }
 

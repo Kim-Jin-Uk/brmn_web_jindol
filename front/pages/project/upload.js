@@ -3,7 +3,7 @@ import Header from "../../components/Header";
 import dynamic from "next/dynamic";
 import {createGlobalStyle} from "styled-components";
 import styles from "../../styles/Project.module.scss"
-import {Select, Divider, Input} from "antd";
+import {Select, Divider, Input, Checkbox, Modal} from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 import Image from "next/image";
 import Button from "../../components/Button";
@@ -18,6 +18,22 @@ const TextEdit = dynamic(
 const Global = createGlobalStyle`
     body{
       background: #fafafa;
+    }
+
+    .ant-modal-mask{
+      z-index: 3000 !important;
+    }
+    
+    .ant-modal-wrap{
+      z-index: 3000 !important;
+    }
+    
+    .ant-modal{
+      z-index: 4000 !important;
+    }
+    
+    .ant-checkbox-group{
+      margin-left: 52px;
     }
 
     .ant-select{
@@ -53,6 +69,81 @@ const Global = createGlobalStyle`
     .ant-select-dropdown{
       z-index: 2000;
     }
+
+    .ant-checkbox-checked::after {
+      border: none;
+    }
+
+    .ant-checkbox-checked .ant-checkbox-inner {
+      background: #1d1d1d;
+      border: 1px solid #1d1d1d;
+      outline: none !important;
+    }
+
+    .ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner {
+      border: 1px solid #1d1d1d;
+      outline: none !important;
+    }
+
+    @media (min-width: 600px) and (max-width: 840px) {
+
+
+      .ant-modal-content {
+        border-radius: 4px;
+      }
+
+      .ant-modal {
+        background: none;
+        width: calc(100% - 32px) !important;
+        max-width: 500px;
+        min-width: 280px;
+        margin: 0 auto;
+      }
+
+      .ant-modal-close {
+        display: none;
+      }
+
+      .ant-modal-header {
+        padding: 28px 0 8px;
+        margin-left: 20px;
+        margin-right: 20px;
+        border-bottom: 1px solid #e8e8e8;
+
+        > div {
+          font-family: Spoqa Han Sans Neo;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 18px;
+          line-height: 130%;
+          color: #1D1D1D;
+        }
+      }
+
+      .ant-modal-body {
+        padding: 12px 20px 28px;
+        border-bottom: 1px solid #e8e8e8;
+
+        > div {
+          font-family: Spoqa Han Sans Neo;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 150%;
+          color: #1D1D1D;
+        }
+      }
+
+      .ant-modal-footer {
+        background: #fafafa;
+        height: 60px;
+        padding: 12px 20px;
+      }
+
+      .ant-checkbox {
+        margin-right: 4px;
+      }
+    }
 `
 
 const Upload = () => {
@@ -62,6 +153,7 @@ const Upload = () => {
     const [imgSet,setImgSet] = useState(false)
     const [hashList,setHashList] = useState([])
     const [techList,setTechList] = useState([])
+    const [modalVisible, setModalVisible] = useState(false)
     const [fieldList, setFieldList] = useState([
         "전체","보컬","랩","작사","작곡","연주","음향 엔지니어","디자인"
     ])
@@ -112,6 +204,24 @@ const Upload = () => {
         setTechList(techList.filter((v,i) => i !== index))
     }
 
+    const onClickAddField = () => {
+        setModalVisible(true)
+    }
+
+    const onClickCloseAddField = () => {
+        setModalVisible(false)
+    }
+
+    const onChangeFieldName = (e) =>{
+        setFieldName(e.target.value)
+    }
+
+    const addModalFieldItem = () =>{
+        setFieldList([...fieldList, fieldName])
+        setFieldName("")
+        setModalVisible(false)
+    }
+
     return(
         <>
             <Global></Global>
@@ -134,28 +244,17 @@ const Upload = () => {
                                                 <div className={styles.detail_title}>제목*</div>
                                                 <input className={styles.detail_edit} type="text" placeholder={"제목"}/>
                                             </div>
-                                            <div className={styles.detail_box}>
+                                            <div className={styles.detail_box} style={{height:"auto"}}>
                                                 <div className={styles.detail_title}>분야*</div>
-                                                <Select defaultValue="분야"
-                                                        dropdownRender={menu => (
-                                                            <div>
-                                                                {menu}
-                                                                <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 8, borderTop:"1px solid #e8e8e8"}}>
-                                                                    <input className={styles.add_field_input} value={fieldName} onChange={onFieldNameChange} placeholder={"내용"} />
-                                                                    <a
-                                                                        className={styles.add_field_button}
-                                                                        onClick={addFieldItem}
-                                                                    >
-                                                                        +  분야 추가
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                >
-                                                    {fieldList.map(item => (
-                                                        <Option key={item}>{item}</Option>
-                                                    ))}
-                                                </Select>
+                                                <div className={styles.detail_sub_title}>어떤 분야의 프로젝트입니까?</div>
+                                                <Checkbox.Group style={{ width: '100%' }}>
+                                                    {
+                                                        fieldList.map((v) => (
+                                                            <Checkbox className={styles.edit_card_checkbox} value={v}>{v}</Checkbox>
+                                                        ))
+                                                    }
+                                                    <div className={styles.edit_card_add_link} onClick={onClickAddField}>기타 작성하기</div>
+                                                </Checkbox.Group>
                                             </div>
                                             <div className={styles.detail_box} style={{height:"240px"}}>
                                                 <div className={styles.detail_title} style={{verticalAlign:"top", position:"static", top:"0", transform:"translateY(0)"}}>표지*</div>
@@ -222,6 +321,22 @@ const Upload = () => {
                         :<></>
                 }
             </div>
+
+            <Modal
+                visible={modalVisible}
+                title="기타 분야 작성"
+                footer={[
+                    <Button className={`${styles.pop_btn} ${styles.save_btn}`} onClick={addModalFieldItem}>
+                        저장
+                    </Button>,
+                    <Button className={`${styles.pop_btn} ${styles.cancle_btn}`} onClick={onClickCloseAddField}>
+                        취소
+                    </Button>,
+                ]}
+            >
+                <div>분야 이름</div>
+                <input className={styles.add_field_input2} onChange={onChangeFieldName} value={fieldName} type="text" placeholder={"분야 이름을 입력합니다."}/>
+            </Modal>
 
         </>
     )

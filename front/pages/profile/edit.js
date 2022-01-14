@@ -9,6 +9,7 @@ const { Option } = Select;
 import DatePicker, {registerLocale} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ko from 'date-fns/locale/ko';
+import useInput from "../../hooks/useInput";
 
 
 const Global = createGlobalStyle`
@@ -223,6 +224,10 @@ const Global = createGlobalStyle`
     padding: 12px 20px;
   }
   
+  .ant-checkbox{
+    margin-right: 4px;
+  }
+  
 `
 
 function ValueCard(value) {
@@ -303,7 +308,7 @@ function AddCard(value) {
                                         locale={ko}// 언어설정 기본값은 영어
                                         dateFormat="yyyy/MM"    // 날짜 형식 설정
                                         className="input-datepicker"    // 클래스 명 지정 css주기 위해
-                                        minDate={new Date()}    // 선택할 수 있는 최소 날짜값 지정
+                                        maxDate={new Date()}    // 선택할 수 있는 최소 날짜값 지정
                                         closeOnScroll={true}    // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
                                         placeholderText="시작 날짜"    // placeholder
                                         selected={startDate}    // value
@@ -465,6 +470,7 @@ const Edit = () => {
     const basicRef = useRef(null)
     const infoRef = useRef(null)
     const fieldRef = useRef(null)
+    const webRef = useRef(null)
     const techRef = useRef(null)
     const equipRef = useRef(null)
     const careerRef = useRef(null)
@@ -495,6 +501,18 @@ const Edit = () => {
     const [edu, setEdu] = useState(false)
     const [create, setCreate] = useState(false)
     const [show, setShow] = useState(false)
+
+    const [insta, setInsta] = useState("none")
+    const [youtube, setYoutube] = useState("none")
+    const [soundcloud, setSoundcloud] = useState("none")
+    const [facebook, setFacebook] = useState("none")
+    const [twitter, setTwitter] = useState("none")
+
+    const [instaText,onChangeInstaText] = useInput("")
+    const [youtubeText,onChangeYoutubeText] = useInput("")
+    const [soundcloudText,onChangeSoundcloudText] = useInput("")
+    const [facebookText,onChangeFacebookText] = useInput("")
+    const [twitterText,onChangeTwitterText] = useInput("")
 
     const [techAdd, setTechAdd] = useState({
         col_1:"보유 기술", col_1_content:"기술 이름", col_1_edit:"",
@@ -658,6 +676,7 @@ const Edit = () => {
                             <Menu.Item key="basic" onClick={() => onClickScroll(basicRef)}>기본정보</Menu.Item>
                             <Menu.Item key="info" onClick={() => onClickScroll(infoRef)}>소개</Menu.Item>
                             <Menu.Item key="field" onClick={() => onClickScroll(fieldRef)}>분야</Menu.Item>
+                            <Menu.Item key="web" onClick={() => onClickScroll(webRef)}>웹</Menu.Item>
                             <Menu.Item key="tech" onClick={() => onClickScroll(techRef)}>기술</Menu.Item>
                             <Menu.Item key="equip" onClick={() => onClickScroll(equipRef)}>장비</Menu.Item>
                             <Menu.Item key="career" onClick={() => onClickScroll(careerRef)}>이력</Menu.Item>
@@ -730,6 +749,132 @@ const Edit = () => {
                                 <div className={styles.edit_card_add_link} onClick={onClickAddField}>기타 작성하기</div>
                             </Checkbox.Group>
 
+                        </div>
+
+                        <div className={styles.edit_card_wrapper} ref={webRef}>
+                            <div className={styles.edit_card_title}>웹</div>
+                            <div style={{marginTop:"29px"}}>
+                                <div className={styles.sns_edit_wrapper}>
+                                    <div className={styles.sns_tail}></div>
+                                    <div className={styles.insta_icon}></div>
+                                    {{
+                                        "none":<div className={styles.sns_title}>Instagram</div>,
+                                        "edit":<div className={styles.sns_title_eidt}>Instagram</div>,
+                                        "save":<div className={styles.sns_title}>Instagram</div>,
+                                    }[insta]}
+
+                                    {{
+                                        "none":<><div className={styles.sns_link_btn} onClick={() => {setInsta("edit")}}>링크</div></>,
+                                        "edit":
+                                            <>
+                                                <div className={styles.sns_edit_close}  onClick={() => {setInsta("none")}}></div>
+                                                <div className={styles.sns_edit_btn} onClick={() => {setInsta("save")}}>저장</div>
+                                                <input className={styles.sns_edit_input} placeholder={"입력"} type="text" value={instaText} onChange={onChangeInstaText}/>
+                                            </>,
+                                        "save":
+                                            <>
+                                                <div className={styles.sns_edit_close}  onClick={() => {setInsta("none")}}></div>
+                                                <div className={styles.sns_save_text}>{instaText}</div>
+                                            </>,
+                                    }[insta]}
+                                </div>
+                                <div className={styles.sns_edit_wrapper}>
+                                    <div className={styles.sns_tail}></div>
+                                    <div className={styles.youtube_icon}></div>
+                                    {{
+                                        "none":<div className={styles.sns_title}>YouTube</div>,
+                                        "edit":<div className={styles.sns_title_eidt}>YouTube</div>,
+                                        "save":<div className={styles.sns_title}>YouTube</div>,
+                                    }[youtube]}
+
+                                    {{
+                                        "none":<><div className={styles.sns_link_btn} onClick={() => {setYoutube("edit")}}>링크</div></>,
+                                        "edit":
+                                            <>
+                                                <div className={styles.sns_edit_close}  onClick={() => {setYoutube("none")}}></div>
+                                                <div className={styles.sns_edit_btn} onClick={() => {setYoutube("save")}}>저장</div>
+                                                <input className={styles.sns_edit_input} placeholder={"입력"} type="text" value={youtubeText} onChange={onChangeYoutubeText}/>
+                                            </>,
+                                        "save":
+                                            <>
+                                                <div className={styles.sns_edit_close}  onClick={() => {setYoutube("none")}}></div>
+                                                <div className={styles.sns_save_text}>{youtubeText}</div>
+                                            </>,
+                                    }[youtube]}
+                                </div>
+                                <div className={styles.sns_edit_wrapper}>
+                                    <div className={styles.sns_tail}></div>
+                                    <div className={styles.soundcloud_icon}></div>
+                                    {{
+                                        "none":<div className={styles.sns_title}>Soundcloud</div>,
+                                        "edit":<div className={styles.sns_title_eidt}>Soundcloud</div>,
+                                        "save":<div className={styles.sns_title}>Soundcloud</div>,
+                                    }[soundcloud]}
+
+                                    {{
+                                        "none":<><div className={styles.sns_link_btn} onClick={() => {setSoundcloud("edit")}}>링크</div></>,
+                                        "edit":
+                                            <>
+                                                <div className={styles.sns_edit_close}  onClick={() => {setSoundcloud("none")}}></div>
+                                                <div className={styles.sns_edit_btn} onClick={() => {setSoundcloud("save")}}>저장</div>
+                                                <input className={styles.sns_edit_input} placeholder={"입력"} type="text" value={soundcloudText} onChange={onChangeSoundcloudText}/>
+                                            </>,
+                                        "save":
+                                            <>
+                                                <div className={styles.sns_edit_close}  onClick={() => {setSoundcloud("none")}}></div>
+                                                <div className={styles.sns_save_text}>{soundcloudText}</div>
+                                            </>,
+                                    }[soundcloud]}
+                                </div>
+                                <div className={styles.sns_edit_wrapper}>
+                                    <div className={styles.sns_tail}></div>
+                                    <div className={styles.facebook_icon}></div>
+                                    {{
+                                        "none":<div className={styles.sns_title}>Facebook</div>,
+                                        "edit":<div className={styles.sns_title_eidt}>Facebook</div>,
+                                        "save":<div className={styles.sns_title}>Facebook</div>,
+                                    }[facebook]}
+
+                                    {{
+                                        "none":<><div className={styles.sns_link_btn} onClick={() => {setFacebook("edit")}}>링크</div></>,
+                                        "edit":
+                                            <>
+                                                <div className={styles.sns_edit_close}  onClick={() => {setFacebook("none")}}></div>
+                                                <div className={styles.sns_edit_btn} onClick={() => {setFacebook("save")}}>저장</div>
+                                                <input className={styles.sns_edit_input} placeholder={"입력"} type="text" value={facebookText} onChange={onChangeFacebookText}/>
+                                            </>,
+                                        "save":
+                                            <>
+                                                <div className={styles.sns_edit_close}  onClick={() => {setFacebook("none")}}></div>
+                                                <div className={styles.sns_save_text}>{facebookText}</div>
+                                            </>,
+                                    }[facebook]}
+                                </div>
+                                <div className={styles.sns_edit_wrapper} style={{border:"none", paddingBottom:"0", height:"26px"}}>
+                                    <div className={styles.sns_tail}></div>
+                                    <div className={styles.twitter_icon}></div>
+                                    {{
+                                        "none":<div className={styles.sns_title}>Twitter</div>,
+                                        "edit":<div className={styles.sns_title_eidt}>Twitter</div>,
+                                        "save":<div className={styles.sns_title}>Twitter</div>,
+                                    }[twitter]}
+
+                                    {{
+                                        "none":<><div className={styles.sns_link_btn} onClick={() => {setTwitter("edit")}}>링크</div></>,
+                                        "edit":
+                                            <>
+                                                <div className={styles.sns_edit_close}  onClick={() => {setTwitter("none")}}></div>
+                                                <div className={styles.sns_edit_btn} onClick={() => {setTwitter("save")}}>저장</div>
+                                                <input className={styles.sns_edit_input} placeholder={"입력"} type="text" value={twitterText} onChange={onChangeTwitterText}/>
+                                            </>,
+                                        "save":
+                                            <>
+                                                <div className={styles.sns_edit_close}  onClick={() => {setTwitter("none")}}></div>
+                                                <div className={styles.sns_save_text}>{twitterText}</div>
+                                            </>,
+                                    }[twitter]}
+                                </div>
+                            </div>
                         </div>
 
                         <div className={styles.edit_card_wrapper} ref={techRef}>

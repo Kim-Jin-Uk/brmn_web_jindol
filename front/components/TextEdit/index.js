@@ -128,7 +128,7 @@ const TextEdit = () => {
     const Ref = useRef(null)
 
     useEffect(()=>{
-        setValue(value + img)
+        setValue(value + img + "<p> </p>")
         setImgList([...imgList,img])
         setImg("")
     },[img])
@@ -228,23 +228,37 @@ const TextEdit = () => {
 
     const onClickPopOver = () => {
         const imgArray = imgList.filter((value) => value != '')
-        console.log(value)
         let slicer = imgArray[index]
 
         if (value.includes(slicer)){
-            setValue(value.replace(slicer,""))
+            let v = value.replace(slicer,"")
+            console.log("slicer",slicer)
+            slicer = slicer.replace(">",` id="${index}">`)
+            setValue(v.replace(slicer,""))
+            console.log("after",value.replace(slicer,""))
         }else {
             if (slicer.includes("&rs")){
                 slicer = slicer.replace("&rs","&amp;rs")
-                setValue(value.replace(slicer,""))
-                console.log(slicer)
-                console.log(value.replace(slicer,""))
+                let v = value.replace(slicer,"")
+                console.log("slicer",slicer)
+                slicer = slicer.replace(">",` id="${index}">`)
+                setValue(v.replace(slicer,""))
+                console.log("after",value.replace(slicer,""))
             }
         }
-
         setImgList(imgArray.filter((value,i) => i !== index))
         setView("none")
     }
+
+    useEffect(() => {
+        const valueList = value.split("<p>")
+        let realValue = []
+        for (let i = 0; i < valueList.length; i++) {
+            const valueItem = valueList[i].split("</p>")
+            realValue = realValue.concat(valueItem)
+        }
+        console.log(realValue)
+    },[value])
 
     return(
         <>

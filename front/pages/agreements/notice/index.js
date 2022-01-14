@@ -219,7 +219,7 @@ const Index = () => {
                     showSizeChanger
                     onChange={onChange}
                     defaultCurrent={1}
-                    total={noticeList.length}
+                    total={noticeList.length * 10}
                 />
             </div>
             <>
