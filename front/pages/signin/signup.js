@@ -155,268 +155,280 @@ const SignUp = memo(() => {
                         <a className={styles.signin} ><span className={fontStyles.main_dark} style={{ marginLeft: 5 }}>로그인</span></a>
                     </Link>
                 </div>
-                <div style={{marginTop:"20px"}}>
-                    <div>
-                        {
-                            emailErr
-                                ? <div className={fontStyles.example_text_err}>이메일</div>
-                                : emailFocus
-                                    ? <div className={fontStyles.example_text_focus}>이메일</div>
-                                    : <div className={fontStyles.example_text_default}>이메일</div>
-                        }
-                        <div style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            paddingBottom: '3px',
-                            alignItems: 'center',
-                        }}>
-                            <input
-                                type="email"
-                                className={styles.input_non_autofill}
-                                value={emailText}
-                                onFocus={onFocusEmail}
-                                onBlur={onBlurEmail}
-                                onChange={onChangeEmail}
-                                onKeyUp={onKeyUpEmail}
-                            />
-                            {
-                                !authCodeCheck ?(
-                                    emailErr ?(
-                                        <div className={inputStyles.fake_button}>인증</div>
-                                    ) : (
-                                        <button className={inputStyles.button} onClick={onClickEmail}>
-                                            {
-                                                authType
-                                                    ? "재전송"
-                                                    : "인증"
-                                            }
-                                        </button>
-                                    )
-                                ) : null
-                            }
-                        </div>
-                        {
-                            emailErr
-                                ? <div style={{width: '100%',borderBottom:'1px solid #F43333', marginTop:'2px'}}></div>
-                                : emailFocus
-                                    ? <div style={{width: '100%',borderBottom:'1px solid #3380F4', marginTop:'2px'}}></div>
-                                    : <div style={{width: '100%',borderBottom:'1px solid #E8E8E8', marginTop:'2px'}}></div>
-                        }
-                        {
-                            emailErr
-                                ? <div className={fontStyles.hint_text_err}>이메일 형식이 유효하지 않습니다.</div>
-                                : null
-                        }
 
+                <div style={{marginTop:"52px"}}>
+                    <div className={styles.naver_btn}>
+                        <div className={styles.naver_icon}></div>
+                        <div>네이버 아이디로 가입</div>
                     </div>
-                    {
-                        emailReadonly ? (
-                            <>
-                                <div style={{marginTop:"16px"}}>
-                                    {
-                                        authCodeErr
-                                            ? <div className={fontStyles.example_text_err}>인증번호 입력</div>
-                                            : authCodeFocus
-                                                ? <div className={fontStyles.example_text_focus}>인증번호 입력</div>
-                                                : <div className={fontStyles.example_text_default}>인증번호 입력</div>
-                                    }
-                                    <div style={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        paddingBottom: '3px',
-                                        alignItems: 'center',
-                                    }}>
-                                        <input
-                                            type="text"
-                                            className={styles.input_non_autofill}
-                                            value={authCodeText}
-                                            onFocus={onFocusAuthCode}
-                                            onBlur={onBlurAuthCode}
-                                            onChange={onChangeAuthCode}
-                                            onKeyUp={onKeyUpAuthCode}
-                                            autoComplete='one-time-code'
-                                        />
-                                        {
-                                            countDownType
-                                                ? (
-                                                    authCodeErr
-                                                    ?
-                                                        (
-                                                            <div className={styles.timer_error}>
-                                                                {timeFormat(countDown)}
-                                                            </div>
-                                                        )
-                                                    :
-                                                        (
-                                                            <div className={styles.timer_default}>
-                                                                {timeFormat(countDown)}
-                                                            </div>
-                                                        )
-
-                                                )
-
-                                                : null
-                                        }
-                                        {
-                                            authCodeTime
-                                                ? !authCodeCheck
-                                                    ? <button className={inputStyles.button} onClick={onClickAuthCode}>인증</button>
-                                                    : null
-                                                : <div className={inputStyles.fake_button} >인증</div>
-
-                                        }
-
-                                    </div>
-                                    {
-                                        authCodeErr
-                                            ? <div style={{width: '100%',borderBottom:'1px solid #F43333', marginTop:'2px'}}></div>
-                                            : authCodeFocus
-                                                ? <div style={{width: '100%',borderBottom:'1px solid #3380F4', marginTop:'2px'}}></div>
-                                                : <div style={{width: '100%',borderBottom:'1px solid #E8E8E8', marginTop:'2px'}}></div>
-                                    }
-                                    {
-                                        authCodeErr
-                                            ? <div className={fontStyles.hint_text_err}>인증번호가 일치하지 않습니다.</div>
-                                            : null
-                                    }
-
-                                </div>
-                                {
-                                    authCodeCheck
-                                        ? <div className={fontStyles.hint_text_focus}>본인인증이 완료되었습니다.</div>
-                                        : <></>
-                                }
-                            </>
-                        ) : ""
-                    }
-                    <div className={styles.input_group}>
-                        <div>
-                            {
-                                passwordErr
-                                    ? <div className={fontStyles.example_text_err}>비밀번호</div>
-                                    : passwordFocus
-                                        ? passwordText.length === 0
-                                            ? <div className={fontStyles.example_text_focus}>비밀번호</div>
-                                            : <div className={fontStyles.example_text_complete}>비밀번호</div>
-                                        : <div className={fontStyles.example_text_default}>비밀번호</div>
-                            }
-                            <div style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                paddingBottom: '3px',
-                                alignItems: 'center',
-                            }}>
-                                <input
-                                    type="password"
-                                    className={styles.input_non_autofill}
-                                    value={passwordText}
-                                    onFocus={onFocusPassword}
-                                    onBlur={onBlurPassword}
-                                    onChange={onChangePassword}
-                                    onKeyUp={onKeyUpPassword}
-                                />
-                            </div>
-                            {
-                                passwordErr
-                                    ? passwordFocus
-                                        ? passwordText.length === 0
-                                            ? <div style={{width: '100%',borderBottom:'1px solid #3380F4', marginTop:'2px'}}></div>
-                                            : <div style={{width: '100%',borderBottom:'1px solid #F43333', marginTop:'2px'}}></div>
-                                        : <div style={{width: '100%',borderBottom:'1px solid #E8E8E8', marginTop:'2px'}}></div>
-                                    : <div style={{width: '100%',borderBottom:'1px solid #25D38A', marginTop:'2px'}}></div>
-                            }
-                            {
-                                passwordErr
-                                    ?  passwordFocus
-                                        ? passwordText.length === 0
-                                            ? <div className={fontStyles.hint_text_focus}>영문/숫자/특수문자 포함 8~15자리를 입력해주세요.</div>
-                                            : <div className={fontStyles.hint_text_err}>영문/숫자/특수문자 포함 8~15자리를 입력해주세요.</div>
-                                        : null
-                                    : <div className={fontStyles.hint_text_complete}>사용 가능한 비밀번호입니다.</div>
-
-
-                            }
-
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            {
-                                passwordCheckFocus
-                                    ? passwordCheckText.length === 0
-                                        ? <div className={fontStyles.example_text_focus}>비밀번호 확인</div>
-                                        :  passwordCheckErr
-                                            ? <div className={fontStyles.example_text_err}>비밀번호 확인</div>
-                                            : <div className={fontStyles.example_text_complete}>비밀번호 확인</div>
-                                    : <div className={fontStyles.example_text_default}>비밀번호 확인</div>
-                            }
-                            <div style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                paddingBottom: '3px',
-                                alignItems: 'center',
-                            }}>
-                                <input
-                                    type="password"
-                                    className={styles.input_non_autofill}
-                                    value={passwordCheckText}
-                                    onFocus={onFocusPasswordCheck}
-                                    onBlur={onBlurPasswordCheck}
-                                    onChange={onChangePasswordCheck}
-                                    onKeyUp={onKeyUpPasswordCheck}
-                                />
-                            </div>
-                            {
-                                passwordCheckErr
-                                    ? passwordCheckFocus
-                                        ? passwordCheckText.length === 0
-                                            ? <div style={{width: '100%',borderBottom:'1px solid #3380F4', marginTop:'2px'}}></div>
-                                            : <div style={{width: '100%',borderBottom:'1px solid #F43333', marginTop:'2px'}}></div>
-                                        : <div style={{width: '100%',borderBottom:'1px solid #E8E8E8', marginTop:'2px'}}></div>
-                                    : <div style={{width: '100%',borderBottom:'1px solid #25D38A', marginTop:'2px'}}></div>
-                            }
-                            {
-                                passwordCheckErr
-                                    ? passwordCheckFocus
-                                        ? passwordCheckText.length === 0
-                                            ? <></>
-                                            : <div className={fontStyles.hint_text_err}>비밀번호가 일치하지 않습니다.</div>
-                                        : null
-                                    : <div className={fontStyles.hint_text_complete}>비밀번호가 일치합니다.</div>
-                            }
-                        </div>
-                    </div>
-                    <div style={{marginTop:"16px"}}></div>
-                    <Agreements
-                        authCodeCheck = {authCodeCheck}
-                        passwordErr={passwordErr}
-                        passwordCheckErr={passwordCheckErr}
-                    />
-                </div>
-
-                <div className={styles.sns_link}>
-                    <span>SNS 계정으로 더욱 간편하게 가입하기</span>
-                    <div className={styles.sns_button_group}>
-                        <div
-                            onMouseOver={()=>setIsGoogleHover(true)}
-                            onMouseOut={()=>setIsGoogleHover(false)}
-                        >
-                            <Image src={!isGoogleHover? image_google : image_google_hover}></Image>
-                        </div>
-                        <div
-                            onMouseOver={()=>setIsNaverHover(true)}
-                            onMouseOut={()=>setIsNaverHover(false)}
-                        >
-                            <Image src={!isNaverHover? image_naver : image_naver_hover}></Image>
-                        </div>
-                        <div
-                            onMouseOver={()=>setIsKakaoHover(true)}
-                            onMouseOut={()=>setIsKakaoHover(false)}
-                        >
-                            <Image src={!isKakaoHover? image_kakao : image_kakao_hover}></Image>
-                        </div>
+                    <div className={styles.kakao_btn}>
+                        <div className={styles.kakao_icon}></div>
+                        <div>카카오 계정으로 가입</div>
                     </div>
                 </div>
+
+                {/*<div style={{marginTop:"20px"}}>*/}
+                {/*    <div>*/}
+                {/*        {*/}
+                {/*            emailErr*/}
+                {/*                ? <div className={fontStyles.example_text_err}>이메일</div>*/}
+                {/*                : emailFocus*/}
+                {/*                    ? <div className={fontStyles.example_text_focus}>이메일</div>*/}
+                {/*                    : <div className={fontStyles.example_text_default}>이메일</div>*/}
+                {/*        }*/}
+                {/*        <div style={{*/}
+                {/*            display: 'flex',*/}
+                {/*            justifyContent: 'space-between',*/}
+                {/*            paddingBottom: '3px',*/}
+                {/*            alignItems: 'center',*/}
+                {/*        }}>*/}
+                {/*            <input*/}
+                {/*                type="email"*/}
+                {/*                className={styles.input_non_autofill}*/}
+                {/*                value={emailText}*/}
+                {/*                onFocus={onFocusEmail}*/}
+                {/*                onBlur={onBlurEmail}*/}
+                {/*                onChange={onChangeEmail}*/}
+                {/*                onKeyUp={onKeyUpEmail}*/}
+                {/*            />*/}
+                {/*            {*/}
+                {/*                !authCodeCheck ?(*/}
+                {/*                    emailErr ?(*/}
+                {/*                        <div className={inputStyles.fake_button}>인증</div>*/}
+                {/*                    ) : (*/}
+                {/*                        <button className={inputStyles.button} onClick={onClickEmail}>*/}
+                {/*                            {*/}
+                {/*                                authType*/}
+                {/*                                    ? "재전송"*/}
+                {/*                                    : "인증"*/}
+                {/*                            }*/}
+                {/*                        </button>*/}
+                {/*                    )*/}
+                {/*                ) : null*/}
+                {/*            }*/}
+                {/*        </div>*/}
+                {/*        {*/}
+                {/*            emailErr*/}
+                {/*                ? <div style={{width: '100%',borderBottom:'1px solid #F43333', marginTop:'2px'}}></div>*/}
+                {/*                : emailFocus*/}
+                {/*                    ? <div style={{width: '100%',borderBottom:'1px solid #3380F4', marginTop:'2px'}}></div>*/}
+                {/*                    : <div style={{width: '100%',borderBottom:'1px solid #E8E8E8', marginTop:'2px'}}></div>*/}
+                {/*        }*/}
+                {/*        {*/}
+                {/*            emailErr*/}
+                {/*                ? <div className={fontStyles.hint_text_err}>이메일 형식이 유효하지 않습니다.</div>*/}
+                {/*                : null*/}
+                {/*        }*/}
+
+                {/*    </div>*/}
+                {/*    {*/}
+                {/*        emailReadonly ? (*/}
+                {/*            <>*/}
+                {/*                <div style={{marginTop:"16px"}}>*/}
+                {/*                    {*/}
+                {/*                        authCodeErr*/}
+                {/*                            ? <div className={fontStyles.example_text_err}>인증번호 입력</div>*/}
+                {/*                            : authCodeFocus*/}
+                {/*                                ? <div className={fontStyles.example_text_focus}>인증번호 입력</div>*/}
+                {/*                                : <div className={fontStyles.example_text_default}>인증번호 입력</div>*/}
+                {/*                    }*/}
+                {/*                    <div style={{*/}
+                {/*                        display: 'flex',*/}
+                {/*                        justifyContent: 'space-between',*/}
+                {/*                        paddingBottom: '3px',*/}
+                {/*                        alignItems: 'center',*/}
+                {/*                    }}>*/}
+                {/*                        <input*/}
+                {/*                            type="text"*/}
+                {/*                            className={styles.input_non_autofill}*/}
+                {/*                            value={authCodeText}*/}
+                {/*                            onFocus={onFocusAuthCode}*/}
+                {/*                            onBlur={onBlurAuthCode}*/}
+                {/*                            onChange={onChangeAuthCode}*/}
+                {/*                            onKeyUp={onKeyUpAuthCode}*/}
+                {/*                            autoComplete='one-time-code'*/}
+                {/*                        />*/}
+                {/*                        {*/}
+                {/*                            countDownType*/}
+                {/*                                ? (*/}
+                {/*                                    authCodeErr*/}
+                {/*                                    ?*/}
+                {/*                                        (*/}
+                {/*                                            <div className={styles.timer_error}>*/}
+                {/*                                                {timeFormat(countDown)}*/}
+                {/*                                            </div>*/}
+                {/*                                        )*/}
+                {/*                                    :*/}
+                {/*                                        (*/}
+                {/*                                            <div className={styles.timer_default}>*/}
+                {/*                                                {timeFormat(countDown)}*/}
+                {/*                                            </div>*/}
+                {/*                                        )*/}
+
+                {/*                                )*/}
+
+                {/*                                : null*/}
+                {/*                        }*/}
+                {/*                        {*/}
+                {/*                            authCodeTime*/}
+                {/*                                ? !authCodeCheck*/}
+                {/*                                    ? <button className={inputStyles.button} onClick={onClickAuthCode}>인증</button>*/}
+                {/*                                    : null*/}
+                {/*                                : <div className={inputStyles.fake_button} >인증</div>*/}
+
+                {/*                        }*/}
+
+                {/*                    </div>*/}
+                {/*                    {*/}
+                {/*                        authCodeErr*/}
+                {/*                            ? <div style={{width: '100%',borderBottom:'1px solid #F43333', marginTop:'2px'}}></div>*/}
+                {/*                            : authCodeFocus*/}
+                {/*                                ? <div style={{width: '100%',borderBottom:'1px solid #3380F4', marginTop:'2px'}}></div>*/}
+                {/*                                : <div style={{width: '100%',borderBottom:'1px solid #E8E8E8', marginTop:'2px'}}></div>*/}
+                {/*                    }*/}
+                {/*                    {*/}
+                {/*                        authCodeErr*/}
+                {/*                            ? <div className={fontStyles.hint_text_err}>인증번호가 일치하지 않습니다.</div>*/}
+                {/*                            : null*/}
+                {/*                    }*/}
+
+                {/*                </div>*/}
+                {/*                {*/}
+                {/*                    authCodeCheck*/}
+                {/*                        ? <div className={fontStyles.hint_text_focus}>본인인증이 완료되었습니다.</div>*/}
+                {/*                        : <></>*/}
+                {/*                }*/}
+                {/*            </>*/}
+                {/*        ) : ""*/}
+                {/*    }*/}
+                {/*    <div className={styles.input_group}>*/}
+                {/*        <div>*/}
+                {/*            {*/}
+                {/*                passwordErr*/}
+                {/*                    ? <div className={fontStyles.example_text_err}>비밀번호</div>*/}
+                {/*                    : passwordFocus*/}
+                {/*                        ? passwordText.length === 0*/}
+                {/*                            ? <div className={fontStyles.example_text_focus}>비밀번호</div>*/}
+                {/*                            : <div className={fontStyles.example_text_complete}>비밀번호</div>*/}
+                {/*                        : <div className={fontStyles.example_text_default}>비밀번호</div>*/}
+                {/*            }*/}
+                {/*            <div style={{*/}
+                {/*                display: 'flex',*/}
+                {/*                justifyContent: 'space-between',*/}
+                {/*                paddingBottom: '3px',*/}
+                {/*                alignItems: 'center',*/}
+                {/*            }}>*/}
+                {/*                <input*/}
+                {/*                    type="password"*/}
+                {/*                    className={styles.input_non_autofill}*/}
+                {/*                    value={passwordText}*/}
+                {/*                    onFocus={onFocusPassword}*/}
+                {/*                    onBlur={onBlurPassword}*/}
+                {/*                    onChange={onChangePassword}*/}
+                {/*                    onKeyUp={onKeyUpPassword}*/}
+                {/*                />*/}
+                {/*            </div>*/}
+                {/*            {*/}
+                {/*                passwordErr*/}
+                {/*                    ? passwordFocus*/}
+                {/*                        ? passwordText.length === 0*/}
+                {/*                            ? <div style={{width: '100%',borderBottom:'1px solid #3380F4', marginTop:'2px'}}></div>*/}
+                {/*                            : <div style={{width: '100%',borderBottom:'1px solid #F43333', marginTop:'2px'}}></div>*/}
+                {/*                        : <div style={{width: '100%',borderBottom:'1px solid #E8E8E8', marginTop:'2px'}}></div>*/}
+                {/*                    : <div style={{width: '100%',borderBottom:'1px solid #25D38A', marginTop:'2px'}}></div>*/}
+                {/*            }*/}
+                {/*            {*/}
+                {/*                passwordErr*/}
+                {/*                    ?  passwordFocus*/}
+                {/*                        ? passwordText.length === 0*/}
+                {/*                            ? <div className={fontStyles.hint_text_focus}>영문/숫자/특수문자 포함 8~15자리를 입력해주세요.</div>*/}
+                {/*                            : <div className={fontStyles.hint_text_err}>영문/숫자/특수문자 포함 8~15자리를 입력해주세요.</div>*/}
+                {/*                        : null*/}
+                {/*                    : <div className={fontStyles.hint_text_complete}>사용 가능한 비밀번호입니다.</div>*/}
+
+
+                {/*            }*/}
+
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*    <div>*/}
+                {/*        <div>*/}
+                {/*            {*/}
+                {/*                passwordCheckFocus*/}
+                {/*                    ? passwordCheckText.length === 0*/}
+                {/*                        ? <div className={fontStyles.example_text_focus}>비밀번호 확인</div>*/}
+                {/*                        :  passwordCheckErr*/}
+                {/*                            ? <div className={fontStyles.example_text_err}>비밀번호 확인</div>*/}
+                {/*                            : <div className={fontStyles.example_text_complete}>비밀번호 확인</div>*/}
+                {/*                    : <div className={fontStyles.example_text_default}>비밀번호 확인</div>*/}
+                {/*            }*/}
+                {/*            <div style={{*/}
+                {/*                display: 'flex',*/}
+                {/*                justifyContent: 'space-between',*/}
+                {/*                paddingBottom: '3px',*/}
+                {/*                alignItems: 'center',*/}
+                {/*            }}>*/}
+                {/*                <input*/}
+                {/*                    type="password"*/}
+                {/*                    className={styles.input_non_autofill}*/}
+                {/*                    value={passwordCheckText}*/}
+                {/*                    onFocus={onFocusPasswordCheck}*/}
+                {/*                    onBlur={onBlurPasswordCheck}*/}
+                {/*                    onChange={onChangePasswordCheck}*/}
+                {/*                    onKeyUp={onKeyUpPasswordCheck}*/}
+                {/*                />*/}
+                {/*            </div>*/}
+                {/*            {*/}
+                {/*                passwordCheckErr*/}
+                {/*                    ? passwordCheckFocus*/}
+                {/*                        ? passwordCheckText.length === 0*/}
+                {/*                            ? <div style={{width: '100%',borderBottom:'1px solid #3380F4', marginTop:'2px'}}></div>*/}
+                {/*                            : <div style={{width: '100%',borderBottom:'1px solid #F43333', marginTop:'2px'}}></div>*/}
+                {/*                        : <div style={{width: '100%',borderBottom:'1px solid #E8E8E8', marginTop:'2px'}}></div>*/}
+                {/*                    : <div style={{width: '100%',borderBottom:'1px solid #25D38A', marginTop:'2px'}}></div>*/}
+                {/*            }*/}
+                {/*            {*/}
+                {/*                passwordCheckErr*/}
+                {/*                    ? passwordCheckFocus*/}
+                {/*                        ? passwordCheckText.length === 0*/}
+                {/*                            ? <></>*/}
+                {/*                            : <div className={fontStyles.hint_text_err}>비밀번호가 일치하지 않습니다.</div>*/}
+                {/*                        : null*/}
+                {/*                    : <div className={fontStyles.hint_text_complete}>비밀번호가 일치합니다.</div>*/}
+                {/*            }*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*    <div style={{marginTop:"16px"}}></div>*/}
+                {/*    <Agreements*/}
+                {/*        authCodeCheck = {authCodeCheck}*/}
+                {/*        passwordErr={passwordErr}*/}
+                {/*        passwordCheckErr={passwordCheckErr}*/}
+                {/*    />*/}
+                {/*</div>*/}
+
+                {/*<div className={styles.sns_link}>*/}
+                {/*    <span>SNS 계정으로 더욱 간편하게 가입하기</span>*/}
+                {/*    <div className={styles.sns_button_group}>*/}
+                {/*        <div*/}
+                {/*            onMouseOver={()=>setIsGoogleHover(true)}*/}
+                {/*            onMouseOut={()=>setIsGoogleHover(false)}*/}
+                {/*        >*/}
+                {/*            <Image src={!isGoogleHover? image_google : image_google_hover}></Image>*/}
+                {/*        </div>*/}
+                {/*        <div*/}
+                {/*            onMouseOver={()=>setIsNaverHover(true)}*/}
+                {/*            onMouseOut={()=>setIsNaverHover(false)}*/}
+                {/*        >*/}
+                {/*            <Image src={!isNaverHover? image_naver : image_naver_hover}></Image>*/}
+                {/*        </div>*/}
+                {/*        <div*/}
+                {/*            onMouseOver={()=>setIsKakaoHover(true)}*/}
+                {/*            onMouseOut={()=>setIsKakaoHover(false)}*/}
+                {/*        >*/}
+                {/*            <Image src={!isKakaoHover? image_kakao : image_kakao_hover}></Image>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </SignWrapper>
 
         </>

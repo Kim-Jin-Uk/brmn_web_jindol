@@ -5,3 +5,6 @@
 /react-brmn.pem
 /brmn_jindol.pem
 /front/.env
+/back/node_modules/
+/back/.env
+/node_modules/

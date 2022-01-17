@@ -11,7 +11,7 @@
 .create_btn_group {
     width: 100%;
     > div{
-        height: 40px;
+        height: 56px;
     }
 }
 
@@ -78,11 +78,11 @@
 
 .create_btn {
     width: 100% !important;
-    margin-top: 20px;
+    margin-top: 40px;
     font-style: normal;
     font-family: "Spoqa Han Sans Neo";
     font-weight: 500;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .input_non_autofill  {
@@ -127,11 +127,71 @@
     font-family: "Spoqa Han Sans Neo";
     font-weight: 500;
     font-size: 16px;
-    background: #ffffff;
-    color: #1d1d1d;
-    border: 1px solid #e8e8e8;
+    background: #ffffff !important;
+    color: #1d1d1d !important;
+    border: 1px solid #e8e8e8 !important;
     &:hover {
-        background: #1d1d1d;
-        color: #ffffff;
+        background: #e8e8e8 !important;
     }
+}
+
+.naver_btn{
+    width: 100%;
+    height: 56px;
+    background-color: #1EC800;
+    border-radius: 4px;
+    padding-top: 20px;
+    padding-left: calc(50% - 86px);
+    padding-right: calc(50% - 86px);
+    cursor: pointer;
+    > div{
+        display: inline-block;
+        font-family: Spoqa Han Sans Neo;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 100%;
+        text-align: center;
+        color: #FFFFFF;
+        vertical-align: top;
+        margin-right: 4px;
+    }
+}
+
+.naver_icon{
+    background: url(../images/icons/naver_icon.svg);
+    width: 24px !important;
+    height: 24px;
+    margin-top: -4px;
+}
+
+.kakao_btn{
+    margin-top: 16px;
+    width: 100%;
+    height: 56px;
+    background-color: #FAE300;
+    border-radius: 4px;
+    padding-top: 20px;
+    padding-left: calc(50% - 86px);
+    padding-right: calc(50% - 86px);
+    cursor: pointer;
+    > div{
+        display: inline-block;
+        font-family: Spoqa Han Sans Neo;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 100%;
+        text-align: center;
+        color: #1D1D1D;
+        vertical-align: top;
+        margin-right: 4px;
+    }
+}
+
+.kakao_icon{
+    background: url(../images/icons/kakao_icon.svg);
+    width: 24px !important;
+    height: 24px;
+    margin-top: -4px;
 }
