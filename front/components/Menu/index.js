@@ -11,7 +11,7 @@ import {Menu as antMenu, Dropdown, Button as AntBtn, ConfigProvider, Switch} fro
 import image_message from "/images/icons/message.svg"
 import image_bell from "/images/icons/bell.svg"
 import image_arrow_down from "/images/icons/arrow_down.svg"
-
+import profile_image_default from "/images/default/profimg_default.svg"
 import image_search from "/images/icons/search.svg"
 import image_menu from "/images/icons/menu.svg"
 import image_close from "/images/icons/close.svg"
@@ -21,30 +21,6 @@ import icon_styles from "../IconButton/styles.module.scss"
 ConfigProvider.config({
     prefixCls: 'ant',
 });
-
-const ProfileMenu = (
-    <antMenu>
-        <div className={styles.dropdown}>
-            <div className={styles.dropdown_top}>
-                <div style={{cursor: "pointer", display: "inline-block", paddingTop: "20px" , paddingLeft: "20px"}}>
-                    <ProfileThumbnail circle size={64} image={
-                        "https://www.walkerhillstory.com/wp-content/uploads/2020/09/2-1.jpg"
-                    }/>
-                </div>
-                <div className={styles.dropdown_item_top}>
-                    <span className={styles.dropdown_item_top_first}>사용자 이름</span>
-                    <span className={styles.dropdown_item_top_second}>userid@naver.com</span>
-                </div>
-            </div>
-            <div className={styles.dropdown_bottom}>
-                <Link href={"/"}><a className={styles.dropdown_item_bottom}>작업물 관리</a></Link>
-                <Link href={"/"}><a className={styles.dropdown_item_bottom}>프로필 편집</a></Link>
-                <Link href={"/"}><a className={styles.dropdown_item_bottom}>문의하기</a></Link>
-                <Link href={"/"}><a className={styles.dropdown_item_bottom}>로그아웃</a></Link>
-            </div>
-        </div>
-    </antMenu>
-)
 
 function MenuItem(props) {
     return (
@@ -75,6 +51,44 @@ export default function Menu(param) {
             param.setUpload(true)
         }
     },[param.upload])
+
+    const ProfileMenu = (
+        <antMenu>
+            <div className={styles.dropdown}>
+                <div className={styles.dropdown_top}>
+                    <div style={{cursor: "pointer", display: "inline-block", paddingTop: "20px" , paddingLeft: "20px"}}>
+                        <Link href={"/profile/edit"}><a>
+                            <ProfileThumbnail circle size={64} image={
+                                param.profile && param.profile.profile_img
+                                    ? param.profile.profile_img
+                                    : profile_image_default
+                            }/>
+                        </a></Link>
+                    </div>
+                    <div className={styles.dropdown_item_top}>
+                        {
+                            param.profile && param.profile.nickname
+                                ?<span className={styles.dropdown_item_top_first}>{param.profile.nickname}</span>
+                                : param.user && param.user.email
+                                    ? <span className={styles.dropdown_item_top_first}>{param.user.email}</span>
+                                    : <></>
+                        }
+                        {
+                            param.user && param.user.email
+                                ? <span className={styles.dropdown_item_top_second}>{param.user.email}</span>
+                                : <></>
+                        }
+                    </div>
+                </div>
+                <div className={styles.dropdown_bottom}>
+                    <Link href={"/"}><a className={styles.dropdown_item_bottom}>작업물 관리</a></Link>
+                    <Link href={"/"}><a className={styles.dropdown_item_bottom}>프로필 편집</a></Link>
+                    <Link href={"/"}><a className={styles.dropdown_item_bottom}>문의하기</a></Link>
+                    <Link href={"/"}><a className={styles.dropdown_item_bottom}>로그아웃</a></Link>
+                </div>
+            </div>
+        </antMenu>
+    )
 
     useEffect(() => {
         if (param.side !== undefined){
@@ -138,7 +152,7 @@ export default function Menu(param) {
                                                 <div className={styles.right}>
                                                     param.param ? (
                                                     <>
-                                                        <Button upload className={styles.create} onClick={()=>router.push("/project/create").then((() =>window.scrollTo(0,0) ))}>프로젝트 업로드</Button>
+                                                        <Button upload className={styles.create} onClick={()=>router.push("/project/upload").then((() =>window.scrollTo(0,0) ))}>프로젝트 업로드</Button>
                                                         {/*
                             <IconButton src={image_message} onClick={() => alert("준비중인 기능입니다.")}/>
                             <IconButton src={image_bell} onClick={() => alert("준비중인 기능입니다.")}/>
@@ -146,13 +160,15 @@ export default function Menu(param) {
 
                                                         <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
                                                             <AntBtn className={styles.dropdown_button}>
-                                                                <Link href={"/"}>
+                                                                <Link href={"/profile/edit"}><a>
                                                                     <div style={{cursor: "pointer", display: "flex"}}>
                                                                         <ProfileThumbnail circle size={40} image={
-                                                                            "https://www.walkerhillstory.com/wp-content/uploads/2020/09/2-1.jpg"
+                                                                            param.profile && param.profile.profile_img
+                                                                                ? param.profile.profile_img
+                                                                                : profile_image_default
                                                                         }/>
                                                                     </div>
-                                                                </Link>
+                                                                </a></Link>
                                                             </AntBtn>
                                                         </Dropdown>
 
@@ -231,21 +247,18 @@ export default function Menu(param) {
                                                 {
                                                     param.param ? (
                                                         <>
-                                                            <Button upload className={styles.create} onClick={()=>router.push("/project/create").then((() =>window.scrollTo(0,0) ))}>프로젝트 업로드</Button>
-                                                            {/*
-                            <IconButton src={image_message} onClick={() => alert("준비중인 기능입니다.")}/>
-                            <IconButton src={image_bell} onClick={() => alert("준비중인 기능입니다.")}/>
- */}
-
+                                                            <Button upload className={styles.create} onClick={()=>router.push("/project/upload").then((() =>window.scrollTo(0,0) ))}>프로젝트 업로드</Button>
                                                             <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
                                                                 <AntBtn className={styles.dropdown_button}>
-                                                                    <Link href={"/"}>
+                                                                    <Link href={"/profile/edit"}><a>
                                                                         <div style={{cursor: "pointer", display: "flex"}}>
                                                                             <ProfileThumbnail circle size={40} image={
-                                                                                "https://www.walkerhillstory.com/wp-content/uploads/2020/09/2-1.jpg"
+                                                                                param.profile && param.profile.profile_img
+                                                                                    ? param.profile.profile_img
+                                                                                    : profile_image_default
                                                                             }/>
                                                                         </div>
-                                                                    </Link>
+                                                                    </a></Link>
                                                                 </AntBtn>
                                                             </Dropdown>
 

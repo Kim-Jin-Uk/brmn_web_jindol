@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(500),
             allowNull:true,
         },
+        field:{
+            type: DataTypes.STRING(500),
+            allowNull:true,
+        },
         instagram_link:{
             type: DataTypes.TEXT,
             allowNull:true,

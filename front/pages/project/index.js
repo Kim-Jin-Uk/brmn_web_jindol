@@ -1,13 +1,16 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import Head from 'next/head'
 import Header from "../../components/Header"
 import styles from '../../styles/Project.module.scss'
 import Button from "../../components/Button";
 import Link from "next/link"
 import Footer from "../../components/Footer";
-
+import profile_image_default from "/images/default/profimg_default.svg"
 import {Modal, Select} from 'antd';
 import {createGlobalStyle} from "styled-components";
+import {useDispatch, useSelector} from "react-redux";
+import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST} from "../../reducers/user";
+import ProfileThumbnail from "../../components/ProfileThumbnail";
 
 const { Option } = Select;
 const Global = createGlobalStyle`
@@ -46,7 +49,6 @@ const Global = createGlobalStyle`
 `;
 
 function MainCard(props) {
-    console.log(props.card.id)
     return(
         <>
             <div className={styles.card_group}>
@@ -73,8 +75,9 @@ function MainCard(props) {
 }
 
 const Index = () =>{
+    const dispatch = useDispatch();
+    const {user, logInDone, profile} = useSelector((state) => state.user);
     const [openAble,setOpenAble] = useState(true)
-    const [isLoggedin,setIsLoggedin] = useState(true)
     const [navActive,setNavActive] = useState({
         "n1": true,
         "n2": false,
@@ -85,19 +88,7 @@ const Index = () =>{
         "n7": false,
         "n8": false,
     })
-    const card = {
-        id:"1",
-        imgUrl:"https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/9dEO/image/_Xi6E6YOQ22VUzRkRtyy0_6Rvak.png",
-        title:"사랑하긴 했었나요 스쳐가는 인연이었나요 짧지않은 쿠쿠루 삥뽕",
-        profImg:"https://bit.ly/2V1ipNj",
-        nickname:"2층과3층사이"
-    }
-    const [cardList,setCardList] = useState([
-        card,card,card,card,card,card,card,card,card
-        ,card,card,card,card,card,card,card,card,card
-        ,card,card,card,card,card,card,card,card,card
-        ,card,card,card,card,card,card,card,card,card
-    ])
+    const {mainProjects} = useSelector((state) => state.project);
 
     const onCLickNav = useCallback((name) => {
         const field = {}
@@ -116,6 +107,25 @@ const Index = () =>{
         setOpenAble(!openAble)
     },[openAble])
 
+    useEffect(() => {
+        dispatch({
+            type:LOG_IN_REQUEST
+        })
+    },[])
+
+    useEffect(() => {
+        if (user !== null){
+            dispatch({
+                type:GET_MY_PROFILE_REQUEST,
+                data:user.email
+            })
+        }
+    },[user])
+
+    useEffect(() => {
+        console.log(profile)
+    },[profile])
+
     return(
         <div>
             <Global />
@@ -126,7 +136,7 @@ const Index = () =>{
 
                 <>
                     <div>
-                        <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble}/>
+                        <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble} user={user} profile={profile}/>
 
                         <div className={styles.body_color}>
                             <Select defaultValue="분야 선택" className={styles.nav_mobile}>
@@ -263,7 +273,7 @@ const Index = () =>{
 
                             </div>
                             <div className={styles.card_wrapper}>
-                                {cardList.map((card, index) => (
+                                {mainProjects.map((card, index) => (
                                     <>
                                         <MainCard card={card}></MainCard>
                                     </>
@@ -283,16 +293,28 @@ const Index = () =>{
                                     <div className={styles.side_right_wrapper}></div>
 
                                     {
-                                        isLoggedin
+                                        logInDone
                                             ?(
                                                 <>
                                                     <div style={{height:"100vh"}}  className={styles.side_wrapper}>
 
                                                         <div className={styles.side_login_top}>
-                                                            <img src={"https://file.mk.co.kr/meet/neds/2020/12/image_readtop_2020_1292239_16081264164474583.jpg"} className={styles.side_login_top_img}></img>
+                                                            <div className={styles.side_login_top_img}>
+                                                                <Link href="profile/edit"><a>
+                                                                    <ProfileThumbnail circle size={40} image={
+                                                                        profile && profile.profile_img
+                                                                            ?profile.profile_img
+                                                                            :profile_image_default
+                                                                    }></ProfileThumbnail>
+                                                                </a></Link>
+                                                            </div>
                                                             <div className={styles.side_login_top_info}>
-                                                                <div className={styles.side_login_top_nickname}>사용자 이름</div>
-                                                                <div className={styles.side_login_top_id}>userid@naver.com</div>
+                                                                {
+                                                                    profile && profile.nickname
+                                                                        ? <div className={styles.side_login_top_nickname}>{profile.nickname}</div>
+                                                                        : <div className={styles.side_login_top_nickname}>{user.email}</div>
+                                                                }
+                                                                <div className={styles.side_login_top_id}>{user.email}</div>
                                                             </div>
                                                             <button className={styles.side_login_top_close} onClick={onClickClose}></button>
                                                         </div>
@@ -350,15 +372,15 @@ const Index = () =>{
                                             :(
                                                 <>
                                                     <div style={{height:"100vh"}}  className={styles.side_wrapper}>
-                                                        <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble} side={true}/>
+                                                        <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble} side={true}  user={user} profile={profile}/>
                                                         <div className={styles.side_title} style={{minWidth:"320px"}}>
                                                             회원가입하고 다양한 메이커들과
                                                             <br/>
                                                             프로젝트를 시작하세요!
                                                         </div>
                                                         <div style={{display:"block",paddingLeft:"20px", height:"56px", marginTop:"16px", borderBottom:"1px solid #E8E8E8", minWidth:"320px"}}>
-                                                            <div style={{display:"inline-block"}}><Button className={styles.side_login}>로그인</Button></div>
-                                                            <div style={{display:"inline-block", marginLeft:"12px"}}><Button className={styles.side_signup}>회원가입</Button></div>
+                                                            <div style={{display:"inline-block"}}><Link href="/signin/login"><a><Button className={styles.side_login}>로그인</Button></a></Link></div>
+                                                            <div style={{display:"inline-block", marginLeft:"12px"}}><Link href="/signin/signup"><a><Button className={styles.side_signup}>회원가입</Button></a></Link></div>
                                                         </div>
 
                                                         <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>

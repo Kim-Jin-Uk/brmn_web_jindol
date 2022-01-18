@@ -7,6 +7,8 @@ const passport = require('passport')
 const passportConfig = require('./passport')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
+const dotenv = require('dotenv')
+dotenv.config()
 
 const app = express()
 
@@ -20,7 +22,7 @@ passportConfig()
 
 app.use(cors({
     origin:true,
-    credentials: false,
+    credentials: true,
 }))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
@@ -36,6 +38,11 @@ app.use(passport.session())
 
 app.use('/user',userRouter)
 app.use('/auth',authRouter)
+
+app.get('/oauth', passport.authenticate('kakao'), function (req, res) {
+    // 로그인 시작시 state 값을 받을 수 있음
+    res.redirect('http://localhost:3060/project')
+})
 
 app.listen(3065,() => {
     console.log("server open")

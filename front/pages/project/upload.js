@@ -159,15 +159,6 @@ const Upload = () => {
     ])
     const [fieldName, setFieldName] = useState("")
 
-    const onFieldNameChange = (e) => {
-        setFieldName(e.target.value)
-    }
-
-    const addFieldItem = () => {
-        setFieldList([...fieldList,fieldName])
-        setFieldName("")
-    }
-
     const imgUpload = () =>{
         const input = document.createElement("input")
         input.setAttribute("type","file")

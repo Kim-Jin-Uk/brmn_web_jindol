@@ -9,22 +9,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {LOG_IN_REQUEST} from "../../reducers/user";
 
 const LogIn = () => {
-    const dispatch = useDispatch()
-    const { logInDone, user } = useSelector((state) => state.user)
-    const dummy = {email:"jindol@naver.com",password:"1234",age:27,gender:"mail",agreement:"1 1 1"}
-
-    const onClickLogin = useCallback(() => {
-        console.log("click")
-        dispatch({
-            type: LOG_IN_REQUEST,
-            data: dummy,
-        })
-    })
-
-    useEffect(() => {
-        console.log(logInDone)
-        console.log(user)
-    },[logInDone,user])
 
     return(
         <>
@@ -41,12 +25,12 @@ const LogIn = () => {
                 </div>
 
                 <div style={{marginTop:"52px"}}>
-                    <div onClick={() => onClickLogin()} style={{ paddingLeft: "calc(50% - 93.5px)", paddingRight: "calc(50% - 93.5px)"}} className={styles.naver_btn}>
+                    <div style={{ paddingLeft: "calc(50% - 93.5px)", paddingRight: "calc(50% - 93.5px)"}} className={styles.naver_btn}>
                         <div className={styles.naver_icon}></div>
                         <div>네이버 아이디로 로그인</div>
                     </div>
                     <Link href={"http://localhost:3065/auth/kakao"}><a>
-                        <div onClick={() => onClickLogin()} style={{ paddingLeft: "calc(50% - 93.5px)", paddingRight: "calc(50% - 93.5px)"}}  className={styles.kakao_btn}>
+                        <div style={{ paddingLeft: "calc(50% - 93.5px)", paddingRight: "calc(50% - 93.5px)"}}  className={styles.kakao_btn}>
                             <div className={styles.kakao_icon}></div>
                             <div>카카오 계정으로 로그인</div>
                         </div>

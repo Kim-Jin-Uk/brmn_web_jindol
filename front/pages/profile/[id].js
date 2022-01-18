@@ -7,8 +7,6 @@ import styles from "../../styles/Profile.module.scss"
 import cardStyle from '../../styles/Project.module.scss'
 import Footer from "../../components/Footer";
 import {Card, Dropdown, Menu as antMenu} from "antd";
-import ProfileThumbnail from "../../components/ProfileThumbnail";
-import {fa} from "faker/lib/locales";
 
 function MainCard(props) {
     return(
