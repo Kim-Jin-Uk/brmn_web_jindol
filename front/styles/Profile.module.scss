@@ -421,6 +421,7 @@
   top: 50%;
   transform: translateY(-50%);
   display: inline-block;
+  cursor: pointer;
 }
 
 .edit_top_btn{
@@ -508,6 +509,9 @@
   padding-left: 10px;
   padding-right: 10px;
   margin-bottom: 16px;
+  &:focus{
+    border: 1px solid #33F4A3 !important;
+  }
 }
 
 .edit_card_textarea{
@@ -527,6 +531,9 @@
   height: auto;
   overflow-y: auto;
   min-height: 36px;
+  &:focus{
+    border: 1px solid #33F4A3 !important;
+  }
 }
 
 .edit_card_select_icon{

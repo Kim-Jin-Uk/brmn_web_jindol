@@ -122,10 +122,6 @@ const Index = () =>{
         }
     },[user])
 
-    useEffect(() => {
-        console.log(profile)
-    },[profile])
-
     return(
         <div>
             <Global />
@@ -136,7 +132,7 @@ const Index = () =>{
 
                 <>
                     <div>
-                        <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble} user={user} profile={profile}/>
+                        <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble} user={user} profile={profile}  isLoggedin={logInDone}/>
 
                         <div className={styles.body_color}>
                             <Select defaultValue="분야 선택" className={styles.nav_mobile}>
@@ -300,7 +296,11 @@ const Index = () =>{
 
                                                         <div className={styles.side_login_top}>
                                                             <div className={styles.side_login_top_img}>
-                                                                <Link href="profile/edit"><a>
+                                                                <Link href={
+                                                                    user && user.email
+                                                                        ?`/profile/${user.email}`
+                                                                        :`/profile/1`
+                                                                }><a>
                                                                     <ProfileThumbnail circle size={40} image={
                                                                         profile && profile.profile_img
                                                                             ?profile.profile_img
@@ -335,7 +335,7 @@ const Index = () =>{
                                                             <div className={styles.side_nav_4}></div>
                                                             <div className={styles.side_nav_content}>작업물 관리</div>
                                                         </a></Link>
-                                                        <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                        <Link href={"/profile/edit"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
                                                             <div className={styles.side_nav_5}></div>
                                                             <div className={styles.side_nav_content}>프로필 편집</div>
                                                         </a></Link>

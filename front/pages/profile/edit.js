@@ -3,7 +3,7 @@ import Header from "../../components/Header";
 import styles from "../../styles/Profile.module.scss"
 import Button from "../../components/Button";
 import Footer from "../../components/Footer";
-import {Checkbox, Input, Select, Menu, Modal} from "antd";
+import {message, Checkbox, Input, Select, Menu, Modal} from "antd";
 import {createGlobalStyle} from "styled-components";
 const { Option } = Select;
 import DatePicker, {registerLocale} from "react-datepicker";
@@ -11,8 +11,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import ko from 'date-fns/locale/ko';
 import useInput from "../../hooks/useInput";
 import {useDispatch, useSelector} from "react-redux";
-import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST} from "../../reducers/user";
+import {
+    GET_MY_PROFILE_DETAIL_REQUEST,
+    GET_MY_PROFILE_REQUEST,
+    LOG_IN_REQUEST,
+    UPDATE_MY_PROFILE_REQUEST,
+    UPLOAD_MY_PROFILE_DONE
+} from "../../reducers/user";
 import Router from "next/router";
+import moment from 'moment'
+import 'moment/locale/ko'
 
 
 const Global = createGlobalStyle`
@@ -234,6 +242,27 @@ const Global = createGlobalStyle`
 `
 
 function ValueCard(value) {
+    const onClickEditButton = () =>{
+        value.trigger(true)
+        let editter = value.param
+        editter.edit = "edit"
+        if (value.value.title){
+            editter.col_1_edit = value.value.title
+        }
+        if (value.value.date){
+            editter.col_2_edit = value.value.date
+            editter.col_4_edit = value.value.date
+        }
+        if (value.value.info){
+            editter.col_3_edit = value.value.info
+        }
+        if (value.value.detail){
+            editter.col_5_edit = value.value.detail
+        }
+        value.mode({list:value.type,index:value.index})
+        value.triggerSet(editter)
+    }
+
     return(
         <>
             <div className={styles.value_card_wrapper}>
@@ -257,7 +286,9 @@ function ValueCard(value) {
                             <></>
                         )
                 }
-                <div className={styles.value_card_edit_icon}></div>
+
+                <div className={styles.value_card_edit_icon} onClick={()=>onClickEditButton()}></div>
+
             </div>
         </>
     )
@@ -265,26 +296,125 @@ function ValueCard(value) {
 
 function AddCard(value) {
     registerLocale('ko', ko)
+    const [text1,onChangeText1,setText1] = useInput(value.value.col_1_edit)
+    const [text2,setText2] = useState(["",""])
+    const [text3,onChangeText3,setText3] = useInput(value.value.col_3_edit)
+    const [text5,onChangeText5,setText5] = useInput(value.value.col_5_edit)
     const [startDate, setStartDate] = useState(new Date())
     const [endDate, setEndDate] = useState(new Date())
     const [normalDate, setNormalDate] = useState(new Date())
-    const [text1,onChangeText1,setText1] = useInput(value.value.col_1_edit)
-    const [text3,onChangeText3,setText3] = useInput(value.value.col_3_edit)
-    const [text5,onChangeText5,setText5] = useInput(value.value.col_5_edit)
+
+    useEffect(() => {
+        if (value.value.col_2_edit.length > 1){
+            if (value.value.col_2_edit.includes(" - ")){
+                let dateList = value.value.col_2_edit.split((" - "))
+                setStartDate(new Date(dateList[0].replace(".","/")+"/01"))
+                setEndDate(new Date(dateList[1].replace(".","/")+"/01"))
+                setText2(dateList)
+            }else {
+                let dateString = value.value.col_2_edit
+                setNormalDate(new Date(dateString.replace(".","/")+"/01"))
+                setText2(text2.map((value,i) => i === 0 ? dateString : value ))
+            }
+        }else {
+            if (value.value.col_2 !== undefined && value.value.col_2 !== null){
+                setText2(text2.map((value,i) => moment(new Date()).format("YYYY.MM")))
+            }else {
+                setText2(text2.map((value,i) => i === 0 ? moment(new Date()).format("YYYY.MM") : value ))
+            }
+
+        }
+    },[value.value.col_2_edit])
+    useEffect(() => {
+        setText1(value.value.col_1_edit)
+    },[value.value.col_1_edit])
+    useEffect(() => {
+        setText3(value.value.col_3_edit)
+    },[value.value.col_3_edit])
+    useEffect(() => {
+        setText5(value.value.col_5_edit)
+    },[value.value.col_5_edit])
+
 
     const startDateChange = useCallback((date) => {
         setStartDate(date)
+        setText2(text2.map((value,i) => i === 0 ? moment(date).format("YYYY.MM") : value ))
     })
 
     const endDateChange = useCallback((date) => {
         setEndDate(date)
+        setText2(text2.map((value,i) => i === 1 ? moment(date).format("YYYY.MM") : value ))
     })
 
     const normalDateChange = useCallback((date) => {
         setNormalDate(date)
+        setText2(text2.map((value,i) => i === 0 ? moment(date).format("YYYY.MM") : value ))
     })
 
     const onClickCancle = () => {
+        let editter = value.value
+        editter.col_1_edit = ""
+        editter.col_2_edit = ""
+        editter.col_3_edit = ""
+        editter.col_4_edit = ""
+        editter.col_5_edit = ""
+        editter.edit = null
+        value.triggerSet(editter)
+        value.type(false)
+    }
+
+    const onClickDelete = () => {
+        let list = value.checker.list
+        let index = value.checker.index
+        value.checkerSet(list.filter((value,i) => i !== index))
+        value.mode(null)
+        let editter = value.value
+        editter.col_1_edit = ""
+        editter.col_2_edit = ""
+        editter.col_3_edit = ""
+        editter.col_4_edit = ""
+        editter.col_5_edit = ""
+        editter.edit = null
+        value.triggerSet(editter)
+        value.type(false)
+    }
+
+    const onClickSave = () => {
+        let date = ""
+        if ((value.value.col_2 !== undefined && value.value.col_2 !== null) || (value.value.col_4 !== undefined && value.value.col_4 !== null)){
+            if (text2[1] !== ""){
+                date = text2.join(" - ")
+            }else {
+                date = text2[0]
+            }
+        }
+
+        if (text1.length === 0 || text3.length === 0 || (value.value.col_5 !== undefined && value.value.col_5 !== null && text5.length === 0)){
+            return message.warning('한글자 이상 작성해 주세요');
+        }
+        const addValue = {
+            title:text1,
+            info:text3,
+            detail:text5,
+            date:date
+        }
+
+        if (value.checker !== null){
+            let valueList = value.checker.list
+            valueList[value.checker.index] = addValue
+            value.checkerSet(valueList)
+        }else {
+            value.checkerSet([...value.addList,addValue])
+        }
+
+        let editter = value.value
+        editter.col_1_edit = ""
+        editter.col_2_edit = ""
+        editter.col_3_edit = ""
+        editter.col_4_edit = ""
+        editter.col_5_edit = ""
+        editter.edit = null
+        value.triggerSet(editter)
         value.type(false)
     }
 
@@ -295,8 +425,9 @@ function AddCard(value) {
                     <div className={styles.add_card_text}>{value.value.col_1}</div>
                     <Input
                         placeholder={value.value.col_1_content}
+                        placeholder={value.value.col_1_content}
                         className={styles.edit_card_input}
-                        maxLength={20}
+                        maxLength={50}
                         value={text1}
                         onChange={onChangeText1}
                         style={{
@@ -341,7 +472,7 @@ function AddCard(value) {
                                         locale={ko}// 언어설정 기본값은 영어
                                         dateFormat="yyyy/MM"    // 날짜 형식 설정
                                         className="input-datepicker"    // 클래스 명 지정 css주기 위해
-                                        minDate={new Date()}    // 선택할 수 있는 최소 날짜값 지정
+                                        maxDate={new Date()}    // 선택할 수 있는 최소 날짜값 지정
                                         closeOnScroll={true}    // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
                                         placeholderText="종료 날짜"    // placeholder
                                         selected={endDate}    // value
@@ -361,7 +492,7 @@ function AddCard(value) {
                     <Input
                         placeholder={value.value.col_3_content}
                         className={styles.edit_card_input}
-                        maxLength={20}
+                        maxLength={100}
                         value={text3}
                         onChange={onChangeText3}
                         style={{
@@ -384,7 +515,7 @@ function AddCard(value) {
                                         locale={ko}// 언어설정 기본값은 영어
                                         dateFormat="yyyy/MM"    // 날짜 형식 설정
                                         className="input-datepicker"    // 클래스 명 지정 css주기 위해
-                                        minDate={new Date()}    // 선택할 수 있는 최소 날짜값 지정
+                                        maxDate={new Date()}    // 선택할 수 있는 최소 날짜값 지정
                                         closeOnScroll={true}    // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
                                         placeholderText="시작 날짜"    // placeholder
                                         selected={normalDate}    // value
@@ -405,7 +536,7 @@ function AddCard(value) {
                                 <Input
                                     placeholder={value.value.col_5_content}
                                     className={styles.edit_card_input}
-                                    maxLength={20}
+                                    maxLength={100}
                                     value={text5}
                                     onChange={onChangeText5}
                                     style={{
@@ -424,12 +555,12 @@ function AddCard(value) {
                         )
                 }
                 <div className={styles.add_card_bottom_wrapper}>
-                    <Button className={styles.add_card_btn_1}>저장</Button>
-                    <Button className={styles.add_card_btn_2} onClick={onClickCancle}>취소</Button>
+                    <Button className={styles.add_card_btn_1} onClick={() => onClickSave()}>저장</Button>
+                    <Button className={styles.add_card_btn_2} onClick={() => onClickCancle()}>취소</Button>
                     {
                         value.value.edit !== undefined && value.value.edit !== null
                             ?(
-                                <Button className={styles.add_card_btn_3}>삭제</Button>
+                                <Button className={styles.add_card_btn_3} onClick={() => onClickDelete()}>삭제</Button>
                             ):(
                                 <></>
                             )
@@ -442,7 +573,7 @@ function AddCard(value) {
 
 const Edit = () => {
     const dispatch = useDispatch();
-    const {user, logInDone, profile} = useSelector((state) => state.user);
+    const {user, logInDone, profile,profileDetail, updateMyProfileDone, updateMyProfileError} = useSelector((state) => state.user);
     const [userName, onChangeUserName, setUserName] = useInput("")
     const [userJob, onChangeUserJob, setUserJob] = useInput("")
     const locationList = [
@@ -479,69 +610,69 @@ const Edit = () => {
     const [eduList, setEduList] = useState([])
     const [createList, setCreateList] = useState([])
     const [showList, setShowList] = useState([])
-    const techAdd = {
+    const [techAdd,setTechAdd] = useState({
         col_1:"보유 기술", col_1_content:"기술 이름", col_1_edit:"",
         col_2:null, col_2_content:"", col_2_edit:"",
         col_3:"세부 사항", col_3_content:"협업 시 원활한 소통이 가능합니다.", col_3_edit:"",
         col_4:null, col_4_content:"", col_4_edit:"",
         col_5:null, col_5_content:"", col_5_edit:"",
         edit:null
-    }
-    const equipAdd = {
+    })
+    const [equipAdd,setEquipAdd] = useState({
         col_1:"장비 종류", col_1_content:"예: 기타, 믹서, 카메라 등", col_1_edit:"",
         col_2:null, col_2_content:"", col_2_edit:"",
         col_3:"장비 설명", col_3_content:"예: EPIPHONE 어쿠스틱기타 EL-00", col_3_edit:"",
         col_4:null, col_4_content:"", col_4_edit:"",
         col_5:null, col_5_content:"", col_5_edit:"",
         edit:null
-    }
-    const careerAdd = {
+    })
+    const [careerAdd,setCareerAdd] = useState({
         col_1:"회사/조직", col_1_content:"회사 이름", col_1_edit:"",
         col_2:"기간", col_2_content:"", col_2_edit:"",
         col_3:"직책", col_3_content:"예: 작곡가, 앨범 디자이너 등", col_3_edit:"",
         col_4:null, col_4_content:"", col_4_edit:"",
         col_5:"세부 사항", col_5_content:"회사에서 진행한 업무를 입력", col_5_edit:"",
         edit:null
-    }
-    const awardAdd= {
+    })
+    const [awardAdd,setAwardAdd]= useState({
         col_1:"수상 경력", col_1_content:"수상 내용", col_1_edit:"",
         col_2:null, col_2_content:"", col_2_edit:"",
         col_3:"수상 기관", col_3_content:"기관 이름", col_3_edit:"",
         col_4:"취득일", col_4_content:"", col_4_edit:"",
         col_5:null, col_5_content:"", col_5_edit:"",
         edit:null
-    }
-    const eduAdd = {
+    })
+    const [eduAdd,setEduAdd] = useState({
         col_1:"학교 또는 대학", col_1_content:"학교 이름", col_1_edit:"",
         col_2:"기간", col_2_content:"", col_2_edit:"",
         col_3:"전공", col_3_content:"전공 학과", col_3_edit:"",
         col_4:null, col_4_content:"", col_4_edit:"",
         col_5:null, col_5_content:"", col_5_edit:"",
         edit:null
-    }
-    const createAdd = {
+    })
+    const [createAdd,setCreateAdd] = useState({
         col_1:"제작 이름", col_1_content:"제작한 프로젝트 이름", col_1_edit:"",
         col_2:"기간", col_2_content:"", col_2_edit:"",
         col_3:"제작 업무", col_3_content:"예: 작곡, 앨범 디자인 등", col_3_edit:"",
         col_4:null, col_4_content:"", col_4_edit:"",
         col_5:"세부 사항", col_5_content:"제작 업무에 포함된 자세한 사항을 입력", col_5_edit:"",
         edit:null
-    }
-    const showAdd = {
+    })
+    const [showAdd,setShowAdd] = useState({
         col_1:"공연 제목", col_1_content:"공연 이름", col_1_edit:"",
         col_2:"기간", col_2_content:"", col_2_edit:"",
         col_3:"공연 업무", col_3_content:"예: 음향감독, 세션 등", col_3_edit:"",
         col_4:null, col_4_content:"", col_4_edit:"",
         col_5:"세부 사항", col_5_content:"공연에 포함된 자세한 사항을 입력", col_5_edit:"",
         edit:null
-    }
-    const [techEdit, setTechEdit] = useState(false)
-    const [equipEdit, setEquipEdit] = useState(false)
-    const [careerEdit, setCareerEdit] = useState(false)
-    const [awardEdit, setAwardEdit] = useState(false)
-    const [eduEdit, setEduEdit] = useState(false)
-    const [createEdit, setCreateEdit] = useState(false)
-    const [showEdit, setShowEdit] = useState(false)
+    })
+    const [editTechMode, setEditTechMode] = useState(null)
+    const [editEquipMode, setEditEquipMode] = useState(null)
+    const [editCareerMode, setEditCareerMode] = useState(null)
+    const [editAwardMode, setEditAwardMode] = useState(null)
+    const [editEduMode, setEditEduMode] = useState(null)
+    const [editCreateMode, setEditCreateMode] = useState(null)
+    const [editShowMode, setEditShowMode] = useState(null)
 
     const onChangeLocation = (v) => {
         setUserLocation(v)
@@ -591,7 +722,6 @@ const Edit = () => {
             behavior: 'smooth',
             block:"center",
         });
-        console.log(ref.current?.scrollHeight)
     },[basicRef,infoRef,fieldRef,techRef,equipRef,careerRef])
 
     const [tech, setTech] = useState(false)
@@ -610,10 +740,17 @@ const Edit = () => {
 
 
 
-    const onClickAddText = useCallback((value,setter) => {
+    const onClickAddText = useCallback((value,setter,add,setAdd) => {
+        let editter = add
+        editter.col_1_edit = ""
+        editter.col_2_edit = ""
+        editter.col_3_edit = ""
+        editter.col_4_edit = ""
+        editter.col_5_edit = ""
+        editter.edit = null
+        setAdd(editter)
         setter(!value)
     },[tech,equip,career,award,edu,create,show])
-
 
 
     const suffix = <>
@@ -667,6 +804,10 @@ const Edit = () => {
 
     useEffect(() => {
         if (profile){
+            dispatch({
+                type:GET_MY_PROFILE_DETAIL_REQUEST,
+                data:user.email
+            })
             if (profile.nickname){
                 setUserName(profile.nickname)
             }
@@ -705,75 +846,119 @@ const Edit = () => {
             if (profile.twitter_link){
                 setUserTwitter(profile.twitter_link)
             }
-            if (profile.ProfileDetails){
-                const UserProfileDetails = profile.ProfileDetails
-                let UserTechList = []
-                let UserEquipmentList = []
-                let UserCareerList = []
-                let UserAwardList = []
-                let UserEducationList = []
-                let UserCreateList = []
-                let UserShowList = []
-                for (let i = 0; i < UserProfileDetails.length; i++) {
-                    switch (UserProfileDetails[i].detail_type){
-                        case "technic":{
-                            UserTechList.push(
-                                {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title}
-                            )
-                        }break
 
-                        case "equipment":{
-                            UserEquipmentList.push(
-                                {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title}
-                            )
-                        }break
-
-                        case "career":{
-                            UserCareerList.push(
-                                {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:UserProfileDetails[i].contents,date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
-                            )
-                        }break
-
-                        case "award":{
-                            UserAwardList.push(
-                                {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,date:UserProfileDetails[i].start_date}
-                            )
-                        }break
-
-                        case "education":{
-                            UserEducationList.push(
-                                {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
-                            )
-                        }break
-
-                        case "create":{
-                            UserCreateList.push(
-                                {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:UserProfileDetails[i].contents,date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
-                            )
-                        }break
-
-                        case "show":{
-                            UserShowList.push(
-                                {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:UserProfileDetails[i].contents,date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
-                            )
-                        }break
-
-                        default:
-                            continue
-                    }
-                }
-                setTechList(UserTechList)
-                setEquipList(UserEquipmentList)
-                setCareerList(UserCareerList)
-                setAwardList(UserAwardList)
-                setEduList(UserEducationList)
-                setCreateList(UserCreateList)
-                setShowList(UserShowList)
-            }
         }else if (user){
             setUserName(user.email)
         }
     },[profile])
+
+    useEffect(() => {
+        if (profileDetail){
+            const UserProfileDetails = profileDetail.ProfileDetails
+            let UserTechList = []
+            let UserEquipmentList = []
+            let UserCareerList = []
+            let UserAwardList = []
+            let UserEducationList = []
+            let UserCreateList = []
+            let UserShowList = []
+            for (let i = 0; i < UserProfileDetails.length; i++) {
+                switch (UserProfileDetails[i].detail_type){
+                    case "technic":{
+                        UserTechList.push(
+                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:""}
+                        )
+                    }break
+
+                    case "equipment":{
+                        UserEquipmentList.push(
+                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:""}
+                        )
+                    }break
+
+                    case "career":{
+                        UserCareerList.push(
+                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:UserProfileDetails[i].contents,date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
+                        )
+                    }break
+
+                    case "award":{
+                        UserAwardList.push(
+                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:UserProfileDetails[i].start_date}
+                        )
+                    }break
+
+                    case "education":{
+                        UserEducationList.push(
+                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
+                        )
+                    }break
+
+                    case "create":{
+                        UserCreateList.push(
+                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:UserProfileDetails[i].contents,date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
+                        )
+                    }break
+
+                    case "show":{
+                        UserShowList.push(
+                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:UserProfileDetails[i].contents,date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
+                        )
+                    }break
+
+                    default:
+                        continue
+                }
+            }
+            setTechList(UserTechList)
+            setEquipList(UserEquipmentList)
+            setCareerList(UserCareerList)
+            setAwardList(UserAwardList)
+            setEduList(UserEducationList)
+            setCreateList(UserCreateList)
+            setShowList(UserShowList)
+        }
+    },[profileDetail])
+
+    useEffect(() => {
+        if (updateMyProfileDone){
+            message.success('프로필을 성공적으로 업데이트 하였습니다');
+            dispatch({type:UPLOAD_MY_PROFILE_DONE})
+            Router.back()
+        }
+    },[updateMyProfileDone])
+
+    useEffect(() => {
+        if (updateMyProfileError){
+            message.warning('업데이트 도중 얘기치 않은 문제가 발생하였습니다')
+        }
+    },[updateMyProfileError])
+
+    const onClickMainSaveButton = () => {
+        dispatch({
+            type:UPDATE_MY_PROFILE_REQUEST,
+            data:{
+                email:user.email,
+                name:userName,
+                job:userJob,
+                location:userLocation,
+                introduce:userIntroduce,
+                field:userField.join(", "),
+                instagram:userInstagram,
+                youtube:userYoutube,
+                soundcloud:userSoundCloud,
+                facebook:userFacebook,
+                twitter:userTwitter,
+                tech:techList,
+                equip:equipList,
+                career:careerList,
+                award:awardList,
+                edu:eduList,
+                create:createList,
+                show:showList,
+            }
+        })
+    }
 
     return(
         <div>
@@ -781,8 +966,8 @@ const Edit = () => {
             <Header param={"profile"} user={user} profile={profile}/>
             <div className={styles.edit_top_wrapper}>
                 <div className={styles.edit_top}>
-                    <div className={styles.edit_top_back}></div>
-                    <Button className={styles.edit_top_btn}>저장</Button>
+                    <div className={styles.edit_top_back} onClick={() => Router.back()}></div>
+                    <Button className={styles.edit_top_btn} onClick={()=>onClickMainSaveButton()}>저장</Button>
                 </div>
             </div>
 
@@ -1031,14 +1216,19 @@ const Edit = () => {
                             {
                                 techList.map((value, index) => (
                                     <>
-                                        <ValueCard value={value}></ValueCard>
+                                        <ValueCard value={value} index={index} type={techList} trigger={setTech}
+                                                   triggerSet={setTechAdd} param={techAdd} mode={setEditTechMode}
+                                                   checker={editTechMode}
+                                        ></ValueCard>
                                     </>
                                 ))
                             }
                             {
                                 tech
                                     ?(
-                                        <AddCard value={techAdd} type={setTech}></AddCard>
+                                        <AddCard value={techAdd} type={setTech} mode={setEditTechMode}
+                                                 checker={editTechMode} triggerSet={setTechAdd} checkerSet={setTechList}
+                                                 addList={techList}></AddCard>
                                     )
                                     :(
                                         <></>
@@ -1048,7 +1238,7 @@ const Edit = () => {
                                 <div className={styles.edit_card_sub_explain}>소프트웨어, 악기 연주 등을 추가합니다.</div>
                             </div>
                             <div className={styles.edit_card_add_link} style={{marginTop:"4px"}}
-                                 onClick={() => onClickAddText(tech,setTech)}>+  기술 추가</div>
+                                 onClick={() => onClickAddText(tech,setTech,techAdd,setTechAdd)}>+  기술 추가</div>
                         </div>
 
                         <div className={styles.edit_card_wrapper} ref={equipRef}>
@@ -1056,14 +1246,18 @@ const Edit = () => {
                             {
                                 equipList.map((value, index) => (
                                     <>
-                                        <ValueCard value={value}></ValueCard>
+                                        <ValueCard value={value} index={index} type={equipList} trigger={setEquip}
+                                                   triggerSet={setEquipAdd} param={equipAdd} mode={setEditEquipMode}
+                                                   checker={editEquipMode}></ValueCard>
                                     </>
                                 ))
                             }
                             {
                                 equip
                                     ?(
-                                        <AddCard value={equipAdd} type={setEquip}></AddCard>
+                                        <AddCard value={equipAdd} type={setEquip} mode={setEditEquipMode}
+                                                 checker={editEquipMode} triggerSet={setEquipAdd} checkerSet={setEquipList}
+                                                 addList={equipList}></AddCard>
                                     )
                                     :(
                                         <></>
@@ -1073,7 +1267,7 @@ const Edit = () => {
                                 <div className={styles.edit_card_sub_explain}>보유하고 있는 장비, 악기를 추가합니다.</div>
                             </div>
                             <div className={styles.edit_card_add_link} style={{marginTop:"4px"}}
-                                 onClick={() => onClickAddText(equip,setEquip)}>+  장비 추가</div>
+                                 onClick={() => onClickAddText(equip,setEquip,equipAdd,setEquipAdd)}>+  장비 추가</div>
                         </div>
 
                         <div className={styles.edit_card_wrapper} ref={careerRef}>
@@ -1081,21 +1275,25 @@ const Edit = () => {
                             {
                                 careerList.map((value, index) => (
                                     <>
-                                        <ValueCard value={value}></ValueCard>
+                                        <ValueCard value={value} index={index} type={careerList} trigger={setCareer}
+                                                   triggerSet={setCareerAdd} param={careerAdd} mode={setEditCareerMode}
+                                                   checker={editCareerMode}></ValueCard>
                                     </>
                                 ))
                             }
                             {
                                 career
                                     ?(
-                                        <AddCard value={careerAdd} type={setCareer}></AddCard>
+                                        <AddCard value={careerAdd} type={setCareer} mode={setEditCareerMode}
+                                                 checker={editCareerMode} triggerSet={setCareerAdd} checkerSet={setCareerList}
+                                                 addList={careerList}></AddCard>
                                     )
                                     :(
                                         <></>
                                     )
                             }
                             <div className={styles.edit_card_add_link} style={{marginTop:"4px"}}
-                                 onClick={() => onClickAddText(career,setCareer)}>+  근무 경력 추가</div>
+                                 onClick={() => onClickAddText(career,setCareer,careerAdd,setCareerAdd)}>+  근무 경력 추가</div>
                         </div>
 
                         <div className={styles.edit_card_wrapper}>
@@ -1103,21 +1301,25 @@ const Edit = () => {
                             {
                                 awardList.map((value, index) => (
                                     <>
-                                        <ValueCard value={value}></ValueCard>
+                                        <ValueCard value={value} index={index} type={awardList} trigger={setAward}
+                                                   triggerSet={setAwardAdd} param={awardAdd} mode={setEditAwardMode}
+                                                   checker={editAwardMode}></ValueCard>
                                     </>
                                 ))
                             }
                             {
                                 award
                                     ?(
-                                        <AddCard value={awardAdd} type={setAward}></AddCard>
+                                        <AddCard value={awardAdd} type={setAward} mode={setEditAwardMode}
+                                                 checker={editAwardMode} triggerSet={setAwardAdd} checkerSet={setAwardList}
+                                                 addList={awardList}></AddCard>
                                     )
                                     :(
                                         <></>
                                     )
                             }
                             <div className={styles.edit_card_add_link} style={{marginTop:"4px"}}
-                                 onClick={() => onClickAddText(award,setAward)}>+  수상추가</div>
+                                 onClick={() => onClickAddText(award,setAward,awardAdd,setAwardAdd)}>+  수상추가</div>
                         </div>
 
                         <div className={styles.edit_card_wrapper}>
@@ -1125,21 +1327,25 @@ const Edit = () => {
                             {
                                 eduList.map((value, index) => (
                                     <>
-                                        <ValueCard value={value}></ValueCard>
+                                        <ValueCard value={value} index={index} type={eduList} trigger={setEdu}
+                                                   triggerSet={setEduAdd} param={eduAdd} mode={setEditEduMode}
+                                                   checker={editEduMode}></ValueCard>
                                     </>
                                 ))
                             }
                             {
                                 edu
                                     ?(
-                                        <AddCard value={eduAdd} type={setEdu}></AddCard>
+                                        <AddCard value={eduAdd} type={setEdu} mode={setEditEduMode}
+                                                 checker={editEduMode} triggerSet={setEduAdd} checkerSet={setEduList}
+                                                 addList={eduList}></AddCard>
                                     )
                                     :(
                                         <></>
                                     )
                             }
                             <div className={styles.edit_card_add_link} style={{marginTop:"4px"}}
-                                 onClick={() => onClickAddText(edu,setEdu)}>+  학력추가</div>
+                                 onClick={() => onClickAddText(edu,setEdu,eduAdd,setEduAdd)}>+  학력추가</div>
                         </div>
 
                         <div className={styles.edit_card_wrapper}>
@@ -1147,14 +1353,18 @@ const Edit = () => {
                             {
                                 createList.map((value, index) => (
                                     <>
-                                        <ValueCard value={value}></ValueCard>
+                                        <ValueCard value={value} index={index} type={createList} trigger={setCreate}
+                                                   triggerSet={setCreateAdd} param={createAdd} mode={setEditCreateMode}
+                                                   checker={editCreateMode}></ValueCard>
                                     </>
                                 ))
                             }
                             {
                                 create
                                     ?(
-                                        <AddCard value={createAdd} type={setCreate}></AddCard>
+                                        <AddCard value={createAdd} type={setCreate} mode={setEditCreateMode}
+                                                 checker={editCreateMode} triggerSet={setCreateAdd} checkerSet={setCreateList}
+                                                 addList={createList}></AddCard>
                                     )
                                     :(
                                         <></>
@@ -1164,7 +1374,7 @@ const Edit = () => {
                                 <div className={styles.edit_card_sub_explain}>음반 제작, 콘텐츠 제작 활동 등을 추가합니다.</div>
                             </div>
                             <div className={styles.edit_card_add_link} style={{marginTop:"4px"}}
-                                 onClick={() => onClickAddText(create,setCreate)}>+  제작추가</div>
+                                 onClick={() => onClickAddText(create,setCreate,createAdd,setCreateAdd)}>+  제작추가</div>
                         </div>
 
                         <div className={styles.edit_card_wrapper}>
@@ -1172,21 +1382,25 @@ const Edit = () => {
                             {
                                 showList.map((value, index) => (
                                     <>
-                                        <ValueCard value={value}></ValueCard>
+                                        <ValueCard value={value} index={index} type={showList} trigger={setShow}
+                                                   triggerSet={setShowAdd} param={showAdd} mode={setEditShowMode}
+                                                   checker={editShowMode}></ValueCard>
                                     </>
                                 ))
                             }
                             {
                                 show
                                     ?(
-                                        <AddCard value={showAdd} type={setShow}></AddCard>
+                                        <AddCard value={showAdd} type={setShow} mode={setEditShowMode}
+                                                 checker={editShowMode} triggerSet={setShowAdd} checkerSet={setShowList}
+                                                 addList={showList}></AddCard>
                                     )
                                     :(
                                         <></>
                                     )
                             }
                             <div className={styles.edit_card_add_link} style={{marginTop:"4px"}}
-                                 onClick={() => onClickAddText(show,setShow)}>+  공연추가</div>
+                                 onClick={() => onClickAddText(show,setShow,showAdd,setShowAdd)}>+  공연추가</div>
                         </div>
                     </div>
                 </div>

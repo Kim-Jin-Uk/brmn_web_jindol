@@ -21,7 +21,7 @@ export default function Header(param) {
                         }}>
                             <Menu param={param.param} openAble={param.openAble} setOpenAble={param.setOpenAble} side={side}
                                   btnType={param.btnType} upload={param.upload} setUpload={param.setUpload}  user={param.user}
-                                  profile={param.profile}/>
+                                  profile={param.profile} isLoggedin={param.isLoggedin}/>
                         </div>
                     )
                     : (
@@ -34,7 +34,7 @@ export default function Header(param) {
                             }}>
                                 <Menu param={param.param} openAble={param.openAble} setOpenAble={param.setOpenAble} side={side}
                                       btnType={param.btnType}  upload={param.upload} setUpload={param.setUpload} user={param.user}
-                                      profile={param.profile}/>
+                                      profile={param.profile} isLoggedin={param.isLoggedin}/>
                             </div>
                             <div style={{height:"56px"}}></div>
                         </>

@@ -7,7 +7,6 @@ module.exports = () => {
         clientID: process.env.KAKAO_API_KEY,
         callbackURL: 'http://localhost:3065/oauth',
     }, async (accessToken, refreshToken, profile, done) => {
-        console.log('kakao profile', profile);
         try {
             const exUser = await User.findOne({
                 where: { email: profile._json.kakao_account.email, provider: 'kakao'},

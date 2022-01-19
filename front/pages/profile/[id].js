@@ -1,4 +1,5 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
+import { useRouter } from 'next/router';
 import Header from "../../components/Header";
 import Link from "next/link";
 import Button from "../../components/Button";
@@ -7,6 +8,17 @@ import styles from "../../styles/Profile.module.scss"
 import cardStyle from '../../styles/Project.module.scss'
 import Footer from "../../components/Footer";
 import {Card, Dropdown, Menu as antMenu} from "antd";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    GET_MY_PROFILE_DETAIL_REQUEST,
+    GET_MY_PROFILE_REQUEST, GET_OTHER_PROFILE_DETAIL_REQUEST,
+    GET_OTHER_PROFILE_REQUEST,
+    LOG_IN_REQUEST
+} from "../../reducers/user";
+import {GetServerSideProps} from "next";
+import useInput from "../../hooks/useInput";
+import ProfileThumbnail from "../../components/ProfileThumbnail";
+import profile_image_default from "/images/default/profimg_default.svg"
 
 function MainCard(props) {
     return(
@@ -48,18 +60,18 @@ function InfoCard(props) {
                 }
             </div>
             {
-                props.props.subtitle !== undefined && props.props.subtitle !== null
+                props.props.info !== undefined && props.props.info !== null
                 ?(
-                        <div className={styles.info_subtitle}>{props.props.subtitle}</div>
+                        <div className={styles.info_subtitle}>{props.props.info}</div>
                     )
                 :(
                         <></>
                     )
             }
             {
-                props.props.content !== undefined && props.props.content !== null
+                props.props.detail !== undefined && props.props.detail !== null
                     ?(
-                        <div className={styles.info_content}>{props.props.content}</div>
+                        <div className={styles.info_content}>{props.props.detail}</div>
                     )
                     :(
                         <></>
@@ -70,23 +82,49 @@ function InfoCard(props) {
 
 }
 
-const ProfileMenu = (
-    <antMenu>
-        <div style={{background:"#FFFFFF", boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.2)", borderRadius:"4px"}}>
-            <div className={styles.hover_btn}>프로필 사진 변경</div>
-            <div className={styles.hover_btn}>기본 이미지로 변경</div>
-        </div>
-    </antMenu>
-)
-
 const ProfileProject = () => {
+    const router = useRouter()
+    const [id,setId] = useState(router.query.id)
+    const dispatch = useDispatch()
+    const {user,profile, logInDone, otherProfile, otherProfileDetail} = useSelector((state) => state.user);
     const [openAble,setOpenAble] = useState(true)
-    const [isLoggedin,setIsLoggedin] = useState(false)
     const [isMe,setIsMe] = useState(true)
+    const [userName, onChangeUserName, setUserName] = useInput("")
+    const [userJob, onChangeUserJob, setUserJob] = useInput("")
+    const [userLocation, setUserLocation] = useState("")
+    const [userIntroduce, onChangeUserIntroduce, setUserIntroduce] = useInput("")
+    const [userField, setUserField] = useState([])
+    const [userInstagram, onChangeUserInstagram, setUserInstagram] = useInput("")
+    const [userYoutube, onChangeUserYoutube, setUserYoutube] = useInput("")
+    const [userSoundCloud, onChangeUserSoundCloud, setUserSoundCloud] = useInput("")
+    const [userFacebook, onChangeUserFacebook, setUserFacebook] = useInput("")
+    const [userTwitter, onChangeUserTwitter, setUserTwitter] = useInput("")
+    const [techList, setTechList] = useState([])
+    const [equipList, setEquipList] = useState([])
+    const [careerList, setCareerList] = useState([])
+    const [awardList, setAwardList] = useState([])
+    const [eduList, setEduList] = useState([])
+    const [createList, setCreateList] = useState([])
+    const [showList, setShowList] = useState([])
+
     const [navActive,setNavActive] = useState({
         "n1": true,
         "n2": false,
     })
+
+    const onClickChangeDefaultImage = () => {
+        
+    }
+
+    const ProfileMenu = (
+        <antMenu>
+            <div style={{background:"#FFFFFF", boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.2)", borderRadius:"4px"}}>
+                <div className={styles.hover_btn}>프로필 사진 변경</div>
+                <div className={styles.hover_btn}>기본 이미지로 변경</div>
+            </div>
+        </antMenu>
+    )
+
     const card = {
         imgUrl:"https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/9dEO/image/_Xi6E6YOQ22VUzRkRtyy0_6Rvak.png",
         title:"사랑하긴 했었나요 스쳐가는 인연이었나요 짧지않은 쿠쿠루 삥뽕",
@@ -100,51 +138,18 @@ const ProfileProject = () => {
         ,card,card,card,card,card,card,card,card,card
     ])
 
-    const [equipList,setEquipList] = useState([
-        {title:"기타",content:"EPIPHONE 어쿠스틱기타 EL-00 Pro"},
-        {title:"믹서",content:"Yamaha MG166CX-USB"},
-    ])
     const [equipOpen,setEquipOpen] = useState(true)
 
-    const [techList,setTechList] = useState([
-        {title:"Logic Pro X",content:"협업 시 원활한 소통이 가능합니다."},
-        {title:"피아노 연주",content:"다양한 장르의 연주가 가능합니다."},
-    ])
 
     const [techOpen,setTechOpen] = useState(true)
 
-    const [careerList,setCareerListList] = useState([
-        {title:"SM 엔터테인먼트",date:"2020.05 - 현재",subtitle:"사운드 엔지니어",content:"녹음기기 전반을 조작하며 음의 캐릭터, 밸런스를 결정하는 일을 담당했습니다."},
-        {title:"음악 입시 작곡 학원",date:"2018.02",subtitle:"작곡 선생님",content:"입시 학원에서 학생들을 지도했습니다."},
-        {title:"SM 엔터테인먼트",date:"2020.05 - 현재",subtitle:"사운드 엔지니어",content:"녹음기기 전반을 조작하며 음의 캐릭터, 밸런스를 결정하는 일을 담당했습니다."},
-        {title:"음악 입시 작곡 학원",date:"2018.02",subtitle:"작곡 선생님",content:"입시 학원에서 학생들을 지도했습니다."},
-        {title:"SM 엔터테인먼트",date:"2020.05 - 현재",subtitle:"사운드 엔지니어",content:"녹음기기 전반을 조작하며 음의 캐릭터, 밸런스를 결정하는 일을 담당했습니다."},
-        {title:"음악 입시 작곡 학원",date:"2018.02",subtitle:"작곡 선생님",content:"입시 학원에서 학생들을 지도했습니다."},
-    ])
-
     const [careerOpen,setCareerOpen] = useState(true)
-
-    const [eduList,setEduListList] = useState([
-        {title:"건국대학교",date:"2020.05 - 0000.00",subtitle:"전공학과"},
-        {title:"안녕고등학교",date:"2018.02 - 0000.00",subtitle:"전공학과"},
-    ])
 
     const [eduOpen,setEduOpen] = useState(true)
 
-    const [awardList,setAwardListList] = useState([
-        {title:"건국대학교",date:"2020.05 - 0000.00",subtitle:"사운드 엔지니어",content:"녹음기기 전반을 조작하며 음의 캐릭터, 밸런스를 결정하는 일을 담당했습니다."},
-        {title:"안녕고등학교",date:"2018.02 - 0000.00",subtitle:"작곡 선생님",content:"입시 학원에서 학생들을 지도했습니다."},
-    ])
-
     const [awardOpen,setAwardOpen] = useState(true)
 
-    const [createList,setCreateListList] = useState([
-        {title:"건국대학교",date:"2020.05 - 0000.00",subtitle:"사운드 엔지니어",content:"녹음기기 전반을 조작하며 음의 캐릭터, 밸런스를 결정하는 일을 담당했습니다."},
-        {title:"안녕고등학교",date:"2018.02 - 0000.00",subtitle:"작곡 선생님",content:"입시 학원에서 학생들을 지도했습니다."},
-    ])
-
     const [createOpen,setCreateOpen] = useState(true)
-
 
     const onClickMoreBtn = useCallback((setOpen) => {
         setOpen(false)
@@ -170,9 +175,157 @@ const ProfileProject = () => {
         setNavActive({...navActive, ...field})
     },[navActive])
 
+    useEffect(() => {
+        if (!router.isReady) return
+        setId(router.query.id)
+
+    },[router.isReady])
+
+    useEffect(() => {
+        if (user){
+            if (user.email === id){
+                setIsMe(true)
+            }else {
+                setIsMe(false)
+            }
+            dispatch({
+                type:GET_OTHER_PROFILE_REQUEST,
+                data:id
+            })
+        }
+    },[user, id])
+
+    useEffect(() => {
+        dispatch({
+            type:LOG_IN_REQUEST
+        })
+    },[])
+
+    useEffect(() => {
+        if (user !== null){
+            dispatch({
+                type:GET_MY_PROFILE_REQUEST,
+                data:user.email
+            })
+        }
+    },[user])
+
+    useEffect(() => {
+        if (otherProfile){
+            dispatch({
+                type:GET_OTHER_PROFILE_DETAIL_REQUEST,
+                data:id
+            })
+            if (otherProfile.nickname){
+                setUserName(otherProfile.nickname)
+            }
+            if (otherProfile.job){
+                setUserJob(otherProfile.job)
+            }
+            if (otherProfile.location){
+                setUserLocation(otherProfile.location)
+            }
+            if (otherProfile.introduce){
+                setUserIntroduce(otherProfile.introduce)
+            }
+            if (otherProfile.field){
+                const userFieldList = otherProfile.field.split(", ")
+                setUserField(userFieldList)
+            }
+            if (otherProfile.instagram_link){
+                setUserInstagram(otherProfile.instagram_link)
+            }
+            if (otherProfile.youtube_link){
+                setUserYoutube(otherProfile.youtube_link)
+            }
+            if (otherProfile.soundcloud_link){
+                setUserSoundCloud(otherProfile.soundcloud_link)
+            }
+            if (otherProfile.facebook_link){
+                setUserFacebook(otherProfile.facebook_link)
+            }
+            if (otherProfile.twitter_link){
+                setUserTwitter(otherProfile.twitter_link)
+            }
+
+        }else if (user){
+            setUserName(user.email)
+        }
+    },[otherProfile])
+
+    useEffect(() => {
+        if (otherProfileDetail){
+            const UserProfileDetails = otherProfileDetail.ProfileDetails
+            let UserTechList = []
+            let UserEquipmentList = []
+            let UserCareerList = []
+            let UserAwardList = []
+            let UserEducationList = []
+            let UserCreateList = []
+            let UserShowList = []
+            for (let i = 0; i < UserProfileDetails.length; i++) {
+                switch (UserProfileDetails[i].detail_type){
+                    case "technic":{
+                        UserTechList.push(
+                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:""}
+                        )
+                    }break
+
+                    case "equipment":{
+                        UserEquipmentList.push(
+                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:""}
+                        )
+                    }break
+
+                    case "career":{
+                        UserCareerList.push(
+                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:UserProfileDetails[i].contents,date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
+                        )
+                    }break
+
+                    case "award":{
+                        UserAwardList.push(
+                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:UserProfileDetails[i].start_date}
+                        )
+                    }break
+
+                    case "education":{
+                        UserEducationList.push(
+                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
+                        )
+                    }break
+
+                    case "create":{
+                        UserCreateList.push(
+                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:UserProfileDetails[i].contents,date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
+                        )
+                    }break
+
+                    case "show":{
+                        UserShowList.push(
+                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:UserProfileDetails[i].contents,date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
+                        )
+                    }break
+
+                    default:
+                        continue
+                }
+            }
+            console.log(UserTechList)
+            setTechList(UserTechList)
+            setEquipList(UserEquipmentList)
+            setCareerList(UserCareerList)
+            setAwardList(UserAwardList)
+            setEduList(UserEducationList)
+            setCreateList(UserCreateList)
+            setShowList(UserShowList)
+        }
+    },[otherProfileDetail])
+
+
     return(
         <>
-            <Header openAble = {openAble} setOpenAble={setOpenAble}></Header>
+            <Header openAble = {openAble} setOpenAble={setOpenAble} user={user} profile={profile}  isLoggedin={logInDone}></Header>
             <div style={{background:"#FAFAFA", minHeight:"calc(100vh - 92px)"}}>
                 {
                     isMe
@@ -181,17 +334,21 @@ const ProfileProject = () => {
                                 <div className={styles.profile_wrapper}>
                                     <div className={styles.profile_top_wrapper}>
                                         <div className={styles.profile_top_icon_wrapper}>
-                                            <img className={styles.profile_top_icon_img} src="https://file.mk.co.kr/meet/neds/2020/12/image_readtop_2020_1292239_16081264164474583.jpg"/>
+                                            <ProfileThumbnail circle size={112} image={
+                                                otherProfile && otherProfile.profile_img
+                                                    ?otherProfile.profile_img
+                                                    :profile_image_default
+                                            }></ProfileThumbnail>
                                             <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
                                                 <div className={styles.profile_top_icon_change}></div>
                                             </Dropdown>
 
                                         </div>
-                                        <div className={styles.profile_top_name}>권태익</div>
-                                        <div className={styles.profile_top_sub}>position</div>
-                                        <div className={styles.profile_top_sub}>job</div>
-                                        <div className={styles.profile_top_sub}>location</div>
-                                        <Button className={styles.profile_top_button}>
+                                        <div className={styles.profile_top_name}>{userName}</div>
+                                        <div className={styles.profile_top_sub}>{userField.join(", ")}</div>
+                                        <div className={styles.profile_top_sub}>{userJob}</div>
+                                        <div className={styles.profile_top_sub}>{userLocation}</div>
+                                        <Button className={styles.profile_top_button} onClick={() => router.push("/profile/edit")}>
                                             <div className={styles.profile_top_button_icon}></div>
                                             <div className={styles.profile_top_button_text}>프로필 편집</div>
                                         </Button>
@@ -204,11 +361,11 @@ const ProfileProject = () => {
                                             <div className={styles.profile_top_follow_num}>following number</div>
                                         </div>
                                         <div className={styles.side_sns_wrapper}>
-                                            <Link href={"/"}><a><div className={sideStyles.side_sns_1}></div></a></Link>
-                                            <Link href={"/"}><a><div className={sideStyles.side_sns_2}></div></a></Link>
-                                            <Link href={"/"}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
-                                            <Link href={"/"}><a><div className={sideStyles.side_sns_3}></div></a></Link>
-                                            <Link href={"/"}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                            <Link href={userInstagram}><a><div className={sideStyles.side_sns_1}></div></a></Link>
+                                            <Link href={userYoutube}><a><div className={sideStyles.side_sns_2}></div></a></Link>
+                                            <Link href={userSoundCloud}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
+                                            <Link href={userFacebook}><a><div className={sideStyles.side_sns_3}></div></a></Link>
+                                            <Link href={userTwitter}><a><div className={sideStyles.side_sns_4}></div></a></Link>
                                         </div>
                                     </div>
                                 </div>
@@ -222,10 +379,10 @@ const ProfileProject = () => {
                                         <div className={styles.profile_top_icon_wrapper}>
                                             <img className={styles.profile_top_icon_img} src="https://file.mk.co.kr/meet/neds/2020/12/image_readtop_2020_1292239_16081264164474583.jpg"/>
                                         </div>
-                                        <div className={styles.profile_top_name}>권태익</div>
-                                        <div className={styles.profile_top_sub}>position</div>
-                                        <div className={styles.profile_top_sub}>job</div>
-                                        <div className={styles.profile_top_sub}>location</div>
+                                        <div className={styles.profile_top_name}>{userName}</div>
+                                        <div className={styles.profile_top_sub}>{userField.join(", ")}</div>
+                                        <div className={styles.profile_top_sub}>{userJob}</div>
+                                        <div className={styles.profile_top_sub}>{userLocation}</div>
                                         <Button className={styles.profile_top_button_not_me}>
                                             <div className={styles.profile_top_button_icon_not_me}></div>
                                             <div className={styles.profile_top_button_text_not_me}>팔로우</div>
@@ -300,10 +457,10 @@ const ProfileProject = () => {
                                 <div style={{paddingBottom:"80px"}} className={styles.profile_info_wrapper}>
                                     <div className={styles.profile_profile_wrapper}>
                                         <div className={styles.profile_profile_top_wrapper}>
-                                            <div className={styles.profile_profile_top_name}>권태익</div>
-                                            <div className={styles.profile_profile_top_sub}>position</div>
-                                            <div className={styles.profile_profile_top_sub}>job</div>
-                                            <div className={styles.profile_profile_top_sub}>location</div>
+                                            <div className={styles.profile_profile_top_name}>{userName}</div>
+                                            <div className={styles.profile_profile_top_sub}>{userField.join(", ")}</div>
+                                            <div className={styles.profile_profile_top_sub}>{userJob}</div>
+                                            <div className={styles.profile_profile_top_sub}>{userLocation}</div>
                                             <div style={{marginTop:"24px"}}>
                                                 <div className={styles.profile_profile_top_follow}>팔로워</div>
                                                 <div className={styles.profile_profile_top_follow_num}>number</div>
@@ -324,61 +481,8 @@ const ProfileProject = () => {
 
                                     <div className={styles.info_card}>
                                         <div className={styles.info_card_title}>소개</div>
-                                        <div className={styles.info_card_content}>가장 낮은 곳에 닿기 전, 2층과3층사이입니다가장 낮은 곳에 닿기 전, 2층과3층사이입니다가장 낮은 곳에 닿기 전, 2층과3층사이입니다가장 낮은 곳에 닿기 전, 2층과3층사이입니다가장 낮은 곳에 닿기 전, 2층과3층사이입니다</div>
+                                        <div className={styles.info_card_content}>{otherProfile.introduce}</div>
                                     </div>
-                                    {/*equip*/}
-                                    {
-                                        equipList.length < 1
-                                            ?(
-                                                <></>
-                                            )
-                                            :(
-                                                equipList.length < 3
-                                                    ?(
-                                                        <div className={styles.info_card}>
-                                                            <div className={styles.info_card_title}>장비</div>
-                                                            <div style={{marginTop:"20px"}}></div>
-                                                            <InfoCard props={equipList[0]}></InfoCard>
-                                                            <InfoCard props={equipList[1]}></InfoCard>
-                                                        </div>
-                                                    )
-                                                    :(
-                                                        <div className={styles.info_card}>
-                                                            <div className={styles.info_card_title}>장비</div>
-                                                            <div style={{marginTop:"20px"}}></div>
-                                                            {
-                                                                equipOpen
-                                                                    ?(
-                                                                       <>
-                                                                           <InfoCard props={equipList[0]}></InfoCard>
-                                                                           <InfoCard props={equipList[1]}></InfoCard>
-                                                                           <div className={styles.more_btn} onClick={() => onClickMoreBtn(setEquipOpen)}>
-                                                                               <div>더보기</div>
-                                                                               <div className={styles.more_btn_icon}></div>
-                                                                           </div>
-                                                                       </>
-                                                                    )
-                                                                    :(
-                                                                        <>
-                                                                            {equipList.map((props, index) => (
-                                                                                <>
-                                                                                    <InfoCard props={props}></InfoCard>
-                                                                                </>
-                                                                            ))}
-                                                                            <div className={styles.un_more_btn} onClick={() => onClickUnMoreBtn(setEquipOpen)}>
-                                                                                <div>접기</div>
-                                                                                <div className={styles.un_more_btn_icon}></div>
-                                                                            </div>
-                                                                        </>
-                                                                    )
-                                                            }
-
-
-                                                        </div>
-                                                    )
-                                            )
-                                    }
-
                                     {/*tech*/}
                                     {
                                         techList.length < 1
@@ -419,6 +523,59 @@ const ProfileProject = () => {
                                                                                 </>
                                                                             ))}
                                                                             <div className={styles.un_more_btn} onClick={() => onClickUnMoreBtn(setTechOpen)}>
+                                                                                <div>접기</div>
+                                                                                <div className={styles.un_more_btn_icon}></div>
+                                                                            </div>
+                                                                        </>
+                                                                    )
+                                                            }
+
+
+                                                        </div>
+                                                    )
+                                            )
+                                    }
+
+                                    {/*equip*/}
+                                    {
+                                        equipList.length < 1
+                                            ?(
+                                                <></>
+                                            )
+                                            :(
+                                                equipList.length < 3
+                                                    ?(
+                                                        <div className={styles.info_card}>
+                                                            <div className={styles.info_card_title}>장비</div>
+                                                            <div style={{marginTop:"20px"}}></div>
+                                                            <InfoCard props={equipList[0]}></InfoCard>
+                                                            <InfoCard props={equipList[1]}></InfoCard>
+                                                        </div>
+                                                    )
+                                                    :(
+                                                        <div className={styles.info_card}>
+                                                            <div className={styles.info_card_title}>장비</div>
+                                                            <div style={{marginTop:"20px"}}></div>
+                                                            {
+                                                                equipOpen
+                                                                    ?(
+                                                                        <>
+                                                                            <InfoCard props={equipList[0]}></InfoCard>
+                                                                            <InfoCard props={equipList[1]}></InfoCard>
+                                                                            <div className={styles.more_btn} onClick={() => onClickMoreBtn(setEquipOpen)}>
+                                                                                <div>더보기</div>
+                                                                                <div className={styles.more_btn_icon}></div>
+                                                                            </div>
+                                                                        </>
+                                                                    )
+                                                                    :(
+                                                                        <>
+                                                                            {equipList.map((props, index) => (
+                                                                                <>
+                                                                                    <InfoCard props={props}></InfoCard>
+                                                                                </>
+                                                                            ))}
+                                                                            <div className={styles.un_more_btn} onClick={() => onClickUnMoreBtn(setEquipOpen)}>
                                                                                 <div>접기</div>
                                                                                 <div className={styles.un_more_btn_icon}></div>
                                                                             </div>
@@ -664,16 +821,32 @@ const ProfileProject = () => {
                             <div className={sideStyles.side_right_wrapper}></div>
 
                             {
-                                isLoggedin
+                                logInDone
                                     ?(
                                         <>
                                             <div style={{height:"100vh"}}  className={sideStyles.side_wrapper}>
 
                                                 <div className={sideStyles.side_login_top}>
-                                                    <img src={"https://file.mk.co.kr/meet/neds/2020/12/image_readtop_2020_1292239_16081264164474583.jpg"} className={sideStyles.side_login_top_img}></img>
+                                                    <div className={sideStyles.side_login_top_img}>
+                                                        <Link href={
+                                                            user && user.email
+                                                                ?`/profile/${user.email}`
+                                                                :`/profile/1`
+                                                        }><a>
+                                                            <ProfileThumbnail circle size={40} image={
+                                                                profile && profile.profile_img
+                                                                    ?profile.profile_img
+                                                                    :profile_image_default
+                                                            }></ProfileThumbnail>
+                                                        </a></Link>
+                                                    </div>
                                                     <div className={sideStyles.side_login_top_info}>
-                                                        <div className={sideStyles.side_login_top_nickname}>사용자 이름</div>
-                                                        <div className={sideStyles.side_login_top_id}>userid@naver.com</div>
+                                                        {
+                                                            profile && profile.nickname
+                                                                ? <div className={sideStyles.side_login_top_nickname}>{profile.nickname}</div>
+                                                                : <div className={sideStyles.side_login_top_nickname}>{user.email}</div>
+                                                        }
+                                                        <div className={sideStyles.side_login_top_id}>{user.email}</div>
                                                     </div>
                                                     <button className={sideStyles.side_login_top_close} onClick={onClickClose}></button>
                                                 </div>
@@ -694,7 +867,7 @@ const ProfileProject = () => {
                                                     <div className={sideStyles.side_nav_4}></div>
                                                     <div className={sideStyles.side_nav_content}>작업물 관리</div>
                                                 </a></Link>
-                                                <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                <Link href={"/profile/edit"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
                                                     <div className={sideStyles.side_nav_5}></div>
                                                     <div className={sideStyles.side_nav_content}>프로필 편집</div>
                                                 </a></Link>
@@ -731,15 +904,15 @@ const ProfileProject = () => {
                                     :(
                                         <>
                                             <div style={{height:"100vh"}}  className={sideStyles.side_wrapper}>
-                                                <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble} side={true}/>
+                                                <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble} side={true}  user={user} profile={profile}/>
                                                 <div className={sideStyles.side_title} style={{minWidth:"320px"}}>
                                                     회원가입하고 다양한 메이커들과
                                                     <br/>
                                                     프로젝트를 시작하세요!
                                                 </div>
                                                 <div style={{display:"block",paddingLeft:"20px", height:"56px", marginTop:"16px", borderBottom:"1px solid #E8E8E8", minWidth:"320px"}}>
-                                                    <div style={{display:"inline-block"}}><Button className={sideStyles.side_login}>로그인</Button></div>
-                                                    <div style={{display:"inline-block", marginLeft:"12px"}}><Button className={sideStyles.side_signup}>회원가입</Button></div>
+                                                    <div style={{display:"inline-block"}}><Link href="/signin/login"><a><Button className={sideStyles.side_login}>로그인</Button></a></Link></div>
+                                                    <div style={{display:"inline-block", marginLeft:"12px"}}><Link href="/signin/signup"><a><Button className={sideStyles.side_signup}>회원가입</Button></a></Link></div>
                                                 </div>
 
                                                 <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>

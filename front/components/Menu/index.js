@@ -17,6 +17,7 @@ import image_menu from "/images/icons/menu.svg"
 import image_close from "/images/icons/close.svg"
 import {useRouter} from "next/router";
 import icon_styles from "../IconButton/styles.module.scss"
+import {isLoggendIn} from "../../../back/routes/middlewares";
 
 ConfigProvider.config({
     prefixCls: 'ant',
@@ -35,7 +36,6 @@ function MenuItem(props) {
 export default function Menu(param) {
     const [side, setSide] = useState(false)
     const router = useRouter()
-
     const onClickMenu = useCallback(() => {
         if (param.openAble){
             param.setOpenAble(false)
@@ -57,7 +57,11 @@ export default function Menu(param) {
             <div className={styles.dropdown}>
                 <div className={styles.dropdown_top}>
                     <div style={{cursor: "pointer", display: "inline-block", paddingTop: "20px" , paddingLeft: "20px"}}>
-                        <Link href={"/profile/edit"}><a>
+                        <Link href={
+                            param.user && param.user.email
+                                ?`/profile/${param.user.email}`
+                                :`/profile/1`
+                        }><a>
                             <ProfileThumbnail circle size={64} image={
                                 param.profile && param.profile.profile_img
                                     ? param.profile.profile_img
@@ -82,7 +86,7 @@ export default function Menu(param) {
                 </div>
                 <div className={styles.dropdown_bottom}>
                     <Link href={"/"}><a className={styles.dropdown_item_bottom}>작업물 관리</a></Link>
-                    <Link href={"/"}><a className={styles.dropdown_item_bottom}>프로필 편집</a></Link>
+                    <Link href={"/profile/edit"}><a className={styles.dropdown_item_bottom}>프로필 편집</a></Link>
                     <Link href={"/"}><a className={styles.dropdown_item_bottom}>문의하기</a></Link>
                     <Link href={"/"}><a className={styles.dropdown_item_bottom}>로그아웃</a></Link>
                 </div>
@@ -150,36 +154,41 @@ export default function Menu(param) {
                                         :(
                                             <>
                                                 <div className={styles.right}>
-                                                    param.param ? (
-                                                    <>
-                                                        <Button upload className={styles.create} onClick={()=>router.push("/project/upload").then((() =>window.scrollTo(0,0) ))}>프로젝트 업로드</Button>
-                                                        {/*
-                            <IconButton src={image_message} onClick={() => alert("준비중인 기능입니다.")}/>
-                            <IconButton src={image_bell} onClick={() => alert("준비중인 기능입니다.")}/>
- */}
+                                                    {
+                                                        param.isLoggedin
+                                                            ? (
+                                                                <>
+                                                                    <Button upload className={styles.create} onClick={()=>router.push("/project/upload").then((() =>window.scrollTo(0,0) ))}>프로젝트 업로드</Button>
+                                                                    {/*
+                                        <IconButton src={image_message} onClick={() => alert("준비중인 기능입니다.")}/>
+                                        <IconButton src={image_bell} onClick={() => alert("준비중인 기능입니다.")}/>
+             */}
 
-                                                        <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
-                                                            <AntBtn className={styles.dropdown_button}>
-                                                                <Link href={"/profile/edit"}><a>
-                                                                    <div style={{cursor: "pointer", display: "flex"}}>
-                                                                        <ProfileThumbnail circle size={40} image={
-                                                                            param.profile && param.profile.profile_img
-                                                                                ? param.profile.profile_img
-                                                                                : profile_image_default
-                                                                        }/>
-                                                                    </div>
-                                                                </a></Link>
-                                                            </AntBtn>
-                                                        </Dropdown>
-
-
-                                                    </>
-                                                    ) : (
-                                                    <>
-                                                        <Button login className={styles.login} onClick={()=>router.replace("/signin/login")}>로그인</Button>
-                                                        <Button signup className={styles.signup} onClick={()=>router.replace("/signin/signup")}>회원가입</Button>
-                                                    </>
-                                                    )
+                                                                    <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
+                                                                        <AntBtn className={styles.dropdown_button}>
+                                                                            <Link href={
+                                                                                param.user && param.user.email
+                                                                                    ?`/profile/${param.user.email}`
+                                                                                    :`/profile/1`
+                                                                            }><a>
+                                                                                <div style={{cursor: "pointer", display: "flex"}}>
+                                                                                    <ProfileThumbnail circle size={40} image={
+                                                                                        param.profile && param.profile.profile_img
+                                                                                            ? param.profile.profile_img
+                                                                                            : profile_image_default
+                                                                                    }/>
+                                                                                </div>
+                                                                            </a></Link>
+                                                                        </AntBtn>
+                                                                    </Dropdown>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <Button login className={styles.login} onClick={()=>router.replace("/signin/login")}>로그인</Button>
+                                                                    <Button signup className={styles.signup} onClick={()=>router.replace("/signin/signup")}>회원가입</Button>
+                                                                </>
+                                                            )
+                                                    }
                                                 </div>
                                                 <div className={styles.right_mobile}>
                                                     <IconButton src={image_search}/>
@@ -245,30 +254,33 @@ export default function Menu(param) {
                                         <>
                                             <div className={styles.right}>
                                                 {
-                                                    param.param ? (
-                                                        <>
-                                                            <Button upload className={styles.create} onClick={()=>router.push("/project/upload").then((() =>window.scrollTo(0,0) ))}>프로젝트 업로드</Button>
-                                                            <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
-                                                                <AntBtn className={styles.dropdown_button}>
-                                                                    <Link href={"/profile/edit"}><a>
-                                                                        <div style={{cursor: "pointer", display: "flex"}}>
-                                                                            <ProfileThumbnail circle size={40} image={
-                                                                                param.profile && param.profile.profile_img
-                                                                                    ? param.profile.profile_img
-                                                                                    : profile_image_default
-                                                                            }/>
-                                                                        </div>
-                                                                    </a></Link>
-                                                                </AntBtn>
-                                                            </Dropdown>
-
-
-                                                        </>
+                                                    param.isLoggedin
+                                                        ? (
+                                                            <>
+                                                                <Button upload className={styles.create} onClick={()=>router.push("/project/upload").then((() =>window.scrollTo(0,0) ))}>프로젝트 업로드</Button>
+                                                                <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
+                                                                    <AntBtn className={styles.dropdown_button}>
+                                                                        <Link href={
+                                                                            param.user && param.user.email
+                                                                                ?`/profile/${param.user.email}`
+                                                                                :`/profile/1`
+                                                                        }><a>
+                                                                            <div style={{cursor: "pointer", display: "flex"}}>
+                                                                                <ProfileThumbnail circle size={40} image={
+                                                                                    param.profile && param.profile.profile_img
+                                                                                        ? param.profile.profile_img
+                                                                                        : profile_image_default
+                                                                                }/>
+                                                                            </div>
+                                                                        </a></Link>
+                                                                    </AntBtn>
+                                                                </Dropdown>
+                                                            </>
                                                     ) : (
-                                                        <>
-                                                            <Button login className={styles.login} onClick={()=>router.replace("/signin/login")}>로그인</Button>
-                                                            <Button signup className={styles.signup} onClick={()=>router.replace("/signin/signup")}>회원가입</Button>
-                                                        </>
+                                                            <>
+                                                                <Button login className={styles.login} onClick={()=>router.replace("/signin/login")}>로그인</Button>
+                                                                <Button signup className={styles.signup} onClick={()=>router.replace("/signin/signup")}>회원가입</Button>
+                                                            </>
                                                     )
                                                 }
                                             </div>
