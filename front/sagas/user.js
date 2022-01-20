@@ -11,14 +11,25 @@ import {
   GET_MY_PROFILE_SUCCESS,
   GET_OTHER_PROFILE_DETAIL_FAILURE,
   GET_OTHER_PROFILE_DETAIL_REQUEST,
-  GET_OTHER_PROFILE_DETAIL_SUCCESS, GET_OTHER_PROFILE_FAILURE,
-  GET_OTHER_PROFILE_REQUEST, GET_OTHER_PROFILE_SUCCESS,
+  GET_OTHER_PROFILE_DETAIL_SUCCESS,
+  GET_OTHER_PROFILE_FAILURE,
+  GET_OTHER_PROFILE_REQUEST,
+  GET_OTHER_PROFILE_SUCCESS,
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
   UPDATE_MY_PROFILE_FAILURE,
   UPDATE_MY_PROFILE_REQUEST,
-  UPDATE_MY_PROFILE_SUCCESS
+  UPDATE_MY_PROFILE_SUCCESS,
+  UPDATE_PROFILE_IMAGE_DEFAULT_FAILURE,
+  UPDATE_PROFILE_IMAGE_DEFAULT_REQUEST,
+  UPDATE_PROFILE_IMAGE_DEFAULT_SUCCESS,
+  UPDATE_PROFILE_IMAGE_FAILURE,
+  UPDATE_PROFILE_IMAGE_REQUEST,
+  UPDATE_PROFILE_IMAGE_SUCCESS,
+  UPLOAD_PROFILE_IMAGE_FAILURE,
+  UPLOAD_PROFILE_IMAGE_REQUEST,
+  UPLOAD_PROFILE_IMAGE_SUCCESS
 } from "../reducers/user";
 
 
@@ -143,6 +154,68 @@ function* updateMyProfile(action){
   }
 }
 
+function updateProfileImageDefaultAPI(data){
+  return axios.post('user/update/profile/default',data)
+}
+
+function* updateProfileImageDefault(action){
+  try{
+    const result = yield call(updateProfileImageDefaultAPI,action.data);
+    yield put({
+      type:UPDATE_PROFILE_IMAGE_DEFAULT_SUCCESS,
+      data: result.data
+    })
+  }catch (err){
+    yield put({
+      type:UPDATE_PROFILE_IMAGE_DEFAULT_FAILURE,
+      data:err.response.data
+    })
+    console.error(err)
+  }
+}
+
+function uploadProfileImageAPI(data){
+  return axios.post('user/upload/profile/image',data)
+}
+
+function* uploadProfileImage(action){
+  try{
+    const result = yield call(uploadProfileImageAPI,action.data);
+    yield put({
+      type:UPLOAD_PROFILE_IMAGE_SUCCESS,
+      data: result.data
+    })
+  }catch (err){
+    yield put({
+      type:UPLOAD_PROFILE_IMAGE_FAILURE,
+      data:err.response.data
+    })
+    console.error(err)
+  }
+}
+
+function updateProfileImageAPI(data){
+  return axios.post('user/update/profile/image',data)
+}
+
+function* updateProfileImage(action){
+  try{
+    const result = yield call(updateProfileImageAPI,action.data);
+    yield put({
+      type:UPDATE_PROFILE_IMAGE_SUCCESS,
+      data: result.data
+    })
+  }catch (err){
+    yield put({
+      type:UPDATE_PROFILE_IMAGE_FAILURE,
+      data:err.response.data
+    })
+    console.error(err)
+  }
+}
+
+
+
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -167,6 +240,19 @@ function* watchUpdateMyProfile() {
   yield takeLatest(UPDATE_MY_PROFILE_REQUEST, updateMyProfile);
 }
 
+function* watchUpdateProfileImageDefault() {
+  yield takeLatest(UPDATE_PROFILE_IMAGE_DEFAULT_REQUEST, updateProfileImageDefault);
+}
+
+function* watchUploadProfileImage() {
+  yield takeLatest(UPLOAD_PROFILE_IMAGE_REQUEST, uploadProfileImage);
+}
+
+function* watchUpdateProfileImage() {
+  yield takeLatest(UPDATE_PROFILE_IMAGE_REQUEST, updateProfileImage);
+}
+
+
 export default function* userSaga() {
   yield all([
     fork(watchLogIn),
@@ -175,5 +261,8 @@ export default function* userSaga() {
     fork(watchGetOtherProfile),
     fork(watchGetOtherProfileDetail),
     fork(watchUpdateMyProfile),
+    fork(watchUpdateProfileImageDefault),
+    fork(watchUploadProfileImage),
+    fork(watchUpdateProfileImage),
   ])
 }

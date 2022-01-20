@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import useScript from "../../hooks/use-script"
 import styles from "../../styles/ProjectDetail.module.scss";
 
-
 const KakaoShareButton = (props) => {
     console.log(props)
     useScript('https://developers.kakao.com/sdk/js/kakao.js')
@@ -15,8 +14,6 @@ const KakaoShareButton = (props) => {
         // kakao sdk script이 정상적으로 불러와졌으면 window.Kakao로 접근이 가능합니다
         if (window.Kakao) {
             const kakao = window.Kakao
-            const key = process.env.NEXT_PUBLIC_KAKAO_KEY
-            console.log(key)
             // 중복 initialization 방지
             if (!kakao.isInitialized()) {
                 // 두번째 step 에서 가져온 javascript key 를 이용하여 initialize

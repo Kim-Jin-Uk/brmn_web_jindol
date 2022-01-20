@@ -29,12 +29,26 @@ export const initialState = {
     updateMyProfileDone:false,
     updateMyProfileError:null,
 
+    updateProfileImageDefaultLoading: false,
+    updateProfileImageDefaultDone:false,
+    updateProfileImageDefaultError:null,
+
+    uploadProfileImageLoading: false,
+    uploadProfileImageDone:false,
+    uploadProfileImageError:null,
+
+    updateProfileImageLoading: false,
+    updateProfileImageDone:false,
+    updateProfileImageError:null,
+
     user:null,
     profile:null,
     profileDetail:null,
 
     otherProfile:null,
     otherProfileDetail:null,
+
+    imagePath:null,
 };
 
 export const UPLOAD_MY_PROFILE_DONE = "UPLOAD_MY_PROFILE_DONE"
@@ -67,6 +81,18 @@ export const GET_OTHER_PROFILE_DETAIL_FAILURE = "GET_OTHER_PROFILE_DETAIL_FAILUR
 export const UPDATE_MY_PROFILE_REQUEST = "UPDATE_MY_PROFILE_REQUEST"
 export const UPDATE_MY_PROFILE_SUCCESS = "UPDATE_MY_PROFILE_SUCCESS"
 export const UPDATE_MY_PROFILE_FAILURE = "UPDATE_MY_PROFILE_FAILURE"
+
+export const UPDATE_PROFILE_IMAGE_DEFAULT_REQUEST = "UPDATE_PROFILE_IMAGE_DEFAULT_REQUEST"
+export const UPDATE_PROFILE_IMAGE_DEFAULT_SUCCESS = "UPDATE_PROFILE_IMAGE_DEFAULT_SUCCESS"
+export const UPDATE_PROFILE_IMAGE_DEFAULT_FAILURE = "UPDATE_PROFILE_IMAGE_DEFAULT_FAILURE"
+
+export const UPLOAD_PROFILE_IMAGE_REQUEST = "UPLOAD_PROFILE_IMAGE_REQUEST"
+export const UPLOAD_PROFILE_IMAGE_SUCCESS = "UPLOAD_PROFILE_IMAGE_SUCCESS"
+export const UPLOAD_PROFILE_IMAGE_FAILURE = "UPLOAD_PROFILE_IMAGE_FAILURE"
+
+export const UPDATE_PROFILE_IMAGE_REQUEST = "UPDATE_PROFILE_IMAGE_REQUEST"
+export const UPDATE_PROFILE_IMAGE_SUCCESS = "UPDATE_PROFILE_IMAGE_SUCCESS"
+export const UPDATE_PROFILE_IMAGE_FAILURE = "UPDATE_PROFILE_IMAGE_FAILURE"
 
 export default (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
@@ -179,6 +205,51 @@ export default (state = initialState, action) => produce(state, (draft) => {
         case UPDATE_MY_PROFILE_FAILURE:
             draft.updateMyProfileLoading = false;
             draft.updateMyProfileError = action.error;
+            break;
+
+        case UPDATE_PROFILE_IMAGE_DEFAULT_REQUEST:
+            draft.updateProfileImageDefaultLoading = true;
+            draft.updateProfileImageDefaultError = null;
+            draft.updateProfileImageDefaultDone = false;
+            break;
+        case UPDATE_PROFILE_IMAGE_DEFAULT_SUCCESS:
+            draft.updateProfileImageDefaultLoading = false;
+            draft.updateProfileImageDefaultDone = true;
+            draft.otherProfile = action.data;
+            break;
+        case UPDATE_PROFILE_IMAGE_DEFAULT_FAILURE:
+            draft.updateProfileImageDefaultLoading = false;
+            draft.updateProfileImageDefaultError = action.error;
+            break;
+
+        case UPLOAD_PROFILE_IMAGE_REQUEST:
+            draft.uploadProfileImageLoading = true;
+            draft.uploadProfileImageError = null;
+            draft.uploadProfileImageDone = false;
+            break;
+        case UPLOAD_PROFILE_IMAGE_SUCCESS:
+            draft.uploadProfileImageLoading = false;
+            draft.uploadProfileImageDone = true;
+            draft.imagePath = action.data;
+            break;
+        case UPLOAD_PROFILE_IMAGE_FAILURE:
+            draft.uploadProfileImageLoading = false;
+            draft.uploadProfileImageError = action.error;
+            break;
+
+        case UPDATE_PROFILE_IMAGE_REQUEST:
+            draft.updateProfileImageLoading = true;
+            draft.updateProfileImageError = null;
+            draft.updateProfileImageDone = false;
+            break;
+        case UPDATE_PROFILE_IMAGE_SUCCESS:
+            draft.updateProfileImageLoading = false;
+            draft.updateProfileImageDone = true;
+            draft.otherProfile = action.data;
+            break;
+        case UPDATE_PROFILE_IMAGE_FAILURE:
+            draft.updateProfileImageLoading = false;
+            draft.updateProfileImageError = action.error;
             break;
 
         default:

@@ -8,6 +8,7 @@ const passportConfig = require('./passport')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv')
+const path = require("path");
 dotenv.config()
 
 const app = express()
@@ -24,6 +25,7 @@ app.use(cors({
     origin:true,
     credentials: true,
 }))
+app.use('/',express.static(path.join(__dirname,'profileImages')))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser(process.env.COOKIE_SECRET))

@@ -1,9 +1,33 @@
 const express = require('express')
 const {User,Profile,ProfileDetail} = require('../models')
-const {isNotLoggendIn} = require("./middlewares");
+const {isNotLoggendIn, isLoggendIn} = require("./middlewares");
 const passport = require("passport");
+const multer = require('multer')
+const path = require("path");
+const fs = require("fs");
 
 const router = express.Router()
+
+try{
+    fs.accessSync('profileImages')
+}catch (e) {
+    console.log('make profileImages directory')
+    fs.mkdirSync('profileImages')
+}
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination(req,file,done){
+            done(null,'profileImages')
+        },
+        filename(req,file,done){
+            const ext = path.extname(file.originalname) // 확장자 추출
+            const basename = path.basename(file.originalname, ext)// 파일명
+            done(null,basename + '_' + new Date().getTime() + ext)
+        }
+    }),
+    limits:{fileSize:20*1024*1024},
+})
 
 router.post('/', (req,res,next) => {
     res.status(200).send('ok')
@@ -55,7 +79,6 @@ router.post('/profile/detail',async (req,res,next) => {
                 }
             ]
         })
-        console.log(userProfile)
         res.status(200).json(userProfile)
     }catch (err){
         console.error(err)
@@ -64,7 +87,7 @@ router.post('/profile/detail',async (req,res,next) => {
 
 })
 
-router.post('/update/myprofile',async (req,res,next) => {
+router.post('/update/myprofile',isLoggendIn,async (req,res,next) => {
     try{
         const userData = await User.findOne({
             where:{email:req.body.email}
@@ -257,6 +280,60 @@ router.post('/update/myprofile',async (req,res,next) => {
         next(err)
     }
 
+})
+
+router.post('/update/profile/default',isLoggendIn,async (req,res,next) => {
+    try{
+        const userData = await User.findOne({
+            where:{
+                email:req.body.id
+            }
+        })
+
+        await Profile.update({
+            profile_img:null
+        },{
+            where:{UserId:userData.dataValues.id}
+        })
+
+        const userProfile = await Profile.findOne({
+            where:{
+                UserId:userData.dataValues.id
+            }
+        })
+        res.status(200).json(userProfile)
+    }catch (err){
+        console.error(err)
+        next(err)
+    }
+
+})
+
+router.post('/upload/profile/image',isLoggendIn, upload.single('profileImage'), (req,res,next)=>{
+    res.send({
+        fileName: req.file.filename
+    });
+})
+
+router.post('/update/profile/image',isLoggendIn, upload.none(), async (req,res,next)=>{
+    try{
+        console.log(req.body)
+        await Profile.update({
+            profile_img:"http://localhost:3065/"+req.body.fileName
+        },{
+            where:{UserId:req.user.dataValues.id}
+        })
+
+        const userProfile = await Profile.findOne({
+            where:{
+                UserId:req.user.dataValues.id
+            }
+        })
+        res.status(200).json(userProfile)
+    }catch (err){
+        console.error(err)
+        next(err)
+    }
 })
 
 module.exports = router

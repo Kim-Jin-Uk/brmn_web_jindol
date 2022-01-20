@@ -1,6 +1,6 @@
 const passport = require('passport');
 const KakaoStrategy = require('passport-kakao').Strategy;
-const {User} = require('../models');
+const {User,Profile} = require('../models');
 
 module.exports = () => {
     passport.use(new KakaoStrategy({
@@ -20,6 +20,10 @@ module.exports = () => {
                     gender: profile._json && profile._json.kakao_account.gender,
                     provider: 'kakao',
                 });
+                await Profile.create({
+                    UserId:newUser.id
+                })
+                console.log(newUser)
                 done(null, newUser);
             }
         } catch(error) {

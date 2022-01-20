@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import { useRouter } from 'next/router';
 import Header from "../../components/Header";
 import Link from "next/link";
@@ -7,15 +7,13 @@ import sideStyles from "../../styles/Project.module.scss";
 import styles from "../../styles/Profile.module.scss"
 import cardStyle from '../../styles/Project.module.scss'
 import Footer from "../../components/Footer";
-import {Card, Dropdown, Menu as antMenu} from "antd";
+import {Card, Dropdown, Menu as AntMenu} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    GET_MY_PROFILE_DETAIL_REQUEST,
     GET_MY_PROFILE_REQUEST, GET_OTHER_PROFILE_DETAIL_REQUEST,
     GET_OTHER_PROFILE_REQUEST,
-    LOG_IN_REQUEST
+    LOG_IN_REQUEST, UPDATE_PROFILE_IMAGE_DEFAULT_REQUEST, UPDATE_PROFILE_IMAGE_REQUEST, UPLOAD_PROFILE_IMAGE_REQUEST
 } from "../../reducers/user";
-import {GetServerSideProps} from "next";
 import useInput from "../../hooks/useInput";
 import ProfileThumbnail from "../../components/ProfileThumbnail";
 import profile_image_default from "/images/default/profimg_default.svg"
@@ -86,43 +84,63 @@ const ProfileProject = () => {
     const router = useRouter()
     const [id,setId] = useState(router.query.id)
     const dispatch = useDispatch()
-    const {user,profile, logInDone, otherProfile, otherProfileDetail} = useSelector((state) => state.user);
+    const {user,profile, logInDone, otherProfile, otherProfileDetail,imagePath} = useSelector((state) => state.user);
     const [openAble,setOpenAble] = useState(true)
     const [isMe,setIsMe] = useState(true)
     const [userName, onChangeUserName, setUserName] = useInput("")
-    const [userJob, onChangeUserJob, setUserJob] = useInput("")
-    const [userLocation, setUserLocation] = useState("")
+    const [userJob, onChangeUserJob, setUserJob] = useInput("직업")
+    const [userLocation, setUserLocation] = useState("지역")
     const [userIntroduce, onChangeUserIntroduce, setUserIntroduce] = useInput("")
-    const [userField, setUserField] = useState([])
-    const [userInstagram, onChangeUserInstagram, setUserInstagram] = useInput("")
-    const [userYoutube, onChangeUserYoutube, setUserYoutube] = useInput("")
-    const [userSoundCloud, onChangeUserSoundCloud, setUserSoundCloud] = useInput("")
-    const [userFacebook, onChangeUserFacebook, setUserFacebook] = useInput("")
-    const [userTwitter, onChangeUserTwitter, setUserTwitter] = useInput("")
+    const [userField, setUserField] = useState(["분야"])
+    const [userInstagram, onChangeUserInstagram, setUserInstagram] = useInput(null)
+    const [userYoutube, onChangeUserYoutube, setUserYoutube] = useInput(null)
+    const [userSoundCloud, onChangeUserSoundCloud, setUserSoundCloud] = useInput(null)
+    const [userFacebook, onChangeUserFacebook, setUserFacebook] = useInput(null)
+    const [userTwitter, onChangeUserTwitter, setUserTwitter] = useInput(null)
     const [techList, setTechList] = useState([])
     const [equipList, setEquipList] = useState([])
     const [careerList, setCareerList] = useState([])
     const [awardList, setAwardList] = useState([])
     const [eduList, setEduList] = useState([])
     const [createList, setCreateList] = useState([])
-    const [showList, setShowList] = useState([])
+    const [followerNum,setFollowerNum] = useState(0)
+    const [followingNum,setFollowingNum] = useState(0)
+    const imageInput = useRef();
 
     const [navActive,setNavActive] = useState({
         "n1": true,
         "n2": false,
     })
 
-    const onClickChangeDefaultImage = () => {
-        
-    }
+    const onCLickChangeProfileImage = useCallback(() => {
+        imageInput.current.click()
+    },[imageInput.current])
+
+    const onChangeImages = useCallback((e) => {
+        const imageFormData = new FormData();
+        imageFormData.append('profileImage', e.target.files[0]);
+        console.log(e.target.files[0])
+        dispatch({
+            type: UPLOAD_PROFILE_IMAGE_REQUEST,
+            data: imageFormData
+        });
+    },[])
+
+    const onClickChangeDefaultImage = useCallback(() => {
+        dispatch({
+            type:UPDATE_PROFILE_IMAGE_DEFAULT_REQUEST,
+            data:{id:user.email}
+        })
+    },[])
 
     const ProfileMenu = (
-        <antMenu>
+        <AntMenu>
             <div style={{background:"#FFFFFF", boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.2)", borderRadius:"4px"}}>
-                <div className={styles.hover_btn}>프로필 사진 변경</div>
-                <div className={styles.hover_btn}>기본 이미지로 변경</div>
+                <div className={styles.hover_btn} onClick={() => onCLickChangeProfileImage()}>프로필 사진 변경</div>
+                <input type="file" name="profileImage" hidden ref={imageInput} onChange={onChangeImages} />
+                <div className={styles.hover_btn} onClick={() => onClickChangeDefaultImage()}>기본 이미지로 변경</div>
             </div>
-        </antMenu>
+        </AntMenu>
     )
 
     const card = {
@@ -188,6 +206,11 @@ const ProfileProject = () => {
             }else {
                 setIsMe(false)
             }
+        }else {
+            setIsMe(false)
+        }
+        if (id){
+            console.log(id)
             dispatch({
                 type:GET_OTHER_PROFILE_REQUEST,
                 data:id
@@ -212,6 +235,7 @@ const ProfileProject = () => {
 
     useEffect(() => {
         if (otherProfile){
+            setUserName(user.email)
             dispatch({
                 type:GET_OTHER_PROFILE_DETAIL_REQUEST,
                 data:id
@@ -248,8 +272,6 @@ const ProfileProject = () => {
                 setUserTwitter(otherProfile.twitter_link)
             }
 
-        }else if (user){
-            setUserName(user.email)
         }
     },[otherProfile])
 
@@ -301,12 +323,6 @@ const ProfileProject = () => {
                         )
                     }break
 
-                    case "show":{
-                        UserShowList.push(
-                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:UserProfileDetails[i].contents,date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
-                        )
-                    }break
-
                     default:
                         continue
                 }
@@ -321,6 +337,15 @@ const ProfileProject = () => {
             setShowList(UserShowList)
         }
     },[otherProfileDetail])
+
+    useEffect(() => {
+        if (imagePath){
+            dispatch({
+                type: UPDATE_PROFILE_IMAGE_REQUEST,
+                data: imagePath,
+            });
+        }
+    },[imagePath])
 
 
     return(
@@ -354,18 +379,38 @@ const ProfileProject = () => {
                                         </Button>
                                         <div>
                                             <div className={styles.profile_top_follow}>팔로워</div>
-                                            <div className={styles.profile_top_follow_num}>follower number</div>
+                                            <div className={styles.profile_top_follow_num}>{followerNum}</div>
                                         </div>
                                         <div>
                                             <div className={styles.profile_top_follow}>팔로잉</div>
-                                            <div className={styles.profile_top_follow_num}>following number</div>
+                                            <div className={styles.profile_top_follow_num}>{followingNum}</div>
                                         </div>
                                         <div className={styles.side_sns_wrapper}>
-                                            <Link href={userInstagram}><a><div className={sideStyles.side_sns_1}></div></a></Link>
-                                            <Link href={userYoutube}><a><div className={sideStyles.side_sns_2}></div></a></Link>
-                                            <Link href={userSoundCloud}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
-                                            <Link href={userFacebook}><a><div className={sideStyles.side_sns_3}></div></a></Link>
-                                            <Link href={userTwitter}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                            {
+                                                userInstagram
+                                                    ?<Link href={userInstagram}><a><div className={sideStyles.side_sns_1}></div></a></Link>
+                                                    :<></>
+                                            }
+                                            {
+                                                userYoutube
+                                                    ?<Link href={userYoutube}><a><div className={sideStyles.side_sns_2}></div></a></Link>
+                                                    :<></>
+                                            }
+                                            {
+                                                userSoundCloud
+                                                    ?<Link href={userSoundCloud}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
+                                                    :<></>
+                                            }
+                                            {
+                                                userFacebook
+                                                    ?<Link href={userFacebook}><a><div className={sideStyles.side_sns_3}></div></a></Link>
+                                                    :<></>
+                                            }
+                                            {
+                                                userTwitter
+                                                    ?<Link href={userTwitter}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                                    :<></>
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -377,7 +422,11 @@ const ProfileProject = () => {
                                 <div className={styles.profile_wrapper}>
                                     <div className={styles.profile_top_wrapper}>
                                         <div className={styles.profile_top_icon_wrapper}>
-                                            <img className={styles.profile_top_icon_img} src="https://file.mk.co.kr/meet/neds/2020/12/image_readtop_2020_1292239_16081264164474583.jpg"/>
+                                            <ProfileThumbnail circle size={112} image={
+                                                otherProfile && otherProfile.profile_img
+                                                    ?otherProfile.profile_img
+                                                    :profile_image_default
+                                            }></ProfileThumbnail>
                                         </div>
                                         <div className={styles.profile_top_name}>{userName}</div>
                                         <div className={styles.profile_top_sub}>{userField.join(", ")}</div>
@@ -389,18 +438,38 @@ const ProfileProject = () => {
                                         </Button>
                                         <div>
                                             <div className={styles.profile_top_follow}>팔로워</div>
-                                            <div className={styles.profile_top_follow_num}>follower number</div>
+                                            <div className={styles.profile_top_follow_num}>{followerNum}</div>
                                         </div>
                                         <div>
                                             <div className={styles.profile_top_follow}>팔로잉</div>
-                                            <div className={styles.profile_top_follow_num}>following number</div>
+                                            <div className={styles.profile_top_follow_num}>{followingNum}</div>
                                         </div>
                                         <div className={styles.side_sns_wrapper}>
-                                            <Link href={"/"}><a><div className={sideStyles.side_sns_1}></div></a></Link>
-                                            <Link href={"/"}><a><div className={sideStyles.side_sns_2}></div></a></Link>
-                                            <Link href={"/"}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
-                                            <Link href={"/"}><a><div className={sideStyles.side_sns_3}></div></a></Link>
-                                            <Link href={"/"}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                            {
+                                                userInstagram
+                                                    ?<Link href={userInstagram}><a><div className={sideStyles.side_sns_1}></div></a></Link>
+                                                    :<></>
+                                            }
+                                            {
+                                                userYoutube
+                                                    ?<Link href={userYoutube}><a><div className={sideStyles.side_sns_2}></div></a></Link>
+                                                    :<></>
+                                            }
+                                            {
+                                                userSoundCloud
+                                                    ?<Link href={userSoundCloud}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
+                                                    :<></>
+                                            }
+                                            {
+                                                userFacebook
+                                                    ?<Link href={userFacebook}><a><div className={sideStyles.side_sns_3}></div></a></Link>
+                                                    :<></>
+                                            }
+                                            {
+                                                userTwitter
+                                                    ?<Link href={userTwitter}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                                    :<></>
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -463,25 +532,49 @@ const ProfileProject = () => {
                                             <div className={styles.profile_profile_top_sub}>{userLocation}</div>
                                             <div style={{marginTop:"24px"}}>
                                                 <div className={styles.profile_profile_top_follow}>팔로워</div>
-                                                <div className={styles.profile_profile_top_follow_num}>number</div>
+                                                <div className={styles.profile_profile_top_follow_num}>{followerNum}</div>
                                             </div>
                                             <div style={{marginTop:"1px"}}>
                                                 <div className={styles.profile_profile_top_follow}>팔로잉</div>
-                                                <div className={styles.profile_profile_top_follow_num}>number</div>
+                                                <div className={styles.profile_profile_top_follow_num}>{followingNum}</div>
                                             </div>
                                             <div className={styles.profile_sns_wrapper}>
-                                                <Link href={"/"}><a><div className={sideStyles.side_sns_1}></div></a></Link>
-                                                <Link href={"/"}><a><div className={sideStyles.side_sns_2}></div></a></Link>
-                                                <Link href={"/"}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
-                                                <Link href={"/"}><a><div className={sideStyles.side_sns_3}></div></a></Link>
-                                                <Link href={"/"}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                                {
+                                                    userInstagram
+                                                        ?<Link href={userInstagram}><a><div className={sideStyles.side_sns_1}></div></a></Link>
+                                                        :<></>
+                                                }
+                                                {
+                                                    userYoutube
+                                                        ?<Link href={userYoutube}><a><div className={sideStyles.side_sns_2}></div></a></Link>
+                                                        :<></>
+                                                }
+                                                {
+                                                    userSoundCloud
+                                                        ?<Link href={userSoundCloud}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
+                                                        :<></>
+                                                }
+                                                {
+                                                    userFacebook
+                                                        ?<Link href={userFacebook}><a><div className={sideStyles.side_sns_3}></div></a></Link>
+                                                        :<></>
+                                                }
+                                                {
+                                                    userTwitter
+                                                        ?<Link href={userTwitter}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                                        :<></>
+                                                }
                                             </div>
                                         </div>
                                     </div>
 
                                     <div className={styles.info_card}>
                                         <div className={styles.info_card_title}>소개</div>
-                                        <div className={styles.info_card_content}>{otherProfile.introduce}</div>
+                                        <div className={styles.info_card_content}>{
+                                            otherProfile && otherProfile.introduce
+                                            ?otherProfile.introduce
+                                            :""
+                                        }</div>
                                     </div>
                                     {/*tech*/}
                                     {

@@ -9,7 +9,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {LOG_IN_REQUEST} from "../../reducers/user";
 
 const LogIn = () => {
-
     return(
         <>
             <SignWrapper>

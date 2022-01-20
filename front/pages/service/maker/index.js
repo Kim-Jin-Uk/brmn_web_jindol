@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import Header from "../../../components/Header";
 import styles from '../../../styles/MakerIntro.module.scss'
 import { Steps } from 'antd';
@@ -6,6 +6,12 @@ import { createGlobalStyle } from 'styled-components';
 import Link from 'next/link'
 import sideStyles from "../../../styles/Project.module.scss";
 import Button from "../../../components/Button";
+
+import profile_image_default from "/images/default/profimg_default.svg"
+import {useDispatch, useSelector} from "react-redux";
+import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST} from "../../../reducers/user";
+import ProfileThumbnail from "../../../components/ProfileThumbnail";
+import Footer from "../../../components/Footer";
 
 const { Step } = Steps;
 
@@ -128,8 +134,9 @@ const Global = createGlobalStyle`
 `;
 
 const Index = () => {
+    const dispatch = useDispatch()
     const [openAble,setOpenAble] = useState(true)
-    const [isLoggedin,setIsLoggedin] = useState(true)
+    const {user,profile,logInDone} = useSelector((state) => state.user);
 
     const onClickClose = useCallback(() => {
         setOpenAble(!openAble)
@@ -157,10 +164,25 @@ const Index = () => {
                 </div>
     );
 
+    useEffect(() => {
+        dispatch({
+            type:LOG_IN_REQUEST
+        })
+    },[])
+
+    useEffect(() => {
+        if (user !== null){
+            dispatch({
+                type:GET_MY_PROFILE_REQUEST,
+                data:user.email
+            })
+        }
+    },[user])
+
     return(
         <>
             <Global/>
-            <Header param={"guide"} openAble = {openAble} setOpenAble={setOpenAble}></Header>
+            <Header param={"guide"} openAble = {openAble} setOpenAble={setOpenAble} user={user} profile={profile}  isLoggedin={logInDone}></Header>
             <div style={{background:"#fafafa"}}>
                 <div className={styles.background_top}>
                     <div className={styles.content_cover_top}>
@@ -308,16 +330,32 @@ const Index = () => {
                             <div className={sideStyles.side_right_wrapper}></div>
 
                             {
-                                isLoggedin
+                                logInDone
                                     ?(
                                         <>
                                             <div style={{height:"100vh"}}  className={sideStyles.side_wrapper}>
 
                                                 <div className={sideStyles.side_login_top}>
-                                                    <img src={"https://file.mk.co.kr/meet/neds/2020/12/image_readtop_2020_1292239_16081264164474583.jpg"} className={sideStyles.side_login_top_img}></img>
+                                                    <div className={sideStyles.side_login_top_img}>
+                                                        <Link href={
+                                                            user && user.email
+                                                                ?`/profile/${user.email}`
+                                                                :`/profile/1`
+                                                        }><a>
+                                                            <ProfileThumbnail circle size={40} image={
+                                                                profile && profile.profile_img
+                                                                    ?profile.profile_img
+                                                                    :profile_image_default
+                                                            }></ProfileThumbnail>
+                                                        </a></Link>
+                                                    </div>
                                                     <div className={sideStyles.side_login_top_info}>
-                                                        <div className={sideStyles.side_login_top_nickname}>사용자 이름</div>
-                                                        <div className={sideStyles.side_login_top_id}>userid@naver.com</div>
+                                                        {
+                                                            profile && profile.nickname
+                                                                ? <div className={sideStyles.side_login_top_nickname}>{profile.nickname}</div>
+                                                                : <div className={sideStyles.side_login_top_nickname}>{user.email}</div>
+                                                        }
+                                                        <div className={sideStyles.side_login_top_id}>{user.email}</div>
                                                     </div>
                                                     <button className={sideStyles.side_login_top_close} onClick={onClickClose}></button>
                                                 </div>
@@ -338,7 +376,7 @@ const Index = () => {
                                                     <div className={sideStyles.side_nav_4}></div>
                                                     <div className={sideStyles.side_nav_content}>작업물 관리</div>
                                                 </a></Link>
-                                                <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                <Link href={"/profile/edit"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
                                                     <div className={sideStyles.side_nav_5}></div>
                                                     <div className={sideStyles.side_nav_content}>프로필 편집</div>
                                                 </a></Link>
@@ -375,15 +413,15 @@ const Index = () => {
                                     :(
                                         <>
                                             <div style={{height:"100vh"}}  className={sideStyles.side_wrapper}>
-                                                <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble}/>
+                                                <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble} side={true}  user={user} profile={profile}/>
                                                 <div className={sideStyles.side_title} style={{minWidth:"320px"}}>
                                                     회원가입하고 다양한 메이커들과
                                                     <br/>
                                                     프로젝트를 시작하세요!
                                                 </div>
                                                 <div style={{display:"block",paddingLeft:"20px", height:"56px", marginTop:"16px", borderBottom:"1px solid #E8E8E8", minWidth:"320px"}}>
-                                                    <div style={{display:"inline-block"}}><Button className={sideStyles.side_login}>로그인</Button></div>
-                                                    <div style={{display:"inline-block", marginLeft:"12px"}}><Button className={sideStyles.side_signup}>회원가입</Button></div>
+                                                    <div style={{display:"inline-block"}}><Link href="/signin/login"><a><Button className={sideStyles.side_login}>로그인</Button></a></Link></div>
+                                                    <div style={{display:"inline-block", marginLeft:"12px"}}><Link href="/signin/signup"><a><Button className={sideStyles.side_signup}>회원가입</Button></a></Link></div>
                                                 </div>
 
                                                 <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
@@ -430,6 +468,7 @@ const Index = () => {
                         </div>
                     )
             }
+            <Footer></Footer>
         </>
     )
 }
