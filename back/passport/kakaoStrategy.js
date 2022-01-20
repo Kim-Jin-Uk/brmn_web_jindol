@@ -5,6 +5,7 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 module.exports = () => {
+    console.log(process.env.KAKAO_API_KEY)
     passport.use(new KakaoStrategy({
         clientID: process.env.KAKAO_API_KEY,
         callbackURL: 'http://3.38.54.88/oauth',
