@@ -15,6 +15,7 @@ module.exports = {
     "password": process.env.DB_PASSWORD,
     "database": "brmn_music",
     "host": "127.0.0.1",
+    "port": "3306",
     "dialect": "mysql"
   },
   "production": {
@@ -22,6 +23,7 @@ module.exports = {
     "password": process.env.DB_PASSWORD,
     "database": "brmn_music",
     "host": "127.0.0.1",
+    "port": "3306",
     "dialect": "mysql"
   }
 }

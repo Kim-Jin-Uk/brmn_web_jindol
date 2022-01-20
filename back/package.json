@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon app",
-    "start": "node app"
+    "start": "cross-env NODE_ENV=production pm2 start app.js"
   },
   "author": "Jindol",
   "license": "ISC",
@@ -13,9 +13,12 @@
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^13.0.1",
     "express": "^4.17.2",
     "express-session": "^1.17.2",
+    "helmet": "^5.0.1",
+    "hpp": "^0.2.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "mysql2": "^2.3.3",
@@ -23,6 +26,7 @@
     "passport-kakao": "^1.0.1",
     "passport-local": "^1.0.0",
     "passport-naver": "^1.0.6",
+    "pm2": "^5.1.2",
     "sequelize": "^6.13.0",
     "sequelize-cli": "^6.4.1"
   },

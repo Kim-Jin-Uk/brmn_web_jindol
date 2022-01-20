@@ -9,6 +9,9 @@ const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv')
 const path = require("path");
+const morgan = require('morgan')
+const hpp = require('hpp')
+const helmet = require('helmet')
 dotenv.config()
 
 const app = express()
@@ -21,8 +24,16 @@ db.sequelize.sync()
 
 passportConfig()
 
+if (process.env.NODE_ENV === 'production'){
+    app.use(morgan('combined'))
+    app.use(hpp())
+    app.use(helmet())
+}else{
+    app.use(morgan('dev'))
+}
+
 app.use(cors({
-    origin:true,
+    origin:['http://localhost:3060','http://3.38.232.129','brmnmusic.com'],
     credentials: true,
 }))
 app.use('/',express.static(path.join(__dirname,'profileImages')))
@@ -36,6 +47,10 @@ app.use(session({
 }));
 app.use(passport.initialize())
 app.use(passport.session())
+
+app.get('/',(req,res) => {
+    res.send('hello brmn')
+})
 
 
 app.use('/user',userRouter)

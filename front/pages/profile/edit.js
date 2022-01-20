@@ -674,7 +674,7 @@ const Edit = () => {
 
     const onChangeField = (v) => {
         if (v.length > 3){
-            alert("분야는 최대 3개까지")
+            return message.warning('분야는 최대 3개까지 선택 가능합니다.')
         }else {
             setUserField(v)
         }
