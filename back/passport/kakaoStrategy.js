@@ -7,7 +7,7 @@ dotenv.config()
 module.exports = () => {
     passport.use(new KakaoStrategy({
         clientID: process.env.KAKAO_API_KEY,
-        callbackURL: 'http://localhost:3065/oauth',
+        callbackURL: 'http://3.38.54.88/oauth',
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             const exUser = await User.findOne({
