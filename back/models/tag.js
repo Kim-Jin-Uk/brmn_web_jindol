@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Tag = sequelize.define('Tag',{
+    const Tag = sequelize.define('tags',{
         tag_name:{
             type: DataTypes.STRING(150),
             allowNull:false,
@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Tag.associate = (db) => {
-        db.Tag.belongsToMany(db.Project,{ through: 'ProjectHashtag' })
+        db.Tag.belongsToMany(db.Project,{ through: 'projecthashtag' })
     }
 
     return Tag

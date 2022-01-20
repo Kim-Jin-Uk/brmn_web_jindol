@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const ProfileDetail = sequelize.define('ProfileDetail',{
+    const ProfileDetail = sequelize.define('profiledetails',{
         title:{
             type: DataTypes.STRING(50),
             allowNull:false,

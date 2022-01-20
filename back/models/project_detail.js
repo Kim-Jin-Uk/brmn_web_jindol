@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const ProjectDetail = sequelize.define('ProjectDetail',{
+    const ProjectDetail = sequelize.define('projectdetails',{
         contents:{
             type: DataTypes.TEXT,
             allowNull:false,

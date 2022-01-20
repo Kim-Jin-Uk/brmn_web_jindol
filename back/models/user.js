@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define('User',{
+    const User = sequelize.define('users',{
         email:{
             type: DataTypes.STRING(320),
             allowNull:false,
@@ -33,8 +33,8 @@ module.exports = (sequelize, DataTypes) => {
     User.associate = (db) => {
         db.User.hasMany(db.Project)
         db.User.hasOne(db.Profile)
-        db.User.belongsToMany(db.User,{through:"Follow", as: "Followers", foreignKey: "FollowingId"})
-        db.User.belongsToMany(db.User,{through:"Follow", as: "Followings", foreignKey: "FollowerId"})
+        db.User.belongsToMany(db.User,{through:"follow", as: "Followers", foreignKey: "FollowingId"})
+        db.User.belongsToMany(db.User,{through:"follow", as: "Followings", foreignKey: "FollowerId"})
     }
 
     return User
