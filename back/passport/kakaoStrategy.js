@@ -10,6 +10,7 @@ module.exports = () => {
         callbackURL: 'http://3.38.54.88/oauth',
     }, async (accessToken, refreshToken, profile, done) => {
         try {
+            console.log(profile)
             const exUser = await User.findOne({
                 where: { email: profile._json.kakao_account.email, provider: 'kakao'},
             });
