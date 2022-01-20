@@ -33,7 +33,8 @@ router.post('/', (req,res,next) => {
     res.status(200).send('ok')
 })
 
-router.get('/login',(req,res,next) => {
+router.get('/login',isLoggendIn,(req,res,next) => {
+    console.log(req.user)
     if (req.isAuthenticated()){
         return res.status(200).json({email:req.user.dataValues.email})
     }
