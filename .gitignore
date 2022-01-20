@@ -8,3 +8,5 @@
 /back/node_modules/
 /back/.env
 /node_modules/
+/brmn_front_key.pem
+/brmn_back_key.pem
