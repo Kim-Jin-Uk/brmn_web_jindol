@@ -61,6 +61,6 @@ app.get('/oauth', passport.authenticate('kakao'), function (req, res) {
     res.redirect('http://3.38.232.129/project')
 })
 
-app.listen(3065,() => {
+app.listen(80,() => {
     console.log("server open")
 })
