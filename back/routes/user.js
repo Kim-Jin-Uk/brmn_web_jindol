@@ -333,7 +333,7 @@ router.post('/update/profile/image',isLoggendIn, upload.none(), async (req,res,n
     try{
         console.log(req.body)
         await Profile.update({
-            profile_img:"http://localhost:3065/"+req.body.fileName
+            profile_img:"http://3.38.54.88/"+req.body.fileName
         },{
             where:{UserId:req.user.dataValues.id}
         })

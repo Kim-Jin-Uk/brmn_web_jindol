@@ -7,6 +7,7 @@ import fontStyles from "../../styles/font.module.scss"
 import SignWrapper from "../../components/SignWrapper";
 import {useDispatch, useSelector} from "react-redux";
 import {LOG_IN_REQUEST} from "../../reducers/user";
+import backUrl from "../../config/config";
 
 const LogIn = () => {
     return(
@@ -28,7 +29,7 @@ const LogIn = () => {
                         <div className={styles.naver_icon}></div>
                         <div>네이버 아이디로 로그인</div>
                     </div>
-                    <Link href={"http://localhost:3065/auth/kakao"}><a>
+                    <Link href={`${backUrl}/auth/kakao`}><a>
                         <div style={{ paddingLeft: "calc(50% - 93.5px)", paddingRight: "calc(50% - 93.5px)"}}  className={styles.kakao_btn}>
                             <div className={styles.kakao_icon}></div>
                             <div>카카오 계정으로 로그인</div>

@@ -57,7 +57,7 @@ const Global = createGlobalStyle`
 const Upload = () => {
 
     const [uploadBtn, setUploadBtn] = useState(false)
-    const [imgUrl, setImgUrl] = useState("http://localhost:3060/_next/static/media/img_select.7a864cc8.svg")
+    const [imgUrl, setImgUrl] = useState("")
     const [imgSet,setImgSet] = useState(false)
     const [hashList,setHashList] = useState([])
     const [techList,setTechList] = useState([])
