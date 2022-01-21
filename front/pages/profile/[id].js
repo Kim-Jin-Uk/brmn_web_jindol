@@ -43,6 +43,7 @@ function MainCard(props) {
 }
 
 function InfoCard(props) {
+    console.log(props)
     return(
         <div style={{marginBottom:"22px"}}>
             <div>
