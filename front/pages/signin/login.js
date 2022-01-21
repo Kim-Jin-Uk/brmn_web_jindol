@@ -32,7 +32,7 @@ const LogIn = () => {
                     <Link href={`${backUrl}/auth/kakao`}><a>
                         <div style={{ paddingLeft: "calc(50% - 93.5px)", paddingRight: "calc(50% - 93.5px)"}}  className={styles.kakao_btn}>
                             <div className={styles.kakao_icon}></div>
-                            <div>카카오 계정으로 로그인</div>
+                            <div style={{marginTop:"21px"}}>카카오 계정으로 로그인</div>
                         </div>
                     </a></Link>
                 </div>
