@@ -44,38 +44,44 @@ function MainCard(props) {
 
 function InfoCard(props) {
     return(
-        <div style={{marginBottom:"22px"}}>
-            <div>
-                <div className={styles.info_title}>{props.props.title}</div>
-                {
-                    props.props.date !== undefined && props.props.date !== null
-                    ?(
-                            <div className={styles.info_date}>{props.props.date}</div>
-                        )
-                    :(
-                            <></>
-                        )
-                }
-            </div>
+        <>
             {
-                props.props.info !== undefined && props.props.info !== null
-                ?(
-                        <div className={styles.info_subtitle}>{props.props.info}</div>
-                    )
-                :(
-                        <></>
-                    )
+                props !== null
+                    ? <div style={{marginBottom:"22px"}}>
+                        <div>
+                            <div className={styles.info_title}>{props.props.title}</div>
+                            {
+                                props.props.date !== undefined && props.props.date !== null
+                                    ?(
+                                        <div className={styles.info_date}>{props.props.date}</div>
+                                    )
+                                    :(
+                                        <></>
+                                    )
+                            }
+                        </div>
+                        {
+                            props.props.info !== undefined && props.props.info !== null
+                                ?(
+                                    <div className={styles.info_subtitle}>{props.props.info}</div>
+                                )
+                                :(
+                                    <></>
+                                )
+                        }
+                        {
+                            props.props.detail !== undefined && props.props.detail !== null
+                                ?(
+                                    <div className={styles.info_content}>{props.props.detail}</div>
+                                )
+                                :(
+                                    <></>
+                                )
+                        }
+                    </div>
+                    : <></>
             }
-            {
-                props.props.detail !== undefined && props.props.detail !== null
-                    ?(
-                        <div className={styles.info_content}>{props.props.detail}</div>
-                    )
-                    :(
-                        <></>
-                    )
-            }
-        </div>
+        </>
     )
 
 }
@@ -335,12 +341,6 @@ const ProfileProject = () => {
             setAwardList(UserAwardList)
             setEduList(UserEducationList)
             setCreateList(UserCreateList)
-            console.log("UserTechList",UserTechList)
-            console.log("UserEquipmentList",UserEquipmentList)
-            console.log("UserCareerList",UserCareerList)
-            console.log("UserAwardList",UserAwardList)
-            console.log("UserEducationList",UserEducationList)
-            console.log("UserCreateList",UserCreateList)
         }
     },[otherProfileDetail])
 
