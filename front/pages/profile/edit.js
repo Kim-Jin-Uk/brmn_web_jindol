@@ -269,31 +269,36 @@ function ValueCard(value) {
 
     return(
         <>
-            <div className={styles.value_card_wrapper}>
-                <div className={styles.value_card_title}>{value.value.title}</div>
-                <div className={styles.value_card_info}>{value.value.info}</div>
-                {
-                    value.value.detail !== undefined && value.value.detail !== null
-                        ?(
-                            <div className={styles.value_card_detail}>{value.value.detail}</div>
-                        )
-                        :(
-                            <></>
-                        )
-                }
-                {
-                    value.value.date !== undefined && value.value.date !== null
-                        ?(
-                            <div className={styles.value_card_date}>{value.value.date}</div>
-                        )
-                        :(
-                            <></>
-                        )
-                }
+            {
+                value.value !== undefined && value.value !== null
+                    ?<div className={styles.value_card_wrapper}>
+                        <div className={styles.value_card_title}>{value.value.title}</div>
+                        <div className={styles.value_card_info}>{value.value.info}</div>
+                        {
+                            value.value.detail !== undefined && value.value.detail !== null
+                                ?(
+                                    <div className={styles.value_card_detail}>{value.value.detail}</div>
+                                )
+                                :(
+                                    <></>
+                                )
+                        }
+                        {
+                            value.value.date !== undefined && value.value.date !== null
+                                ?(
+                                    <div className={styles.value_card_date}>{value.value.date}</div>
+                                )
+                                :(
+                                    <></>
+                                )
+                        }
 
-                <div className={styles.value_card_edit_icon} onClick={()=>onClickEditButton()}></div>
+                        <div className={styles.value_card_edit_icon} onClick={()=>onClickEditButton()}></div>
 
-            </div>
+                    </div>
+                    :<></>
+            }
+
         </>
     )
 }
@@ -424,153 +429,158 @@ function AddCard(value) {
 
     return(
         <>
-            <div className={styles.add_card_wrapper}>
-                <div>
-                    <div className={styles.add_card_text}>{value.value.col_1}</div>
-                    <Input
-                        placeholder={value.value.col_1_content}
-                        placeholder={value.value.col_1_content}
-                        className={styles.edit_card_input}
-                        maxLength={50}
-                        value={text1}
-                        onChange={onChangeText1}
-                        style={{
-                            marginLeft:"12px",
-                            marginRight:"12px",
-                            width:"calc(100% - 24px)",
-                            marginTop:"6px",
-                            marginBottom:"0",
-                            maxWidth:"464px"
-                        }}
-                    />
-                </div>
-                {
-                    value.value.col_2 !== undefined && value.value.col_2 !== null
-                        ?(
-                            <div>
-                                <div className={styles.add_card_text}>{value.value.col_2}</div>
-                                <div className={styles.add_input_double}>
-                                    <DatePicker
-                                        locale={ko}// 언어설정 기본값은 영어
-                                        dateFormat="yyyy/MM"    // 날짜 형식 설정
-                                        className="input-datepicker"    // 클래스 명 지정 css주기 위해
-                                        maxDate={new Date()}    // 선택할 수 있는 최소 날짜값 지정
-                                        closeOnScroll={true}    // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
-                                        placeholderText="시작 날짜"    // placeholder
-                                        selected={startDate}    // value
-                                        onChange={(date) => startDateChange(date)}    // 날짜를 선택하였을 때 실행될 함수
-                                    />
-                                    <div style={{
-                                        display:"inline-block",
-                                        width:"0px",
-                                        position:"relative",
-                                        right:"4px",
-                                        fontFamily: "Spoqa Han Sans Neo",
-                                        fontStyle: "normal",
-                                        fontWeight: 500,
-                                        fontSize: "14px",
-                                        lineHeight: "150%",
+            {
+                value.value !== undefined && value.value !== null
+                    ?<div className={styles.add_card_wrapper}>
+                        <div>
+                            <div className={styles.add_card_text}>{value.value.col_1}</div>
+                            <Input
+                                placeholder={value.value.col_1_content}
+                                placeholder={value.value.col_1_content}
+                                className={styles.edit_card_input}
+                                maxLength={50}
+                                value={text1}
+                                onChange={onChangeText1}
+                                style={{
+                                    marginLeft:"12px",
+                                    marginRight:"12px",
+                                    width:"calc(100% - 24px)",
+                                    marginTop:"6px",
+                                    marginBottom:"0",
+                                    maxWidth:"464px"
+                                }}
+                            />
+                        </div>
+                        {
+                            value.value.col_2 !== undefined && value.value.col_2 !== null
+                                ?(
+                                    <div>
+                                        <div className={styles.add_card_text}>{value.value.col_2}</div>
+                                        <div className={styles.add_input_double}>
+                                            <DatePicker
+                                                locale={ko}// 언어설정 기본값은 영어
+                                                dateFormat="yyyy/MM"    // 날짜 형식 설정
+                                                className="input-datepicker"    // 클래스 명 지정 css주기 위해
+                                                maxDate={new Date()}    // 선택할 수 있는 최소 날짜값 지정
+                                                closeOnScroll={true}    // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
+                                                placeholderText="시작 날짜"    // placeholder
+                                                selected={startDate}    // value
+                                                onChange={(date) => startDateChange(date)}    // 날짜를 선택하였을 때 실행될 함수
+                                            />
+                                            <div style={{
+                                                display:"inline-block",
+                                                width:"0px",
+                                                position:"relative",
+                                                right:"4px",
+                                                fontFamily: "Spoqa Han Sans Neo",
+                                                fontStyle: "normal",
+                                                fontWeight: 500,
+                                                fontSize: "14px",
+                                                lineHeight: "150%",
 
-                                    }}>~</div>
-                                    <DatePicker
-                                        locale={ko}// 언어설정 기본값은 영어
-                                        dateFormat="yyyy/MM"    // 날짜 형식 설정
-                                        className="input-datepicker"    // 클래스 명 지정 css주기 위해
-                                        maxDate={new Date()}    // 선택할 수 있는 최소 날짜값 지정
-                                        closeOnScroll={true}    // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
-                                        placeholderText="종료 날짜"    // placeholder
-                                        selected={endDate}    // value
-                                        onChange={(date) => endDateChange(date)}    // 날짜를 선택하였을 때 실행될 함수
-                                    />
-                                </div>
+                                            }}>~</div>
+                                            <DatePicker
+                                                locale={ko}// 언어설정 기본값은 영어
+                                                dateFormat="yyyy/MM"    // 날짜 형식 설정
+                                                className="input-datepicker"    // 클래스 명 지정 css주기 위해
+                                                maxDate={new Date()}    // 선택할 수 있는 최소 날짜값 지정
+                                                closeOnScroll={true}    // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
+                                                placeholderText="종료 날짜"    // placeholder
+                                                selected={endDate}    // value
+                                                onChange={(date) => endDateChange(date)}    // 날짜를 선택하였을 때 실행될 함수
+                                            />
+                                        </div>
 
 
-                            </div>
-                        )
-                        :(
-                            <></>
-                        )
-                }
-                <div>
-                    <div className={styles.add_card_text}>{value.value.col_3}</div>
-                    <Input
-                        placeholder={value.value.col_3_content}
-                        className={styles.edit_card_input}
-                        maxLength={100}
-                        value={text3}
-                        onChange={onChangeText3}
-                        style={{
-                            marginLeft:"12px",
-                            marginRight:"12px",
-                            width:"calc(100% - 24px)",
-                            marginTop:"6px",
-                            marginBottom:"0",
-                            maxWidth:"464px"
-                        }}
-                    />
-                </div>
-                {
-                    value.value.col_4 !== undefined && value.value.col_4 !== null
-                        ?(
-                            <div>
-                                <div className={styles.add_card_text}>{value.value.col_4}</div>
-                                <div className={styles.add_input}>
-                                    <DatePicker
-                                        locale={ko}// 언어설정 기본값은 영어
-                                        dateFormat="yyyy/MM"    // 날짜 형식 설정
-                                        className="input-datepicker"    // 클래스 명 지정 css주기 위해
-                                        maxDate={new Date()}    // 선택할 수 있는 최소 날짜값 지정
-                                        closeOnScroll={true}    // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
-                                        placeholderText="시작 날짜"    // placeholder
-                                        selected={normalDate}    // value
-                                        onChange={(date) => normalDateChange(date)}    // 날짜를 선택하였을 때 실행될 함수
-                                    />
-                                </div>
-                            </div>
-                        )
-                        :(
-                            <></>
-                        )
-                }
-                {
-                    value.value.col_5 !== undefined && value.value.col_5 !== null
-                        ?(
-                            <div>
-                                <div className={styles.add_card_text}>{value.value.col_5}</div>
-                                <Input
-                                    placeholder={value.value.col_5_content}
-                                    className={styles.edit_card_input}
-                                    maxLength={100}
-                                    value={text5}
-                                    onChange={onChangeText5}
-                                    style={{
-                                        marginLeft:"12px",
-                                        marginRight:"12px",
-                                        width:"calc(100% - 24px)",
-                                        marginTop:"6px",
-                                        marginBottom:"0",
-                                        maxWidth:"464px"
-                                    }}
-                                />
-                            </div>
-                        )
-                        :(
-                            <></>
-                        )
-                }
-                <div className={styles.add_card_bottom_wrapper}>
-                    <Button className={styles.add_card_btn_1} onClick={() => onClickSave()}>저장</Button>
-                    <Button className={styles.add_card_btn_2} onClick={() => onClickCancle()}>취소</Button>
-                    {
-                        value.value.edit !== undefined && value.value.edit !== null
-                            ?(
-                                <Button className={styles.add_card_btn_3} onClick={() => onClickDelete()}>삭제</Button>
-                            ):(
-                                <></>
-                            )
-                    }
-                </div>
-            </div>
+                                    </div>
+                                )
+                                :(
+                                    <></>
+                                )
+                        }
+                        <div>
+                            <div className={styles.add_card_text}>{value.value.col_3}</div>
+                            <Input
+                                placeholder={value.value.col_3_content}
+                                className={styles.edit_card_input}
+                                maxLength={100}
+                                value={text3}
+                                onChange={onChangeText3}
+                                style={{
+                                    marginLeft:"12px",
+                                    marginRight:"12px",
+                                    width:"calc(100% - 24px)",
+                                    marginTop:"6px",
+                                    marginBottom:"0",
+                                    maxWidth:"464px"
+                                }}
+                            />
+                        </div>
+                        {
+                            value.value.col_4 !== undefined && value.value.col_4 !== null
+                                ?(
+                                    <div>
+                                        <div className={styles.add_card_text}>{value.value.col_4}</div>
+                                        <div className={styles.add_input}>
+                                            <DatePicker
+                                                locale={ko}// 언어설정 기본값은 영어
+                                                dateFormat="yyyy/MM"    // 날짜 형식 설정
+                                                className="input-datepicker"    // 클래스 명 지정 css주기 위해
+                                                maxDate={new Date()}    // 선택할 수 있는 최소 날짜값 지정
+                                                closeOnScroll={true}    // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
+                                                placeholderText="시작 날짜"    // placeholder
+                                                selected={normalDate}    // value
+                                                onChange={(date) => normalDateChange(date)}    // 날짜를 선택하였을 때 실행될 함수
+                                            />
+                                        </div>
+                                    </div>
+                                )
+                                :(
+                                    <></>
+                                )
+                        }
+                        {
+                            value.value.col_5 !== undefined && value.value.col_5 !== null
+                                ?(
+                                    <div>
+                                        <div className={styles.add_card_text}>{value.value.col_5}</div>
+                                        <Input
+                                            placeholder={value.value.col_5_content}
+                                            className={styles.edit_card_input}
+                                            maxLength={100}
+                                            value={text5}
+                                            onChange={onChangeText5}
+                                            style={{
+                                                marginLeft:"12px",
+                                                marginRight:"12px",
+                                                width:"calc(100% - 24px)",
+                                                marginTop:"6px",
+                                                marginBottom:"0",
+                                                maxWidth:"464px"
+                                            }}
+                                        />
+                                    </div>
+                                )
+                                :(
+                                    <></>
+                                )
+                        }
+                        <div className={styles.add_card_bottom_wrapper}>
+                            <Button className={styles.add_card_btn_1} onClick={() => onClickSave()}>저장</Button>
+                            <Button className={styles.add_card_btn_2} onClick={() => onClickCancle()}>취소</Button>
+                            {
+                                value.value.edit !== undefined && value.value.edit !== null
+                                    ?(
+                                        <Button className={styles.add_card_btn_3} onClick={() => onClickDelete()}>삭제</Button>
+                                    ):(
+                                        <></>
+                                    )
+                            }
+                        </div>
+                    </div>
+                    :<></>
+            }
+
         </>
     )
 }
@@ -851,7 +861,7 @@ const Edit = () => {
 
     useEffect(() => {
         if (profileDetail){
-            const UserProfileDetails = profileDetail.ProfileDetails
+            const UserProfileDetails = profileDetail.profiledetails
             let UserTechList = []
             let UserEquipmentList = []
             let UserCareerList = []
