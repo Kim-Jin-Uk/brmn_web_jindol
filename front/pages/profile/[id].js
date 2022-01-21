@@ -43,6 +43,7 @@ function MainCard(props) {
 }
 
 function InfoCard(props) {
+    console.log(props)
     return(
         <>
             {
@@ -290,7 +291,6 @@ const ProfileProject = () => {
             let UserAwardList = []
             let UserEducationList = []
             let UserCreateList = []
-            console.log(UserProfileDetails)
             if (UserProfileDetails.length){
                 for (let i = 0; i < UserProfileDetails.length; i++) {
                     switch (UserProfileDetails[i].detail_type){
