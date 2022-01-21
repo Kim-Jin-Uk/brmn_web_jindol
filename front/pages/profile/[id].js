@@ -285,49 +285,50 @@ const ProfileProject = () => {
             let UserEducationList = []
             let UserCreateList = []
             let UserShowList = []
-            for (let i = 0; i < UserProfileDetails.length; i++) {
-                switch (UserProfileDetails[i].detail_type){
-                    case "technic":{
-                        UserTechList.push(
-                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:""}
-                        )
-                    }break
+            if (UserProfileDetails.length && UserProfileDetails.length > 0){
+                for (let i = 0; i < UserProfileDetails.length; i++) {
+                    switch (UserProfileDetails[i].detail_type){
+                        case "technic":{
+                            UserTechList.push(
+                                {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:""}
+                            )
+                        }break
 
-                    case "equipment":{
-                        UserEquipmentList.push(
-                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:""}
-                        )
-                    }break
+                        case "equipment":{
+                            UserEquipmentList.push(
+                                {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:""}
+                            )
+                        }break
 
-                    case "career":{
-                        UserCareerList.push(
-                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:UserProfileDetails[i].contents,date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
-                        )
-                    }break
+                        case "career":{
+                            UserCareerList.push(
+                                {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:UserProfileDetails[i].contents,date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
+                            )
+                        }break
 
-                    case "award":{
-                        UserAwardList.push(
-                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:UserProfileDetails[i].start_date}
-                        )
-                    }break
+                        case "award":{
+                            UserAwardList.push(
+                                {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:UserProfileDetails[i].start_date}
+                            )
+                        }break
 
-                    case "education":{
-                        UserEducationList.push(
-                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
-                        )
-                    }break
+                        case "education":{
+                            UserEducationList.push(
+                                {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:"",date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
+                            )
+                        }break
 
-                    case "create":{
-                        UserCreateList.push(
-                            {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:UserProfileDetails[i].contents,date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
-                        )
-                    }break
+                        case "create":{
+                            UserCreateList.push(
+                                {title:UserProfileDetails[i].title,info:UserProfileDetails[i].sub_title,detail:UserProfileDetails[i].contents,date:UserProfileDetails[i].start_date+" - "+UserProfileDetails[i].end_date}
+                            )
+                        }break
 
-                    default:
-                        continue
+                        default:
+                            continue
+                    }
                 }
             }
-            console.log(UserTechList)
             setTechList(UserTechList)
             setEquipList(UserEquipmentList)
             setCareerList(UserCareerList)
