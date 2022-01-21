@@ -47,7 +47,7 @@ function InfoCard(props) {
     return(
         <>
             {
-                props !== null
+                props.props !== undefined && props.props !== null
                     ? <div style={{marginBottom:"22px"}}>
                         <div>
                             <div className={styles.info_title}>{props.props.title}</div>
