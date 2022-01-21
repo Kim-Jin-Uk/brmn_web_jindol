@@ -61,7 +61,7 @@ app.use('/auth',authRouter)
 
 app.get('/oauth', passport.authenticate('kakao'), function (req, res) {
     // 로그인 시작시 state 값을 받을 수 있음
-    res.redirect('http://brmnmusic.com//project')
+    res.redirect('http://brmnmusic.com/project')
 })
 
 app.listen(80,() => {
