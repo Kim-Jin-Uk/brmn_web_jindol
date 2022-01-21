@@ -5,6 +5,8 @@ const passport = require("passport");
 const multer = require('multer')
 const path = require("path");
 const fs = require("fs");
+const multerS3 = require('multer-s3')
+const AWS = require('aws-sdk')
 
 const router = express.Router()
 
@@ -14,16 +16,17 @@ try{
     console.log('make profileImages directory')
     fs.mkdirSync('profileImages')
 }
-
+AWS.config.update({
+    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    region:'ap-northeast-2'
+})
 const upload = multer({
-    storage: multer.diskStorage({
-        destination(req,file,done){
-            done(null,'profileImages')
-        },
-        filename(req,file,done){
-            const ext = path.extname(file.originalname) // 확장자 추출
-            const basename = path.basename(file.originalname, ext)// 파일명
-            done(null,basename + '_' + new Date().getTime() + ext)
+    storage: multerS3({
+        s3: new AWS.S3(),
+        bucket: 'brmnmusic-image-s3',
+        key(req, file, cb){
+            cb(null,`profile/${Date.now()}_${path.basename(file.originalname)}`)
         }
     }),
     limits:{fileSize:20*1024*1024},
@@ -325,7 +328,7 @@ router.post('/update/profile/default',isLoggendIn,async (req,res,next) => {
 
 router.post('/upload/profile/image',isLoggendIn, upload.single('profileImage'), (req,res,next)=>{
     res.send({
-        fileName: req.file.filename
+        fileName: req.file.location
     });
 })
 
@@ -333,7 +336,7 @@ router.post('/update/profile/image',isLoggendIn, upload.none(), async (req,res,n
     try{
         console.log(req.body)
         await Profile.update({
-            profile_img:"http://api.brmnmusic.com/"+req.body.fileName
+            profile_img:req.body.fileName
         },{
             where:{UserId:req.user.dataValues.id}
         })
