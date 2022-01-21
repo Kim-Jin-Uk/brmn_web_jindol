@@ -276,6 +276,7 @@ const ProfileProject = () => {
     },[otherProfile])
 
     useEffect(() => {
+        console.log(otherProfileDetail)
         if (otherProfileDetail){
             const UserProfileDetails = otherProfileDetail.ProfileDetails
             let UserTechList = []
