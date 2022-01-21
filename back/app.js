@@ -28,7 +28,7 @@ passportConfig()
 app.use(helmet())
 
 app.use(cors({
-    origin:['http://localhost:3060','http://3.38.232.129','brmnmusic.com'],
+    origin:['http://localhost:3060','http://3.38.232.129','http://brmnmusic.com'],
     credentials: true,
 }))
 app.use('/',express.static(path.join(__dirname,'profileImages')))

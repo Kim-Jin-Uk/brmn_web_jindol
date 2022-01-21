@@ -1,2 +1,2 @@
-const backUrl = "http://3.38.54.88"
+const backUrl = "http://api.brmnmusic.com"
 export default backUrl

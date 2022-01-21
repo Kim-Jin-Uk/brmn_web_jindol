@@ -34,8 +34,6 @@ router.post('/', (req,res,next) => {
 })
 
 router.get('/login',(req,res,next) => {
-    console.log(req.user)
-    console.log(req.isAuthenticated())
     if (req.isAuthenticated()){
         return res.status(200).json({email:req.user.dataValues.email})
     }
@@ -335,7 +333,7 @@ router.post('/update/profile/image',isLoggendIn, upload.none(), async (req,res,n
     try{
         console.log(req.body)
         await Profile.update({
-            profile_img:"http://3.38.54.88/"+req.body.fileName
+            profile_img:"http://api.brmnmusic.com/"+req.body.fileName
         },{
             where:{UserId:req.user.dataValues.id}
         })
