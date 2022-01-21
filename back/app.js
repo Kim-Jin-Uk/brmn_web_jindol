@@ -12,6 +12,7 @@ const path = require("path");
 const morgan = require('morgan')
 const hpp = require('hpp')
 const helmet = require('helmet')
+const bodyParser = require("express");
 dotenv.config()
 
 const app = express()
@@ -24,13 +25,7 @@ db.sequelize.sync()
 
 passportConfig()
 
-if (process.env.NODE_ENV === 'production'){
-    app.use(morgan('combined'))
-    app.use(hpp())
-    app.use(helmet())
-}else{
-    app.use(morgan('dev'))
-}
+app.use(helmet())
 
 app.use(cors({
     origin:['http://localhost:3060','http://3.38.232.129','brmnmusic.com'],
@@ -40,9 +35,17 @@ app.use('/',express.static(path.join(__dirname,'profileImages')))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser(process.env.COOKIE_SECRET))
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+if (process.env.NODE_ENV === 'production'){
+    app.use(morgan('combined'))
+    app.use(hpp())
+}else{
+    app.use(morgan('dev'))
+}
 app.use(session({
     saveUninitialized:false,
-    resave:false,
+    resave:true,
     secret:process.env.COOKIE_SECRET,
 }));
 app.use(passport.initialize())
