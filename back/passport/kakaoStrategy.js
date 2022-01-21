@@ -24,9 +24,8 @@ module.exports = () => {
                     provider: 'kakao',
                 });
                 await Profile.create({
-                    UserId:newUser.dataValues.id
+                    userId:newUser.dataValues.id
                 })
-                console.log(newUser.dataValues.id)
                 done(null, newUser);
             }
         } catch(error) {
