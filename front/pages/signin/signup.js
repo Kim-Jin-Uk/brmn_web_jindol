@@ -160,12 +160,12 @@ const SignUp = memo(() => {
                 <div style={{marginTop:"52px"}}>
                     <div className={styles.naver_btn}>
                         <div className={styles.naver_icon}></div>
-                        <div>네이버 아이디로 가입</div>
+                        <div style={{marginTop:"1px"}}>네이버 아이디로 가입</div>
                     </div>
                     <Link href={`${backUrl}/auth/kakao`}><a>
                         <div style={{ paddingLeft: "calc(50% - 93.5px)", paddingRight: "calc(50% - 93.5px)"}}  className={styles.kakao_btn}>
                             <div className={styles.kakao_icon}></div>
-                            <div style={{marginTop:"21px"}}>카카오 계정으로 로그인</div>
+                            <div style={{marginTop:"1px"}}>카카오 계정으로 로그인</div>
                         </div>
                     </a></Link>
                 </div>
