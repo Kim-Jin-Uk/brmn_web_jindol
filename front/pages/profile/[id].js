@@ -285,7 +285,8 @@ const ProfileProject = () => {
             let UserEducationList = []
             let UserCreateList = []
             let UserShowList = []
-            if (UserProfileDetails.length && UserProfileDetails.length > 0){
+            console.log(UserProfileDetails)
+            if (UserProfileDetails.length){
                 for (let i = 0; i < UserProfileDetails.length; i++) {
                     switch (UserProfileDetails[i].detail_type){
                         case "technic":{
