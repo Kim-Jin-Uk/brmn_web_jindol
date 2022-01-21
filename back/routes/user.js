@@ -138,7 +138,7 @@ router.post('/update/myprofile',isLoggendIn,async (req,res,next) => {
                     contents:req.body.tech[i].detail,
                     detail_type:"technic",
                     visible_type: null,
-                    ProfileId: ProfileData.dataValues.id
+                    profileId: ProfileData.dataValues.id
                 })
             }
         }
@@ -162,7 +162,7 @@ router.post('/update/myprofile',isLoggendIn,async (req,res,next) => {
                     contents:req.body.equip[i].detail,
                     detail_type:"equipment",
                     visible_type: null,
-                    ProfileId: ProfileData.dataValues.id
+                    profileId: ProfileData.dataValues.id
                 })
             }
         }
@@ -186,7 +186,7 @@ router.post('/update/myprofile',isLoggendIn,async (req,res,next) => {
                     contents:req.body.career[i].detail,
                     detail_type:"career",
                     visible_type: null,
-                    ProfileId: ProfileData.dataValues.id
+                    profileId: ProfileData.dataValues.id
                 })
             }
         }
@@ -210,7 +210,7 @@ router.post('/update/myprofile',isLoggendIn,async (req,res,next) => {
                     contents:req.body.award[i].detail,
                     detail_type:"award",
                     visible_type: null,
-                    ProfileId: ProfileData.dataValues.id
+                    profileId: ProfileData.dataValues.id
                 })
             }
         }
@@ -234,7 +234,7 @@ router.post('/update/myprofile',isLoggendIn,async (req,res,next) => {
                     contents:req.body.edu[i].detail,
                     detail_type:"education",
                     visible_type: null,
-                    ProfileId: ProfileData.dataValues.id
+                    profileId: ProfileData.dataValues.id
                 })
             }
         }
@@ -258,7 +258,7 @@ router.post('/update/myprofile',isLoggendIn,async (req,res,next) => {
                     contents:req.body.create[i].detail,
                     detail_type:"create",
                     visible_type: null,
-                    ProfileId: ProfileData.dataValues.id
+                    profileId: ProfileData.dataValues.id
                 })
             }
         }
@@ -282,7 +282,7 @@ router.post('/update/myprofile',isLoggendIn,async (req,res,next) => {
                     contents:req.body.show[i].detail,
                     detail_type:"show",
                     visible_type: null,
-                    ProfileId: ProfileData.dataValues.id
+                    profileId: ProfileData.dataValues.id
                 })
             }
         }
