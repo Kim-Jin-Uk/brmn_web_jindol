@@ -43,7 +43,6 @@ function MainCard(props) {
 }
 
 function InfoCard(props) {
-    console.log(props)
     return(
         <div style={{marginBottom:"22px"}}>
             <div>
@@ -336,6 +335,12 @@ const ProfileProject = () => {
             setAwardList(UserAwardList)
             setEduList(UserEducationList)
             setCreateList(UserCreateList)
+            console.log("UserTechList",UserTechList)
+            console.log("UserEquipmentList",UserEquipmentList)
+            console.log("UserCareerList",UserCareerList)
+            console.log("UserAwardList",UserAwardList)
+            console.log("UserEducationList",UserEducationList)
+            console.log("UserCreateList",UserCreateList)
         }
     },[otherProfileDetail])
 
