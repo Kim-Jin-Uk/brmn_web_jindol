@@ -284,7 +284,6 @@ const ProfileProject = () => {
             let UserAwardList = []
             let UserEducationList = []
             let UserCreateList = []
-            let UserShowList = []
             console.log(UserProfileDetails)
             if (UserProfileDetails.length){
                 for (let i = 0; i < UserProfileDetails.length; i++) {
@@ -336,7 +335,6 @@ const ProfileProject = () => {
             setAwardList(UserAwardList)
             setEduList(UserEducationList)
             setCreateList(UserCreateList)
-            setShowList(UserShowList)
         }
     },[otherProfileDetail])
 
