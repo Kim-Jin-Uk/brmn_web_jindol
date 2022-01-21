@@ -276,9 +276,8 @@ const ProfileProject = () => {
     },[otherProfile])
 
     useEffect(() => {
-        console.log(otherProfileDetail)
         if (otherProfileDetail){
-            const UserProfileDetails = otherProfileDetail.ProfileDetails
+            const UserProfileDetails = otherProfileDetail.profiledetails
             let UserTechList = []
             let UserEquipmentList = []
             let UserCareerList = []
