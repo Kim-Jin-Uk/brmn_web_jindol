@@ -7,7 +7,7 @@ import logo from "/images/logo.svg"
 import Button from "../Button";
 import ProfileThumbnail from "../ProfileThumbnail";
 import IconButton from "../IconButton";
-import {Menu as antMenu, Dropdown, Button as AntBtn, ConfigProvider, Switch} from 'antd';
+import {Menu as AntMenu, Dropdown, Button as AntBtn, ConfigProvider, Switch} from 'antd';
 import image_message from "/images/icons/message.svg"
 import image_bell from "/images/icons/bell.svg"
 import image_arrow_down from "/images/icons/arrow_down.svg"
@@ -17,7 +17,8 @@ import image_menu from "/images/icons/menu.svg"
 import image_close from "/images/icons/close.svg"
 import {useRouter} from "next/router";
 import icon_styles from "../IconButton/styles.module.scss"
-import {isLoggendIn} from "../../../back/routes/middlewares";
+import {useDispatch, useSelector} from "react-redux";
+import {LOG_OUT_REQUEST} from "../../reducers/user";
 
 ConfigProvider.config({
     prefixCls: 'ant',
@@ -34,8 +35,10 @@ function MenuItem(props) {
 }
 
 export default function Menu(param) {
+    const dispatch = useDispatch()
     const [side, setSide] = useState(false)
     const router = useRouter()
+    const {user, profile, logInDone} = useSelector((state) => state.user);
     const onClickMenu = useCallback(() => {
         if (param.openAble){
             param.setOpenAble(false)
@@ -52,34 +55,40 @@ export default function Menu(param) {
         }
     },[param.upload])
 
+    const onCLickLogOut = useCallback(() => {
+        dispatch({
+            type:LOG_OUT_REQUEST
+        })
+    })
+
     const ProfileMenu = (
-        <antMenu>
+        <AntMenu>
             <div className={styles.dropdown}>
                 <div className={styles.dropdown_top}>
                     <div style={{cursor: "pointer", display: "inline-block", paddingTop: "20px" , paddingLeft: "20px"}}>
                         <Link href={
-                            param.user && param.user.email
-                                ?`/profile/${param.user.email}`
+                            user && user.email
+                                ?`/profile/${user.email}`
                                 :`/profile/1`
                         }><a>
                             <ProfileThumbnail circle size={64} image={
-                                param.profile && param.profile.profile_img
-                                    ? param.profile.profile_img
+                                profile && profile.profile_img
+                                    ? profile.profile_img
                                     : profile_image_default
                             }/>
                         </a></Link>
                     </div>
                     <div className={styles.dropdown_item_top}>
                         {
-                            param.profile && param.profile.nickname
-                                ?<span className={styles.dropdown_item_top_first}>{param.profile.nickname}</span>
-                                : param.user && param.user.email
-                                    ? <span className={styles.dropdown_item_top_first}>{param.user.email}</span>
+                            profile && profile.nickname
+                                ?<span className={styles.dropdown_item_top_first}>{profile.nickname}</span>
+                                : user && user.email
+                                    ? <span className={styles.dropdown_item_top_first}>{user.email}</span>
                                     : <></>
                         }
                         {
-                            param.user && param.user.email
-                                ? <span className={styles.dropdown_item_top_second}>{param.user.email}</span>
+                            user && user.email
+                                ? <span className={styles.dropdown_item_top_second}>{user.email}</span>
                                 : <></>
                         }
                     </div>
@@ -88,10 +97,10 @@ export default function Menu(param) {
                     <Link href={"/"}><a className={styles.dropdown_item_bottom}>작업물 관리</a></Link>
                     <Link href={"/profile/edit"}><a className={styles.dropdown_item_bottom}>프로필 편집</a></Link>
                     <Link href={"/"}><a className={styles.dropdown_item_bottom}>문의하기</a></Link>
-                    <Link href={"/"}><a className={styles.dropdown_item_bottom}>로그아웃</a></Link>
+                    <div onClick={() => onCLickLogOut()} className={styles.dropdown_item_bottom}>로그아웃</div>
                 </div>
             </div>
-        </antMenu>
+        </AntMenu>
     )
 
     useEffect(() => {
@@ -101,6 +110,11 @@ export default function Menu(param) {
         return () => {
         };
     }, [param.side, side]);
+
+    useEffect(() => {
+        console.log("user",user)
+        console.log("profile",profile)
+    },[user,profile])
 
     return (
         <>
@@ -141,9 +155,6 @@ export default function Menu(param) {
                                         </div>
                                     </div>
                             }
-
-
-
                                 {
                                     param.btnType !== undefined && param.btnType === "upload"
                                         ?(
@@ -155,7 +166,7 @@ export default function Menu(param) {
                                             <>
                                                 <div className={styles.right}>
                                                     {
-                                                        param.isLoggedin
+                                                        logInDone
                                                             ? (
                                                                 <>
                                                                     <Button upload className={styles.create} onClick={()=>router.push("/project/upload").then((() =>window.scrollTo(0,0) ))}>프로젝트 업로드</Button>
@@ -167,14 +178,14 @@ export default function Menu(param) {
                                                                     <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
                                                                         <AntBtn className={styles.dropdown_button}>
                                                                             <Link href={
-                                                                                param.user && param.user.email
-                                                                                    ?`/profile/${param.user.email}`
+                                                                                user && user.email
+                                                                                    ?`/profile/${user.email}`
                                                                                     :`/profile/1`
                                                                             }><a>
                                                                                 <div style={{cursor: "pointer", display: "flex"}}>
                                                                                     <ProfileThumbnail circle size={40} image={
-                                                                                        param.profile && param.profile.profile_img
-                                                                                            ? param.profile.profile_img
+                                                                                        profile && profile.profile_img
+                                                                                            ? profile.profile_img
                                                                                             : profile_image_default
                                                                                     }/>
                                                                                 </div>
@@ -254,21 +265,21 @@ export default function Menu(param) {
                                         <>
                                             <div className={styles.right}>
                                                 {
-                                                    param.isLoggedin
+                                                    logInDone
                                                         ? (
                                                             <>
                                                                 <Button upload className={styles.create} onClick={()=>router.push("/project/upload").then((() =>window.scrollTo(0,0) ))}>프로젝트 업로드</Button>
                                                                 <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
                                                                     <AntBtn className={styles.dropdown_button}>
                                                                         <Link href={
-                                                                            param.user && param.user.email
-                                                                                ?`/profile/${param.user.email}`
+                                                                            user && user.email
+                                                                                ?`/profile/${user.email}`
                                                                                 :`/profile/1`
                                                                         }><a>
                                                                             <div style={{cursor: "pointer", display: "flex"}}>
                                                                                 <ProfileThumbnail circle size={40} image={
-                                                                                    param.profile && param.profile.profile_img
-                                                                                        ? param.profile.profile_img
+                                                                                    profile && profile.profile_img
+                                                                                        ? profile.profile_img
                                                                                         : profile_image_default
                                                                                 }/>
                                                                             </div>

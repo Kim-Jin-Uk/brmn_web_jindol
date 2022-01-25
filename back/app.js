@@ -1,5 +1,6 @@
 const express = require('express');
 const userRouter = require('./routes/user')
+const projectRouter = require('./routes/project')
 const authRouter = require('./routes/auth')
 const db = require('./models')
 const cors = require('cors')
@@ -13,6 +14,7 @@ const morgan = require('morgan')
 const hpp = require('hpp')
 const helmet = require('helmet')
 const bodyParser = require("express");
+const {User} = require("./models");
 dotenv.config()
 
 const app = express()
@@ -62,13 +64,26 @@ app.get('/',(req,res) => {
 
 
 app.use('/user',userRouter)
+app.use('/project',projectRouter)
 app.use('/auth',authRouter)
 
-app.get('/oauth', passport.authenticate('kakao'), function (req, res) {
+app.get('/oauth', passport.authenticate('kakao'), async function (req, res, next) {
     // 로그인 시작시 state 값을 받을 수 있음
-    res.redirect('http://brmnmusic.com/project')
+    try{
+        const userData = await User.findOne({
+            where:{id:req.user.dataValues.id}
+        })
+        if (userData.agreement){
+            return res.redirect('http://localhost:3060/project')
+        }
+        res.redirect('http://localhost:3060/signin/agreements')
+    }catch (err){
+        console.error(err)
+        next(err)
+    }
+
 })
 
-app.listen(80,() => {
+app.listen(3065,() => {
     console.log("server open")
 })

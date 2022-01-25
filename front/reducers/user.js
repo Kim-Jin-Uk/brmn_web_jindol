@@ -5,6 +5,14 @@ export const initialState = {
     logInDone:false,
     logInError:null,
 
+    checkAgreementLoading: false,
+    checkAgreementDone:false,
+    checkAgreementError:null,
+
+    updateAgreementLoading: false,
+    updateAgreementDone:false,
+    updateAgreementError:null,
+
     logOutLoading: false,
     logOutDone:false,
     logOutError:null,
@@ -42,9 +50,11 @@ export const initialState = {
     updateProfileImageError:null,
 
     user:null,
+    agreement:null,
     profile:null,
     profileDetail:null,
 
+    otherUser:null,
     otherProfile:null,
     otherProfileDetail:null,
 
@@ -57,6 +67,14 @@ export const UPLOAD_MY_PROFILE_DONE = "UPLOAD_MY_PROFILE_DONE"
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST"
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS"
 export const LOG_IN_FAILURE = "LOG_IN_FAILURE"
+
+export const CHECK_AGREEMENT_REQUEST = "CHECK_AGREEMENT_REQUEST"
+export const CHECK_AGREEMENT_SUCCESS = "CHECK_AGREEMENT_SUCCESS"
+export const CHECK_AGREEMENT_FAILURE = "CHECK_AGREEMENT_FAILURE"
+
+export const UPDATE_AGREEMENT_REQUEST = "UPDATE_AGREEMENT_REQUEST"
+export const UPDATE_AGREEMENT_SUCCESS = "UPDATE_AGREEMENT_SUCCESS"
+export const UPDATE_AGREEMENT_FAILURE = "UPDATE_AGREEMENT_FAILURE"
 
 export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST"
 export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS"
@@ -118,6 +136,36 @@ export default (state = initialState, action) => produce(state, (draft) => {
             draft.logInError = action.error;
             break;
 
+        case CHECK_AGREEMENT_REQUEST:
+            draft.checkAgreementLoading = true;
+            draft.checkAgreementError = null;
+            draft.checkAgreementDone = false;
+            break;
+        case CHECK_AGREEMENT_SUCCESS:
+            draft.checkAgreementLoading = false;
+            draft.checkAgreementDone = true;
+            draft.agreement = action.data;
+            break;
+        case CHECK_AGREEMENT_FAILURE:
+            draft.checkAgreementLoading = false;
+            draft.checkAgreementError = action.error;
+            break;
+
+        case UPDATE_AGREEMENT_REQUEST:
+            draft.updateAgreementLoading = true;
+            draft.updateAgreementError = null;
+            draft.updateAgreementDone = false;
+            break;
+        case UPDATE_AGREEMENT_SUCCESS:
+            draft.updateAgreementLoading = false;
+            draft.updateAgreementDone = true;
+            draft.agreement = action.data;
+            break;
+        case UPDATE_AGREEMENT_FAILURE:
+            draft.updateAgreementLoading = false;
+            draft.updateAgreementError = action.error;
+            break;
+
         case LOG_OUT_REQUEST:
             draft.logOutLoading = true;
             draft.logOutError = null;
@@ -127,6 +175,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
             draft.logOutLoading = false;
             draft.logOutDone = true;
             draft.user = null;
+            draft.logInDone = false
             break;
         case LOG_OUT_FAILURE:
             draft.logOutLoading = false;

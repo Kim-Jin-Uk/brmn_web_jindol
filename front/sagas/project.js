@@ -1,24 +1,95 @@
 import axios from 'axios';
 import {
-  all, call, fork, put, takeLatest, throttle,
+  all, call, fork, put, takeLatest,
 } from 'redux-saga/effects';
-import {LOG_IN_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS} from "../reducers/user";
+import {
+  UPLOAD_PROJECT_FAILURE,
+  UPLOAD_PROJECT_IMAGE_FAILURE,
+  UPLOAD_PROJECT_IMAGE_REQUEST,
+  UPLOAD_PROJECT_IMAGE_SUCCESS, UPLOAD_PROJECT_REQUEST, UPLOAD_PROJECT_SUCCESS,
+  UPLOAD_PROJECT_THUMB_IMAGE_FAILURE,
+  UPLOAD_PROJECT_THUMB_IMAGE_REQUEST,
+  UPLOAD_PROJECT_THUMB_IMAGE_SUCCESS
+} from "../reducers/project";
 
-function logInAPI(data){
-  return axios.post('login',data)
+function uploadProjectImageAPI(data){
+  return axios.post('project/upload/image',data)
 }
 
-function* logIn(action){
+function* uploadProjectImage(action){
+  try{
+    const result = yield call(uploadProjectImageAPI,action.data);
+    yield put({
+      type:UPLOAD_PROJECT_IMAGE_SUCCESS,
+      data: result.data
+    })
+  }catch (err){
+    yield put({
+      type:UPLOAD_PROJECT_IMAGE_FAILURE,
+      data:err.response.data
+    })
+    console.error(err)
+  }
+}
 
+function uploadProjectThumbImageAPI(data){
+  return axios.post('project/upload/image',data)
+}
+
+function* uploadProjectThumbImage(action){
+  try{
+    const result = yield call(uploadProjectThumbImageAPI,action.data);
+    yield put({
+      type:UPLOAD_PROJECT_THUMB_IMAGE_SUCCESS,
+      data: result.data
+    })
+  }catch (err){
+    yield put({
+      type:UPLOAD_PROJECT_THUMB_IMAGE_FAILURE,
+      data:err.response.data
+    })
+    console.error(err)
+  }
+}
+
+function uploadProjectAPI(data){
+  return axios.post('project/upload',data)
+}
+
+function* uploadProject(action){
+  try{
+    const result = yield call(uploadProjectAPI,action.data);
+    yield put({
+      type:UPLOAD_PROJECT_SUCCESS,
+      data: result.data
+    })
+  }catch (err){
+    yield put({
+      type:UPLOAD_PROJECT_FAILURE,
+      data:err.response.data
+    })
+    console.error(err)
+  }
 }
 
 
-function* watchLogIn() {
-  yield takeLatest("test", logIn);
+function* watchUploadProjectImage() {
+  yield takeLatest(UPLOAD_PROJECT_IMAGE_REQUEST, uploadProjectImage);
 }
+
+function* watchUploadProjectThumbImage() {
+  yield takeLatest(UPLOAD_PROJECT_THUMB_IMAGE_REQUEST, uploadProjectThumbImage);
+}
+
+function* watchUploadProject() {
+  yield takeLatest(UPLOAD_PROJECT_REQUEST, uploadProject);
+}
+
 
 export default function* projectSaga() {
   yield all([
-    fork(watchLogIn),
+    fork(watchUploadProjectImage),
+    fork(watchUploadProjectThumbImage),
+    fork(watchUploadProject),
   ])
 }

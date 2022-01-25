@@ -11,6 +11,7 @@ import {createGlobalStyle} from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
 import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST} from "../../reducers/user";
 import ProfileThumbnail from "../../components/ProfileThumbnail";
+import Router from "next/router";
 
 const { Option } = Select;
 const Global = createGlobalStyle`
@@ -115,10 +116,14 @@ const Index = () =>{
 
     useEffect(() => {
         if (user !== null){
-            dispatch({
-                type:GET_MY_PROFILE_REQUEST,
-                data:user.email
-            })
+            if (user === "not agreement"){
+                Router.replace("http://localhost:3060/signin/agreements")
+            }else {
+                dispatch({
+                    type:GET_MY_PROFILE_REQUEST,
+                    data:user.email
+                })
+            }
         }
     },[user])
 

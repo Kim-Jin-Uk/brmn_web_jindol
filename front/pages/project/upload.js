@@ -1,12 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import Header from "../../components/Header";
 import dynamic from "next/dynamic";
 import {createGlobalStyle} from "styled-components";
 import styles from "../../styles/Project.module.scss"
-import {Select, Divider, Input, Checkbox, Modal} from "antd";
-import { PlusOutlined } from '@ant-design/icons';
+import {Select, Divider, Input, Checkbox, Modal, message} from "antd";
 import Image from "next/image";
 import Button from "../../components/Button";
+import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST} from "../../reducers/user";
+import Router from "next/router";
+import {useDispatch, useSelector} from "react-redux";
+import useInput from "../../hooks/useInput";
+import {UPLOAD_PROJECT_REQUEST, UPLOAD_PROJECT_THUMB_IMAGE_REQUEST} from "../../reducers/project";
+import ProfileThumbnail from "../../components/ProfileThumbnail";
 const { Option } = Select;
 const TextEdit = dynamic(
     () => {
@@ -16,6 +21,9 @@ const TextEdit = dynamic(
 );
 
 const Global = createGlobalStyle`
+  .ant-message{
+    z-index: 3000;
+  }
     body{
       background: #fafafa;
     }
@@ -147,43 +155,74 @@ const Global = createGlobalStyle`
 `
 
 const Upload = () => {
-
+    const dispatch = useDispatch();
+    const {user, logInDone, profile} = useSelector((state) => state.user);
+    const {projectThumbImagePath} = useSelector((state) => state.project);
     const [uploadBtn, setUploadBtn] = useState(false)
-    const [imgUrl, setImgUrl] = useState("http://localhost:3060/_next/static/media/img_select.7a864cc8.svg")
+    const [modalVisible, setModalVisible] = useState(false)
+    const [select, setSelect] = useState(true)
+    const onSelcetChange = useCallback(() => {
+        setSelect(!select)
+    })
+
+    const [title,onChangeTitle,setTitle] = useInput("")
+    const [projectField, setProjectField] = useState([])
+    const [imgUrl, setImgUrl] = useState("https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/project/img_select.svg")
     const [imgSet,setImgSet] = useState(false)
     const [hashList,setHashList] = useState([])
     const [techList,setTechList] = useState([])
-    const [modalVisible, setModalVisible] = useState(false)
+    const [userCopyright, setUserCopyright] = useState("저작자표시 (CC BY)")
+    const [mainText,setMainText] = useState([])
+
+    const copyrightList = [
+        "저작자표시 (CC BY)",
+        "저작자표시 동일조건변경허락 (CC BY-SA)",
+        "저작자표시 변경금지 (CC BY-ND)",
+        "저작자표시-비영리 (CC BY-NC)",
+        "저작자표시-비영리-동일조건변경허락 (CC BY-NC-SA)",
+        "저작자표시-비영리-변경금지 (CC BY-NC-ND)"
+    ]
+
+
     const [fieldList, setFieldList] = useState([
-        "전체","보컬","랩","작사","작곡","연주","음향 엔지니어","디자인"
+        "보컬","랩","작사","작곡","연주","음향 엔지니어","디자인"
     ])
     const [fieldName, setFieldName] = useState("")
 
     const imgUpload = () =>{
         const input = document.createElement("input")
         input.setAttribute("type","file")
+        input.setAttribute("name","projectImage")
         input.setAttribute("accept","image/*")
         input.click()
         input.onchange = async (e) => {
-            if (input.files){
-                const file = input.files[0]
-                const formData = new FormData()
-                formData.append("image",file)
-                setImgUrl("https://helpx.adobe.com/content/dam/help/ko/photoshop/how-to/compositing/jcr%3acontent/main-pars/image/compositing_1408x792.jpg")
-                setImgSet(true)
-            }
+            const imageFormData = new FormData();
+            imageFormData.append('projectImage', e.target.files[0]);
+            console.log(e.target.files[0])
+            dispatch({
+                type: UPLOAD_PROJECT_THUMB_IMAGE_REQUEST,
+                data: imageFormData
+            });
+
         }
     }
 
+    useEffect(() => {
+        if (projectThumbImagePath){
+            setImgUrl(projectThumbImagePath.fileName)
+            setImgSet(true)
+        }
+    },[projectThumbImagePath])
+
     const onEnterHash = (e) => {
         if (e.key === "Enter"){
-            setHashList([...hashList,e.target.innerText])
+            setHashList([...hashList,e.target.innerText.replace(/\n/gi,'')])
             e.target.innerText = ""
         }
     }
     const onEnterTech = (e) => {
         if (e.key === "Enter"){
-            setTechList([...techList,e.target.innerText])
+            setTechList([...techList,e.target.innerText.replace(/\n/gi,'')])
             e.target.innerText = ""
         }
     }
@@ -213,6 +252,78 @@ const Upload = () => {
         setModalVisible(false)
     }
 
+    useEffect(() => {
+        if (!logInDone){
+            Router.replace("/project")
+        }
+    },[])
+
+    useEffect(() => {
+        dispatch({
+            type:LOG_IN_REQUEST
+        })
+    },[])
+
+    useEffect(() => {
+        if (user !== null){
+            if (user === "not agreement"){
+                Router.replace("http://localhost:3060/signin/agreements")
+            }else {
+                dispatch({
+                    type:GET_MY_PROFILE_REQUEST,
+                    data:user.email
+                })
+            }
+        }
+    },[user])
+
+    const onChangeField = (v) => {
+        if (v.length > 10){
+            return message.warning('분야는 최대 10개까지 선택 가능합니다.')
+        }else {
+            setProjectField(v)
+        }
+    }
+
+    const suffix = <>
+        {
+            select
+                ? <div className={styles.edit_card_select_icon}></div>
+                : <div className={styles.edit_card_clear_icon}></div>
+        }
+    </>
+
+
+    const onChangeCopyright = (v) => {
+        setUserCopyright(v)
+    }
+
+    const onCLickUploadBtn = () => {
+        if (mainText.length < 1){
+            message.warning("본문 내용을 입력해주세요.")
+        }
+        else if (title.length < 1){
+            message.warning("제목을 입력해주세요")
+        }else if (projectField.length < 1){
+            message.warning("분야를 선택해주세요")
+        }else if (imgUrl === "https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/project/img_select.svg"){
+            message.warning("표지 이미지를 선택해주세요.")
+        }else {
+            dispatch({
+                type:UPLOAD_PROJECT_REQUEST,
+                data:{
+                    mainText:mainText,
+                    title:title,
+                    field:projectField,
+                    image:imgUrl,
+                    copyright:userCopyright,
+                    hashList:hashList,
+                    techList:techList
+                }
+            })
+        }
+    }
+
     return(
         <>
             <Global></Global>
@@ -220,7 +331,7 @@ const Upload = () => {
             <div>
                 <div style={{maxWidth:"960px", background:"#ffffff",margin:"0 auto", minHeight:"calc(100vh - 56px)",
                 border:"1px solid #E8E8E8"}}>
-                    <TextEdit></TextEdit>
+                    <TextEdit mainText={mainText} setMainText={setMainText}></TextEdit>
                 </div>
 
                 {
@@ -229,16 +340,19 @@ const Upload = () => {
                             <div style={{position:"absolute", top:"0", zIndex:"2000", width:"100vw", height:"100vh", minWidth:"340px"}}>
                                     <div className={styles.detail_blank}></div>
                                     <aside style={{overflowY:"scroll", overflowX:"hidden"}} className={styles.detail_wrapper}>
-                                        <Header btnType={"upload"} upload={uploadBtn} setUpload={setUploadBtn} side={true}></Header>
+                                        <div className={styles.side_top_wrapper}>
+                                            <div className={styles.side_top_close_btn} onClick={() => setUploadBtn(false)}></div>
+                                            <div onClick={() => onCLickUploadBtn()} className={styles.side_top_upload_btn}>업로드</div>
+                                        </div>
                                         <div style={{paddingTop:"4px", border:"none"}}>
                                             <div className={styles.detail_box}>
                                                 <div className={styles.detail_title}>제목*</div>
-                                                <input className={styles.detail_edit} type="text" placeholder={"제목"}/>
+                                                <input value={title} onChange={onChangeTitle} className={styles.detail_edit} type="text" placeholder={"제목"}/>
                                             </div>
                                             <div className={styles.detail_box} style={{height:"auto"}}>
                                                 <div className={styles.detail_title}>분야*</div>
                                                 <div className={styles.detail_sub_title}>어떤 분야의 프로젝트입니까?</div>
-                                                <Checkbox.Group style={{ width: '100%' }}>
+                                                <Checkbox.Group style={{ width: '100%' }} onChange={onChangeField}>
                                                     {
                                                         fieldList.map((v) => (
                                                             <Checkbox className={styles.edit_card_checkbox} value={v}>{v}</Checkbox>
@@ -249,7 +363,11 @@ const Upload = () => {
                                             </div>
                                             <div className={styles.detail_box} style={{height:"240px"}}>
                                                 <div className={styles.detail_title} style={{verticalAlign:"top", position:"static", top:"0", transform:"translateY(0)"}}>표지*</div>
-                                                <img src={imgUrl} onClick={imgUpload} className={styles.detail_img_wrapper}></img>
+                                                <div onClick={imgUpload} className={styles.detail_img_wrapper}>
+                                                    <ProfileThumbnail circle size={240} image={
+                                                        imgUrl
+                                                    }></ProfileThumbnail>
+                                                </div>
                                                 {
                                                     imgSet
                                                         ?(
@@ -265,13 +383,15 @@ const Upload = () => {
                                             </div>
                                             <div className={styles.detail_box}>
                                                 <div className={styles.detail_title}>저작권</div>
-                                                <Select defaultValue="CC BY">
-                                                    <Option value="CC BY">저작자표시 (CC BY)</Option>
-                                                    <Option value="CC BY SA">저작자표시 동일조건변경허락 (CC BY-SA)</Option>
-                                                    <Option value="CC BY ND">저작자표시 변경금지 (CC BY-ND)</Option>
-                                                    <Option value="CC BY NC">저작자표시-비영리 (CC BY-NC)</Option>
-                                                    <Option value="CC BY NC SA">저작자표시-비영리-동일조건변경허락 (CC BY-NC-SA)</Option>
-                                                    <Option value="CC BY NC ND">저작자표시-비영리-변경금지 (CC BY-NC-ND)</Option>
+                                                <Select defaultValue="저작자표시 (CC BY)"
+                                                        value={userCopyright}
+                                                        suffixIcon={suffix}
+                                                        onClick={onSelcetChange}
+                                                        onChange={onChangeCopyright}
+                                                >
+                                                    {copyrightList.map(v => (
+                                                        <Option key={v}>{v}</Option>
+                                                    ))}
                                                 </Select>
                                             </div>
                                             <div className={styles.detail_box} style={{height:"auto", minHeight:"36px"}}>
@@ -326,7 +446,7 @@ const Upload = () => {
                 ]}
             >
                 <div>분야 이름</div>
-                <input className={styles.add_field_input2} onChange={onChangeFieldName} value={fieldName} type="text" placeholder={"분야 이름을 입력합니다."}/>
+                <input maxLength={20} className={styles.add_field_input2} onChange={onChangeFieldName} value={fieldName} type="text" placeholder={"분야 이름을 입력합니다."}/>
             </Modal>
 
         </>

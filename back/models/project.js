@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     Project.associate = (db) => {
         db.Project.belongsTo(db.User)
         db.Project.hasMany(db.ProjectDetail)
-        db.Project.hasMany(db.Tag)
+        db.Project.belongsToMany(db.Tag,{ through: 'projecthashtag' })
     }
 
     return Project

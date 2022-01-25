@@ -3,6 +3,9 @@ import {
 } from 'redux-saga/effects';
 import axios from 'axios';
 import {
+  CHECK_AGREEMENT_FAILURE,
+  CHECK_AGREEMENT_REQUEST,
+  CHECK_AGREEMENT_SUCCESS,
   GET_MY_PROFILE_DETAIL_FAILURE,
   GET_MY_PROFILE_DETAIL_REQUEST,
   GET_MY_PROFILE_DETAIL_SUCCESS,
@@ -17,7 +20,12 @@ import {
   GET_OTHER_PROFILE_SUCCESS,
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
-  LOG_IN_SUCCESS,
+  LOG_IN_SUCCESS, LOG_OUT_FAILURE,
+  LOG_OUT_REQUEST,
+  LOG_OUT_SUCCESS,
+  UPDATE_AGREEMENT_FAILURE,
+  UPDATE_AGREEMENT_REQUEST,
+  UPDATE_AGREEMENT_SUCCESS,
   UPDATE_MY_PROFILE_FAILURE,
   UPDATE_MY_PROFILE_REQUEST,
   UPDATE_MY_PROFILE_SUCCESS,
@@ -47,6 +55,66 @@ function* logIn(){
   }catch (err){
     yield put({
       type:LOG_IN_FAILURE,
+      data:err.response.data
+    })
+    console.error(err)
+  }
+}
+
+function checkAgreementAPI(){
+  return axios.get('user/agreement')
+}
+
+function* checkAgreement(){
+  try{
+    const result = yield call(checkAgreementAPI);
+    yield put({
+      type:CHECK_AGREEMENT_SUCCESS,
+      data:result.data
+    })
+  }catch (err){
+    yield put({
+      type:CHECK_AGREEMENT_FAILURE,
+      data:err.response.data
+    })
+    console.error(err)
+  }
+}
+
+function updateAgreementAPI(data){
+  return axios.post('user/agreement',data)
+}
+
+function* updateAgreement(action){
+  try{
+    const result = yield call(updateAgreementAPI,action.data);
+    yield put({
+      type:UPDATE_AGREEMENT_SUCCESS,
+      data:result.data
+    })
+  }catch (err){
+    yield put({
+      type:UPDATE_AGREEMENT_FAILURE,
+      data:err.response.data
+    })
+    console.error(err)
+  }
+}
+
+function logOutAPI(){
+  return axios.post('user/logout')
+}
+
+function* logOut(){
+  try{
+    const result = yield call(logOutAPI);
+    yield put({
+      type:LOG_OUT_SUCCESS,
+      data:result.data
+    })
+  }catch (err){
+    yield put({
+      type:LOG_OUT_FAILURE,
       data:err.response.data
     })
     console.error(err)
@@ -220,6 +288,18 @@ function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
 
+function* watchCheckAgreement() {
+  yield takeLatest(CHECK_AGREEMENT_REQUEST, checkAgreement);
+}
+
+function* watchUpdateAgreement() {
+  yield takeLatest(UPDATE_AGREEMENT_REQUEST, updateAgreement);
+}
+
+function* watchLogOut() {
+  yield takeLatest(LOG_OUT_REQUEST, logOut);
+}
+
 function* watchGetMyProfile() {
   yield takeLatest(GET_MY_PROFILE_REQUEST, getMyProfile);
 }
@@ -256,6 +336,9 @@ function* watchUpdateProfileImage() {
 export default function* userSaga() {
   yield all([
     fork(watchLogIn),
+    fork(watchCheckAgreement),
+    fork(watchUpdateAgreement),
+    fork(watchLogOut),
     fork(watchGetMyProfile),
     fork(watchGetMyProfileDetail),
     fork(watchGetOtherProfile),

@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import Header from "../../components/Header";
 import Link from "next/link";
 import Button from "../../components/Button";
@@ -10,9 +10,14 @@ import Footer from "../../components/Footer";
 import {Card, Dropdown, Menu as AntMenu} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    GET_MY_PROFILE_REQUEST, GET_OTHER_PROFILE_DETAIL_REQUEST,
+    GET_MY_PROFILE_REQUEST,
+    GET_OTHER_PROFILE_DETAIL_REQUEST,
     GET_OTHER_PROFILE_REQUEST,
-    LOG_IN_REQUEST, UPDATE_PROFILE_IMAGE_DEFAULT_REQUEST, UPDATE_PROFILE_IMAGE_REQUEST, UPLOAD_PROFILE_IMAGE_REQUEST
+    LOG_IN_REQUEST,
+    LOG_OUT_REQUEST,
+    UPDATE_PROFILE_IMAGE_DEFAULT_REQUEST,
+    UPDATE_PROFILE_IMAGE_REQUEST,
+    UPLOAD_PROFILE_IMAGE_REQUEST
 } from "../../reducers/user";
 import useInput from "../../hooks/useInput";
 import ProfileThumbnail from "../../components/ProfileThumbnail";
@@ -233,16 +238,22 @@ const ProfileProject = () => {
 
     useEffect(() => {
         if (user !== null){
-            dispatch({
-                type:GET_MY_PROFILE_REQUEST,
-                data:user.email
-            })
+            if (user === "not agreement"){
+                dispatch({
+                    type:LOG_OUT_REQUEST
+                })
+            }else {
+                dispatch({
+                    type:GET_MY_PROFILE_REQUEST,
+                    data:user.email
+                })
+            }
         }
     },[user])
 
     useEffect(() => {
         if (otherProfile){
-            setUserName(user.email)
+            setUserName(id)
             dispatch({
                 type:GET_OTHER_PROFILE_DETAIL_REQUEST,
                 data:id

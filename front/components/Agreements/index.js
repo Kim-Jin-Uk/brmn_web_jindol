@@ -3,10 +3,13 @@ import Checkbox from "../Checkbox";
 import styles from "./style.module.scss"
 import btn_styles from "../../styles/Sign.module.scss"
 import Button from "../Button";
-import {Modal} from "antd";
+import {message, Modal} from "antd";
 import Router from 'next/router'
+import {useDispatch} from "react-redux";
+import {UPDATE_AGREEMENT_REQUEST} from "../../reducers/user";
 
 export default function Agreements(props) {
+    const dispatch = useDispatch()
     const [hidden, setHidden] = useState(true)
     const [allowAll, setAllowAll] = useState(false)
     const [requiredToggle, setRequiredToggle] = useState(false)
@@ -23,15 +26,14 @@ export default function Agreements(props) {
     }, [checked])
 
     const onClickCreate = useCallback(() => {
-        console.log("click")
         if (requiredToggle){
-            Router.push("complete")
+            Router.replace("complete")
+            dispatch({
+                type:UPDATE_AGREEMENT_REQUEST,
+                data:checked
+            })
         }else {
-            Modal.error({
-                title: '회원가입 실패',
-                content: '필수항목을 체크해주세요.',
-                okText:"확인"
-            });
+            message.warning('필수항목을 체크해주세요.');
         }
     },[requiredToggle])
 

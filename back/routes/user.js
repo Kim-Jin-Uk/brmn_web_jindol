@@ -36,11 +36,66 @@ router.post('/', (req,res,next) => {
     res.status(200).send('ok')
 })
 
-router.get('/login',(req,res,next) => {
+router.get('/login',async (req,res,next) => {
     if (req.isAuthenticated()){
-        return res.status(200).json({email:req.user.dataValues.email})
+        try{
+            const userData = await User.findOne({
+                where:{id:req.user.dataValues.id}
+            })
+            if (userData.agreement){
+                return res.status(200).json({email:req.user.dataValues.email})
+            }
+            return res.status(200).json('not agreement')
+        }catch (err){
+            console.error(err)
+            next(err)
+        }
     }
     res.status(400).send('not login')
+})
+
+router.post('/logout',(req,res,next) => {
+    req.logout()
+    req.session.destroy()
+    res.status(200).send('ok')
+    console.log("logout")
+})
+
+router.get('/agreement',isLoggendIn,async (req,res,next) => {
+    try{
+        const userData = await User.findOne({
+            where:{id:req.user.dataValues.id}
+        })
+        console.log(userData)
+        res.status(200).json(userData.agreement)
+    }catch (err){
+        console.error(err)
+        next(err)
+    }
+})
+
+router.post('/agreement',isLoggendIn,async (req,res,next) => {
+    try{
+        let agreements = []
+        if (req.body.c1){
+            agreements.push("c1")
+        }
+        if (req.body.c2){
+            agreements.push("c2")
+        }
+        if (req.body.c3){
+            agreements.push("c3")
+        }
+        await User.update({
+            agreement:agreements.join(", ")
+        },{
+            where:{id:req.user.dataValues.id}
+        })
+        res.status(200).send(agreements.join(", "))
+    }catch (err){
+        console.error(err)
+        next(err)
+    }
 })
 
 router.post('/profile',async (req,res,next) => {

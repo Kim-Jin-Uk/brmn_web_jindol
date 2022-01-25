@@ -790,7 +790,7 @@ const Edit = () => {
 
     useEffect(() => {
         if (!logInDone){
-            Router.back()
+            Router.replace("/project")
         }
     },[])
 
@@ -801,11 +801,15 @@ const Edit = () => {
     },[])
 
     useEffect(() => {
-        if (user){
-            dispatch({
-                type:GET_MY_PROFILE_REQUEST,
-                data:user.email
-            })
+        if (user !== null){
+            if (user === "not agreement"){
+                Router.replace("http://localhost:3060/signin/agreements")
+            }else {
+                dispatch({
+                    type:GET_MY_PROFILE_REQUEST,
+                    data:user.email
+                })
+            }
         }
     },[user])
 
@@ -933,6 +937,11 @@ const Edit = () => {
         }
     },[updateMyProfileError])
 
+    useEffect(() => {
+        const antSelect = document.getElementById("antSelect")
+        console.log(antSelect)
+    },[userLocation])
+
     const onClickMainSaveButton = () => {
         dispatch({
             type:UPDATE_MY_PROFILE_REQUEST,
@@ -1032,7 +1041,7 @@ const Edit = () => {
                                 <div style={{marginBottom:"5px"}}>
                                     <div className={styles.edit_card_sub_title}>위치</div>
                                 </div>
-                                <Select size={"default"} defaultValue={
+                                <Select id={"antSelect"} size={"default"} defaultValue={
                                     userLocation !== ""
                                         ? userLocation
                                         : "서울특별시"
@@ -1041,6 +1050,7 @@ const Edit = () => {
                                     maxWidth:"344px",
                                     height:"36px",
                                 }}
+                                        value={userLocation}
                                         suffixIcon={suffix}
                                         onClick={onSelcetChange}
                                         onChange={onChangeLocation}

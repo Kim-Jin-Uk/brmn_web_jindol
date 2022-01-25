@@ -7,7 +7,7 @@ dotenv.config()
 module.exports = () => {
     passport.use(new KakaoStrategy({
         clientID: process.env.KAKAO_API_KEY,
-        callbackURL: 'http://api.brmnmusic.com/oauth',
+        callbackURL: 'http://localhost:3065/oauth',
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             const exUser = await User.findOne({
@@ -23,7 +23,8 @@ module.exports = () => {
                     provider: 'kakao',
                 });
                 await Profile.create({
-                    userId:newUser.dataValues.id
+                    userId:newUser.dataValues.id,
+                    nickname:newUser.dataValues.email
                 })
                 done(null, newUser);
             }

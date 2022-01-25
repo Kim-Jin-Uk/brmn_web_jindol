@@ -5,7 +5,8 @@ import {createGlobalStyle} from "styled-components";
 import styles from './styles.module.scss'
 import {Modal, Popover} from "antd";
 import Button from "../Button";
-import {func} from "prop-types";
+import {useDispatch, useSelector} from "react-redux";
+import {ADD_DONE_PROJECT_IMAGE, UPLOAD_PROJECT_IMAGE_REQUEST} from "../../reducers/project";
 
 const Global = createGlobalStyle`
   .ql-video {
@@ -37,6 +38,7 @@ const Global = createGlobalStyle`
     background: #ffffff;
     z-index: 1000;
     width: 100%;
+    top: 56px;
   }
 
   .ql-snow .ql-tooltip[data-mode=video]::before {
@@ -117,7 +119,9 @@ function BtnOk(onClickBtnOk){
 }
 
 
-const TextEdit = () => {
+const TextEdit = (param) => {
+    const dispatch = useDispatch()
+    const {projectImagePath} = useSelector((state) => state.project);
     const [value, setValue] = useState("");
     const [img, setImg] = useState("")
     const [visible, setVisible] = useState(false);
@@ -125,13 +129,28 @@ const TextEdit = () => {
     const [imgList, setImgList] = useState([])
     const [view, setView] = useState("none")
     const [index, setIndex] = useState(null)
-    const Ref = useRef(null)
+    const imageInput = useRef();
+    const bottomRef = useRef(null)
 
     useEffect(()=>{
-        setValue(value + img + "<p> </p>")
-        setImgList([...imgList,img])
-        setImg("")
+        if (img !== ""){
+            setValue(value + img + "<p> </p>")
+            setImgList([...imgList,img])
+            setImg("")
+            setYoutube("")
+            dispatch({
+                type:ADD_DONE_PROJECT_IMAGE
+            })
+        }
     },[img])
+
+    useEffect(() => {
+        console.log("scroll")
+        bottomRef.current?.scrollIntoView({
+            behavior: 'auto',
+            block:"end",
+        });
+    },[img,bottomRef])
 
     useEffect(() => {
         document.body.onclick = function (e) {
@@ -164,21 +183,29 @@ const TextEdit = () => {
         }
     })
 
-    const imageHandler = () => {
-        const input = document.createElement("input")
-        input.setAttribute("type","file")
-        input.setAttribute("accept","image/*")
-        input.click()
-        input.onchange = async (e) => {
-            if (input.files){
-                const file = input.files[0]
-                const formData = new FormData()
-                formData.append("image",file)
-                const imgString = `<img src="https://t1.daumcdn.net/cfile/tistory/24283C3858F778CA2E">`
-                setImg(imgString)
-            }
+    const imageHandler = useCallback(() => {
+        imageInput.current.click()
+    },[imageInput.current])
+
+    const onChangeImages = useCallback((e) => {
+        console.log("image select")
+        const imageFormData = new FormData();
+        imageFormData.append('projectImage', e.target.files[0]);
+        console.log(e.target.files[0])
+        dispatch({
+            type: UPLOAD_PROJECT_IMAGE_REQUEST,
+            data: imageFormData
+        });
+    })
+
+    useEffect(() => {
+        console.log(projectImagePath)
+        if (projectImagePath){
+            const imgString = `<img src="${projectImagePath.fileName}">`
+            setImg(imgString)
         }
-    }
+    },[projectImagePath])
+
     const onClickBtnOk = () => {
         let url = ""
         const propList = youtube.toString().split("/")
@@ -255,15 +282,30 @@ const TextEdit = () => {
         let realValue = []
         for (let i = 0; i < valueList.length; i++) {
             const valueItem = valueList[i].split("</p>")
-            realValue = realValue.concat(valueItem)
+            for (let j = 0; j < valueItem.length; j++) {
+                const valueItemKey = valueItem[j]
+                if (valueItemKey !== '') {
+                    if (valueItemKey.includes('src="')){
+                        const valueUrl = valueItemKey.split('src="')[1].split('"')[0]
+                        if (valueUrl.includes('https://i.ytimg.com/vi/')){
+                            realValue.push("youtube:"+valueUrl.split('https://i.ytimg.com/vi/')[1].split('/')[0])
+                        }else {
+                            realValue.push("image:"+valueUrl)
+                        }
+                    }else {
+                        realValue.push("<pre>"+valueItemKey+"</pre>")
+                    }
+                }
+            }
         }
-        console.log(realValue)
+        param.setMainText(realValue)
     },[value])
 
     return(
         <>
             <Global></Global>
             <div style={{minWidth:"320px"}}>
+                <input type="file" name="projectImage" hidden ref={imageInput} onChange={onChangeImages} />
                 <ReactQuill modules={modules} formats={formats} theme="snow" value={value} onChange={setValue} />
             </div>
             <div>
@@ -287,6 +329,7 @@ const TextEdit = () => {
                 onClick={onClickPopOver}
             > </div>
 
+            <div style={{width:"100%",height:"1px"}} ref={bottomRef}></div>
         </>
     )
 }
