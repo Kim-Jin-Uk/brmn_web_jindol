@@ -13,7 +13,6 @@ const router = express.Router()
 try{
     fs.accessSync('profileImages')
 }catch (e) {
-    console.log('make profileImages directory')
     fs.mkdirSync('profileImages')
 }
 AWS.config.update({
@@ -58,7 +57,6 @@ router.post('/logout',(req,res,next) => {
     req.logout()
     req.session.destroy()
     res.status(200).send('ok')
-    console.log("logout")
 })
 
 router.get('/agreement',isLoggendIn,async (req,res,next) => {
@@ -66,7 +64,6 @@ router.get('/agreement',isLoggendIn,async (req,res,next) => {
         const userData = await User.findOne({
             where:{id:req.user.dataValues.id}
         })
-        console.log(userData)
         res.status(200).json(userData.agreement)
     }catch (err){
         console.error(err)
@@ -107,10 +104,9 @@ router.post('/profile',async (req,res,next) => {
         })
         const userProfile = await Profile.findOne({
             where:{
-                UserId:userData.dataValues.id
+                userId:userData.dataValues.id
             }
         })
-
         res.status(200).json(userProfile)
     }catch (err){
         console.error(err)
@@ -128,7 +124,7 @@ router.post('/profile/detail',async (req,res,next) => {
         })
         const userProfile = await Profile.findOne({
             where:{
-                UserId:userData.dataValues.id
+                userId:userData.dataValues.id
             },
             include:[
                 {
@@ -152,7 +148,7 @@ router.post('/update/myprofile',isLoggendIn,async (req,res,next) => {
         })
         const ProfileData = await Profile.findOne({
             where:{
-                UserId:userData.dataValues.id
+                userId:userData.dataValues.id
             }
         })
         await Profile.update({
@@ -167,13 +163,13 @@ router.post('/update/myprofile',isLoggendIn,async (req,res,next) => {
             facebook_link:req.body.facebook,
             twitter_link:req.body.twitter,
         },{
-            where:{UserId:userData.dataValues.id}
+            where:{userId:userData.dataValues.id}
         })
 
         await ProfileDetail.update({
             visible_type: "none"
         },{
-            where:{ProfileId:ProfileData.dataValues.id}
+            where:{profileId:ProfileData.dataValues.id}
         })
 
         if (req.body.tech){
@@ -365,12 +361,12 @@ router.post('/update/profile/default',isLoggendIn,async (req,res,next) => {
         await Profile.update({
             profile_img:null
         },{
-            where:{UserId:userData.dataValues.id}
+            where:{userId:userData.dataValues.id}
         })
 
         const userProfile = await Profile.findOne({
             where:{
-                UserId:userData.dataValues.id
+                userId:userData.dataValues.id
             }
         })
         res.status(200).json(userProfile)
@@ -389,16 +385,15 @@ router.post('/upload/profile/image',isLoggendIn, upload.single('profileImage'), 
 
 router.post('/update/profile/image',isLoggendIn, upload.none(), async (req,res,next)=>{
     try{
-        console.log(req.body)
         await Profile.update({
             profile_img:req.body.fileName
         },{
-            where:{UserId:req.user.dataValues.id}
+            where:{userId:req.user.dataValues.id}
         })
 
         const userProfile = await Profile.findOne({
             where:{
-                UserId:req.user.dataValues.id
+                userId:req.user.dataValues.id
             }
         })
         res.status(200).json(userProfile)

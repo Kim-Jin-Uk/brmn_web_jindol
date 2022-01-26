@@ -8,7 +8,7 @@ import {createGlobalStyle} from "styled-components";
 import sideStyles from "../../styles/Project.module.scss";
 import Image from "next/image"
 import {Modal, Popover} from "antd";
-import Router from "next/router";
+import Router, {useRouter} from "next/router";
 
 
 import {
@@ -17,6 +17,17 @@ import {
 } from "react-share";
 import useScript from "../../hooks/use-script";
 import KakaoShareButton from "../../components/ShareBtn/KakaoShareButton";
+import {GET_MY_PROFILE_REQUEST, GET_OTHER_PROFILE_REQUEST, LOG_IN_REQUEST, LOG_OUT_REQUEST} from "../../reducers/user";
+import {
+    ADD_VIEW_COUNT_REQUEST, DELETE_PROJECT_REQUEST,
+    LOAD_PROJECT_DETAIL_REQUEST,
+    LOAD_PROJECT_DETAIL_SUCCESS,
+    LOAD_PROJECT_REQUEST
+} from "../../reducers/project";
+import {useDispatch, useSelector} from "react-redux";
+import ProfileThumbnail from "../../components/ProfileThumbnail";
+import moment from "moment";
+import 'moment/locale/ko'
 
 function ShareGroup(props){
     useScript('https://developers.kakao.com/sdk/js/kakao.js')
@@ -32,7 +43,7 @@ function ShareGroup(props){
     return(
         <div className={styles.share_wrapper}>
             <div className={styles.default_icon} onClick={handleCopyClipBoard}></div>
-            <KakaoShareButton title={props.title} hash={props.hash} />
+            <KakaoShareButton title={props.title} hash={props.hash} url={props.url} />
             <FacebookShareButton style={{ marginRight: "20px" }} url={currentUrl}>
                 <div className={styles.facebook_icon}></div>
             </FacebookShareButton>
@@ -110,22 +121,17 @@ function ProjectCard(props){
     const [youtubeUrl, setYoutubeUrl] = useState("")
     const [textList, setTextList] = useState([])
     useEffect(() => {
-        if (props.props.type === "youtube"){
-            const propList = props.props.url.toString().split("/")
-            if (propList[propList.length-1].includes("watch?v=")){
-                setYoutubeUrl(`https://www.youtube.com/embed/${propList[propList.length-1].replace("watch?v=","")}`)
-            }else {
-                setYoutubeUrl(`https://www.youtube.com/embed/${propList[propList.length-1]}`)
-            }
+        if (props.props.detail_type === "youtube"){
+            setYoutubeUrl(`https://www.youtube.com/embed/${props.props.contents}`)
         }
     },[props])
 
     return(
         <>
             {{
-                "img":(
+                "image":(
                     <>
-                        <img className={styles.card_img} src={props.props.url}/>
+                        <img className={styles.card_img} src={props.props.contents}/>
                     </>
                 ),"youtube":(
                     <>
@@ -136,10 +142,10 @@ function ProjectCard(props){
                     </>
                 ),"text":(
                     <>
-                        <div className={styles.card_img}>{props.props.url}</div>
+                        <div className={styles.card_text} dangerouslySetInnerHTML={ {__html: props.props.contents} }></div>
                     </>
                 )
-            }[props.props.type]}
+            }[props.props.detail_type]}
         </>
     )
 }
@@ -161,14 +167,19 @@ function CopyrightBtn(props){
 }
 
 const ProjectPage = () => {
+    const router = useRouter()
+    const [id,setId] = useState(router.query.id)
+    const dispatch = useDispatch()
     const [openAble,setOpenAble] = useState(true)
-    const [isLoggedin,setIsLoggedin] = useState(true)
-    const [isMe,setIsMe] = useState(true)
+    const {user,profile, logInDone} = useSelector((state) => state.user);
+    const {loadProjectDetail,deleteProjectDone} = useSelector((state) => state.project);
+    const [isMe,setIsMe] = useState(false)
     const [deleteVisible,setDeleteVisible] = useState(false)
     const [shareVisible,setShareVisible] = useState(false)
     const [popVisible,setPopVisible] = useState(false)
+    const [fieldList, setFieldList] = useState([
+    ])
     const [hashList, setHashList] = useState([
-        "#2층과3층사이","#2f3f","#발라드","#영어가사","#커버","#노래영상"
     ])
     const [defaultUrl, setDefaultUrl] = useState("")
     const onClickClose = useCallback(() => {
@@ -176,23 +187,9 @@ const ProjectPage = () => {
     },[openAble])
 
     const [projectList,setProjectList] = useState([
-        {type:"img",url:"https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg"},
-        {type:"text",
-            url:"텍스트 입력텍[스트 입력텍###스트 <b>입력      음악의 가사를 입력합니다\n" +
-                ".<br>음\n" +
-                "악의 가사를 입]력합니다.음악의 가사를 입#력합니다. 음악의 가사를 입력합니다.음악의 가사를 입력합니다.<b>음악의 가사를 입력합니다.음악의 가사를 입력합니<br>다.<b>음\t악의 가사를 #[입력합니다. 음악의 #가사를 ]<br>입력합니다. 음악의 가사를 입력합니다."
-        },
-        {type:"img",url:"https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg"},
-        {type:"youtube",url:"https://www.youtube.com/watch?v=A4RDyzQsI7U"},
-        {type:"text",
-            url:"텍스트 입력텍스트 입력텍스트 입력 음악의 가사를 입력합니다.음악의 가사를 입력합니다.음악의 가사를 입력합니다. 음악의 가사를 입력합니다.음악의 가사를 입력합니다.음악의 가사를 입력합니다.음악의 가사를 입력합니다.음악의 가사를 입력합니다. 음악의 가사를 입력합니다. 음악의 가사를 입력합니다."
-        },
-        {type:"img",url:"https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg"},
-        {type:"youtube",url:"https://youtu.be/A4RDyzQsI7U"},
     ])
 
     const [techList, setTechList] = useState([
-        "Logic Pro X", "신디사이저", "Cubase"
     ])
 
     const [copyrightList, setCopyrightList] = useState([
@@ -205,7 +202,7 @@ const ProjectPage = () => {
 
     const onClickEditBtn = () => {
         setPopVisible(false)
-        Router.push("/project/edit").then((() =>window.scrollTo(0,0) ))
+        Router.push(`/project/edit/${id}`).then((() =>window.scrollTo(0,0) ))
     }
 
     const onClickRemoveBtn = () => {
@@ -213,12 +210,26 @@ const ProjectPage = () => {
         setDeleteVisible(true)
     }
 
+    useEffect(() => {
+        if (deleteProjectDone){
+            setDeleteVisible(false)
+            dispatch({
+                type:LOAD_PROJECT_REQUEST,
+                data:{email:loadProjectDetail.user.email}
+            })
+            Router.back()
+        }
+    },[deleteProjectDone])
+
     const onClickCloseBtn = () => {
         setDeleteVisible(false)
     }
 
     const onClickDeleteBtn = () => {
-        setDeleteVisible(false)
+        dispatch({
+            type:DELETE_PROJECT_REQUEST,
+            data:{id:id}
+        })
     }
 
     const handleShareOk = () => {
@@ -245,8 +256,83 @@ const ProjectPage = () => {
         setDefaultUrl(window.location.href)
     })
 
-
     useScript('https://developers.kakao.com/sdk/js/kakao.js')
+
+    useEffect(() => {
+        if (!router.isReady) return
+        setId(router.query.id)
+
+    },[router.isReady])
+
+    useEffect(() => {
+        dispatch({
+            type:LOG_IN_REQUEST
+        })
+    },[])
+
+    useEffect(() => {
+        if (id){
+            const projectId = id
+            dispatch({
+                type:LOAD_PROJECT_DETAIL_REQUEST,
+                data:{id:projectId}
+            })
+            dispatch({
+                type:ADD_VIEW_COUNT_REQUEST,
+                data:{id:id}
+            })
+        }
+    },[id])
+
+    useEffect(() => {
+        if (user !== null){
+            if (user === "not agreement"){
+                dispatch({
+                    type:LOG_OUT_REQUEST
+                })
+            }else {
+                dispatch({
+                    type:GET_MY_PROFILE_REQUEST,
+                    data:user.email
+                })
+            }
+        }
+    },[user])
+
+    useEffect(() => {
+        if (user && loadProjectDetail){
+            if (user.email === loadProjectDetail.user.email){
+                setIsMe(true)
+            }else {
+                setIsMe(false)
+            }
+        }else {
+            setIsMe(false)
+        }
+        if (loadProjectDetail){
+            const coprightText = loadProjectDetail.copyright.toLowerCase().split("(")[1].replace(')','').replace(' ','-')
+            setCopyrightList(coprightText.split('-'))
+            setProjectList(loadProjectDetail.projectdetails)
+            let hash = []
+            let field = []
+            let tech = []
+            for (let i = 0; i < loadProjectDetail.tags.length; i++) {
+                const tagItem = loadProjectDetail.tags[i]
+                if (tagItem.tag_type === "field"){
+                    field.push(tagItem.tag_name)
+                }
+                if (tagItem.tag_type === "hash"){
+                    hash.push("#"+tagItem.tag_name)
+                }
+                if (tagItem.tag_type === "tech"){
+                    tech.push(tagItem.tag_name)
+                }
+            }
+            setFieldList(field)
+            setHashList(hash)
+            setTechList(tech)
+        }
+    },[user,loadProjectDetail])
 
     return(
         <>
@@ -254,13 +340,18 @@ const ProjectPage = () => {
             <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble}/>
 
             <div className={styles.main_wrapper}>
-                <div className={styles.main_title}>프로젝트 제목</div>
+                <div className={styles.main_title}>{
+                    loadProjectDetail
+                        ? loadProjectDetail.title
+                        :""
+                }</div>
                 <div className={styles.main_field}>분야</div>
                 {projectList.map((props, index) => (
                     <>
                         <ProjectCard props={props}></ProjectCard>
                     </>
                 ))}
+                <div style={{marginTop:"28px"}}></div>
                 <ul className={styles.main_hashtag_wrapper}>
                     {
                         hashList.map((v) => (
@@ -270,11 +361,23 @@ const ProjectPage = () => {
                 </ul>
                 <div className={styles.main_title}
                      style={{marginTop:"4px", fontSize:"20px"}}
-                >프로젝트 제목</div>
+                >{
+                    loadProjectDetail
+                        ? loadProjectDetail.title
+                        : ""
+                }</div>
                 <div className={styles.main_info}>
-                    <div>디자인</div>
-                    <div>조회수 44,592회</div>
-                    <div>2021. 5. 8.</div>
+                    <div>{fieldList.join(", ")}</div>
+                    <div>{
+                        loadProjectDetail
+                            ? `조회수 ${loadProjectDetail.view_count}회`
+                            : `조회수 0회`
+                    }</div>
+                    <div>{
+                        loadProjectDetail
+                            ? moment(loadProjectDetail.updatedAt).format('YYYY.MM.DD')
+                            : "2022. 1. 1."
+                    }</div>
                     <div className={styles.main_btn_group}>
                         <div className={styles.main_share_btn} onClick={onClickShareBtn}></div>
                         {
@@ -301,9 +404,27 @@ const ProjectPage = () => {
 
                 <div className={styles.main_artist}>
                     <div className={styles.main_artist_title}>참여 아티스트</div>
-                    <div className={styles.main_artist_name}>권태익</div>
-                    <div className={styles.main_artist_info}>작곡가, 작사가, 프로듀서, 보컬</div>
-                    <img className={styles.main_artist_img} src={"https://cdn.crowdpic.net/list-thumb/thumb_l_D623AE308211C3678E61EC0E3FF3C969.jpg"}></img>
+                    <div className={styles.main_artist_name}>{
+                        loadProjectDetail
+                            ? loadProjectDetail.user.profile.nickname
+                            : ""
+                    }</div>
+                    <div className={styles.main_artist_info}>{
+                        loadProjectDetail
+                            ? loadProjectDetail.user.profile.job
+                            : ""
+                    }</div>
+                    <Link href={`/profile/${
+                        loadProjectDetail
+                            ? loadProjectDetail.user.email
+                            : 1
+                    }`}><a>
+                        <img className={styles.main_artist_img} src={
+                            loadProjectDetail
+                                ? loadProjectDetail.user.profile.profile_img
+                                : ""
+                        }></img>
+                    </a></Link>
                 </div>
 
                 <div className={styles.main_artist}>
@@ -358,7 +479,15 @@ const ProjectPage = () => {
             >
                 <div>
                     <div className={styles.share_title}>프로젝트 공유</div>
-                    <ShareGroup title={"프로젝트 제목"} hash={hashList.join(" ")}></ShareGroup>
+                    <ShareGroup
+                        title={loadProjectDetail
+                            ? loadProjectDetail.title
+                            : ""}
+                        hash={"#brmn "+hashList.join(" ")}
+                        url={loadProjectDetail
+                            ? loadProjectDetail.thumb_img
+                            : "https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/brmn_icon.png"}
+                    ></ShareGroup>
                     <div className={styles.name_wrapper}>
                         <div>퍼가기</div>
                         <div>카카오톡</div>
@@ -382,16 +511,32 @@ const ProjectPage = () => {
                                 <div className={sideStyles.side_right_wrapper}></div>
 
                                 {
-                                    isLoggedin
+                                    logInDone
                                         ?(
                                             <>
                                                 <div style={{height:"100vh"}}  className={sideStyles.side_wrapper}>
 
                                                     <div className={sideStyles.side_login_top}>
-                                                        <img src={"https://file.mk.co.kr/meet/neds/2020/12/image_readtop_2020_1292239_16081264164474583.jpg"} className={sideStyles.side_login_top_img}></img>
+                                                        <div className={sideStyles.side_login_top_img}>
+                                                            <Link href={
+                                                                user && user.email
+                                                                    ?`/profile/${user.email}`
+                                                                    :`/profile/1`
+                                                            }><a>
+                                                                <ProfileThumbnail circle size={40} image={
+                                                                    profile && profile.profile_img
+                                                                        ?profile.profile_img
+                                                                        :profile_image_default
+                                                                }></ProfileThumbnail>
+                                                            </a></Link>
+                                                        </div>
                                                         <div className={sideStyles.side_login_top_info}>
-                                                            <div className={sideStyles.side_login_top_nickname}>사용자 이름</div>
-                                                            <div className={sideStyles.side_login_top_id}>userid@naver.com</div>
+                                                            {
+                                                                profile && profile.nickname
+                                                                    ? <div className={sideStyles.side_login_top_nickname}>{profile.nickname}</div>
+                                                                    : <div className={sideStyles.side_login_top_nickname}>{user.email}</div>
+                                                            }
+                                                            <div className={sideStyles.side_login_top_id}>{user.email}</div>
                                                         </div>
                                                         <button className={sideStyles.side_login_top_close} onClick={onClickClose}></button>
                                                     </div>
@@ -412,7 +557,7 @@ const ProjectPage = () => {
                                                         <div className={sideStyles.side_nav_4}></div>
                                                         <div className={sideStyles.side_nav_content}>작업물 관리</div>
                                                     </a></Link>
-                                                    <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                    <Link href={"/profile/edit"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
                                                         <div className={sideStyles.side_nav_5}></div>
                                                         <div className={sideStyles.side_nav_content}>프로필 편집</div>
                                                     </a></Link>
@@ -449,15 +594,15 @@ const ProjectPage = () => {
                                         :(
                                             <>
                                                 <div style={{height:"100vh"}}  className={sideStyles.side_wrapper}>
-                                                    <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble} side={true}/>
+                                                    <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble} side={true}  user={user} profile={profile}/>
                                                     <div className={sideStyles.side_title} style={{minWidth:"320px"}}>
                                                         회원가입하고 다양한 메이커들과
                                                         <br/>
                                                         프로젝트를 시작하세요!
                                                     </div>
                                                     <div style={{display:"block",paddingLeft:"20px", height:"56px", marginTop:"16px", borderBottom:"1px solid #E8E8E8", minWidth:"320px"}}>
-                                                        <div style={{display:"inline-block"}}><Button className={sideStyles.side_login}>로그인</Button></div>
-                                                        <div style={{display:"inline-block", marginLeft:"12px"}}><Button className={sideStyles.side_signup}>회원가입</Button></div>
+                                                        <div style={{display:"inline-block"}}><Link href="/signin/login"><a><Button className={sideStyles.side_login}>로그인</Button></a></Link></div>
+                                                        <div style={{display:"inline-block", marginLeft:"12px"}}><Link href="/signin/signup"><a><Button className={sideStyles.side_signup}>회원가입</Button></a></Link></div>
                                                     </div>
 
                                                     <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
@@ -499,6 +644,8 @@ const ProjectPage = () => {
                                             </>
                                         )
                                 }
+
+
                             </div>
                         )
                 }

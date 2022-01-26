@@ -15,6 +15,10 @@ import Router from "next/router";
 
 const { Option } = Select;
 const Global = createGlobalStyle`
+  body{
+    background: #fafafa;
+  }
+  
   .ant-select-selector{
     border: 1px solid #E8E8E8 !important;
     box-shadow: none !important;
@@ -89,7 +93,7 @@ const Index = () =>{
         "n7": false,
         "n8": false,
     })
-    const {mainProjects} = useSelector((state) => state.project);
+    const {loadProjects} = useSelector((state) => state.project);
 
     const onCLickNav = useCallback((name) => {
         const field = {}
@@ -274,7 +278,7 @@ const Index = () =>{
 
                             </div>
                             <div className={styles.card_wrapper}>
-                                {mainProjects.map((card, index) => (
+                                {loadProjects.map((card, index) => (
                                     <>
                                         <MainCard card={card}></MainCard>
                                     </>

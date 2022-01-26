@@ -22,19 +22,26 @@ import {
 import useInput from "../../hooks/useInput";
 import ProfileThumbnail from "../../components/ProfileThumbnail";
 import profile_image_default from "/images/default/profimg_default.svg"
+import {LOAD_PROJECT_REQUEST} from "../../reducers/project";
 
 function MainCard(props) {
+    const onClickCard = () => {
+        Router.push(`/project/${props.card.id}`)
+    }
+    const onClickProfile = () => {
+        Router.replace(`/profile/${props.card.email}`)
+    }
     return(
         <>
             <div className={`${cardStyle.card_group} ${styles.card_group} `}>
                 <button className={`${cardStyle.card_button} `}>
-                    <div className={`${cardStyle.card_main} `}>
+                    <div onClick={onClickCard} className={`${cardStyle.card_main} `}>
                         <img src={props.card.imgUrl} className={`${cardStyle.card_main_img} `}></img>
                         <div className={`${cardStyle.card_main_background} `}>
                             <div className={`${cardStyle.card_main_background_title} `}>{props.card.title}</div>
                         </div>
                     </div>
-                    <div className={`${cardStyle.card_meta} `}>
+                    <div onClick={onClickProfile} className={`${cardStyle.card_meta} `}>
                         <div className={`${cardStyle.card_meta_title} `}>{props.card.title}</div>
                         <div>
                             <img src={props.card.profImg} className={`${cardStyle.card_meta_img} `}></img>
@@ -48,7 +55,6 @@ function MainCard(props) {
 }
 
 function InfoCard(props) {
-    console.log(props)
     return(
         <>
             {
@@ -97,6 +103,8 @@ const ProfileProject = () => {
     const [id,setId] = useState(router.query.id)
     const dispatch = useDispatch()
     const {user,profile, logInDone, otherProfile, otherProfileDetail,imagePath} = useSelector((state) => state.user);
+    const {uploadProjectDone,loadProjects} = useSelector((state) => state.project);
+
     const [openAble,setOpenAble] = useState(true)
     const [isMe,setIsMe] = useState(true)
     const [userName, onChangeUserName, setUserName] = useInput("")
@@ -131,7 +139,6 @@ const ProfileProject = () => {
     const onChangeImages = useCallback((e) => {
         const imageFormData = new FormData();
         imageFormData.append('profileImage', e.target.files[0]);
-        console.log(e.target.files[0])
         dispatch({
             type: UPLOAD_PROFILE_IMAGE_REQUEST,
             data: imageFormData
@@ -154,18 +161,7 @@ const ProfileProject = () => {
             </div>
         </AntMenu>
     )
-
-    const card = {
-        imgUrl:"https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/9dEO/image/_Xi6E6YOQ22VUzRkRtyy0_6Rvak.png",
-        title:"사랑하긴 했었나요 스쳐가는 인연이었나요 짧지않은 쿠쿠루 삥뽕",
-        profImg:"https://bit.ly/2V1ipNj",
-        nickname:"2층과3층사이"
-    }
     const [cardList,setCardList] = useState([
-        card,card,card,card,card,card,card,card,card
-        ,card,card,card,card,card,card,card,card,card
-        ,card,card,card,card,card,card,card,card,card
-        ,card,card,card,card,card,card,card,card,card
     ])
 
     const [equipOpen,setEquipOpen] = useState(true)
@@ -222,10 +218,13 @@ const ProfileProject = () => {
             setIsMe(false)
         }
         if (id){
-            console.log(id)
             dispatch({
                 type:GET_OTHER_PROFILE_REQUEST,
                 data:id
+            })
+            dispatch({
+                type:LOAD_PROJECT_REQUEST,
+                data:{email:id}
             })
         }
     },[user, id])
@@ -364,6 +363,9 @@ const ProfileProject = () => {
         }
     },[imagePath])
 
+    useEffect(() => {
+        setCardList(loadProjects)
+    },[loadProjects])
 
     return(
         <>

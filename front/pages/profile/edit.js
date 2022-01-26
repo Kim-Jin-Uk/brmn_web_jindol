@@ -609,7 +609,7 @@ const Edit = () => {
         "경상남도",
         "제주특별자치도"
     ]
-    const [userLocation, setUserLocation] = useState("")
+    const [userLocation, setUserLocation] = useState("서울특별시")
     const [userIntroduce, onChangeUserIntroduce, setUserIntroduce] = useInput("")
     const [userField, setUserField] = useState([])
     const [userInstagram, onChangeUserInstagram, setUserInstagram] = useInput("")
@@ -677,6 +677,14 @@ const Edit = () => {
     const [editAwardMode, setEditAwardMode] = useState(null)
     const [editEduMode, setEditEduMode] = useState(null)
     const [editCreateMode, setEditCreateMode] = useState(null)
+    const filterKey = /[~`!@#$%^&*()+|<>?:{}/\/\[\]]/gi;
+
+    const onKeyUpUserName = (e) => {
+        if (filterKey.test(e.key)){
+            setUserName(userName.replace(filterKey, ''))
+            message.warning("'_'를 제외한 특수문자는 사용이 불가합니다.")
+        }
+    }
 
     const onChangeLocation = (v) => {
         setUserLocation(v)
@@ -826,7 +834,9 @@ const Edit = () => {
                 setUserJob(profile.job)
             }
             if (profile.location){
-                setUserLocation(profile.location)
+                if (profile.location !== ""){
+                    setUserLocation(profile.location)
+                }
             }
             if (profile.introduce){
                 setUserIntroduce(profile.introduce)
@@ -1025,6 +1035,7 @@ const Edit = () => {
                                     maxLength={34}
                                     value={userName}
                                     onChange={onChangeUserName}
+                                    onKeyUp={onKeyUpUserName}
                                 />
 
                                 <div style={{marginBottom:"5px"}}>

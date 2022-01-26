@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull:true,
         },
+        visible_type:{
+            type: DataTypes.STRING(32),
+            allowNull:true,
+        }
     },{
         charset:"utf8mb4",
         collate:"utf8mb4_general_ci"

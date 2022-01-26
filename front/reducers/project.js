@@ -1,13 +1,5 @@
 import produce from 'immer';
 
-const card = {
-    id:"1",
-    imgUrl:"https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/9dEO/image/_Xi6E6YOQ22VUzRkRtyy0_6Rvak.png",
-    title:"사랑하긴 했었나요 스쳐가는 인연이었나요 짧지않은 쿠쿠루 삥뽕",
-    profImg:"https://bit.ly/2V1ipNj",
-    nickname:"2층과3층사이"
-}
-
 export const initialState = {
     uploadProjectImageLoading: false,
     uploadProjectImageDone:false,
@@ -17,14 +9,24 @@ export const initialState = {
     uploadProjectDone:false,
     uploadProjectError:null,
 
-    mainProjects:[
-        card,card,card,card,card,card,card,card,card,card,
-        card,card,card,card,card,card,card,card,card,card,
-        card,card,card,card,card,card,card,card,card,card,
-        card,card,card,card,card,card,card,card,card,card,
-        card,card,card,card,card,card,card,card,card,card,
-        card,card,card,card,card,card,card,card,card,card,
-    ],
+    loadProjectLoading: false,
+    loadProjectDone:false,
+    loadProjectError:null,
+
+    loadProjectDetailLoading: false,
+    loadProjectDetailDone:false,
+    loadProjectDetailError:null,
+
+    addViewCountLoading: false,
+    addViewCountDone:false,
+    addViewCountError:null,
+
+    deleteProjectLoading: false,
+    deleteProjectDone:false,
+    deleteProjectError:null,
+
+    loadProjects:[],
+    loadProjectDetail:null,
 
     projectImagePath:null,
     projectThumbImagePath:null,
@@ -42,15 +44,38 @@ export const UPLOAD_PROJECT_REQUEST = "UPLOAD_PROJECT_REQUEST"
 export const UPLOAD_PROJECT_SUCCESS = "UPLOAD_PROJECT_SUCCESS"
 export const UPLOAD_PROJECT_FAILURE = "UPLOAD_PROJECT_FAILURE"
 
+export const LOAD_PROJECT_REQUEST = "LOAD_PROJECT_REQUEST"
+export const LOAD_PROJECT_SUCCESS = "LOAD_PROJECT_SUCCESS"
+export const LOAD_PROJECT_FAILURE = "LOAD_PROJECT_FAILURE"
+
+export const LOAD_PROJECT_DETAIL_REQUEST = "LOAD_PROJECT_DETAIL_REQUEST"
+export const LOAD_PROJECT_DETAIL_SUCCESS = "LOAD_PROJECT_DETAIL_SUCCESS"
+export const LOAD_PROJECT_DETAIL_FAILURE = "LOAD_PROJECT_DETAIL_FAILURE"
+
+export const ADD_VIEW_COUNT_REQUEST = "ADD_VIEW_COUNT_REQUEST"
+export const ADD_VIEW_COUNT_SUCCESS = "ADD_VIEW_COUNT_SUCCESS"
+export const ADD_VIEW_COUNT_FAILURE = "ADD_VIEW_COUNT_FAILURE"
+
+export const DELETE_PROJECT_REQUEST = "DELETE_PROJECT_REQUEST"
+export const DELETE_PROJECT_SUCCESS = "DELETE_PROJECT_SUCCESS"
+export const DELETE_PROJECT_FAILURE = "DELETE_PROJECT_FAILURE"
+
 export const ADD_DONE_PROJECT_IMAGE = "ADD_DONE_PROJECT_IMAGE"
+
+export const UPLOAD_PROJECT_DONE = "UPLOAD_PROJECT_DONE"
 
 export default (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
         case ADD_DONE_PROJECT_IMAGE:
-            console.log("ADD_DONE")
             draft.uploadProjectImageLoading = false;
             draft.uploadProjectImageDone = true;
             draft.projectImagePath = null;
+            break;
+
+        case UPLOAD_PROJECT_DONE:
+            draft.uploadProjectLoading = false;
+            draft.uploadProjectError = null;
+            draft.uploadProjectDone = false;
             break;
 
         case UPLOAD_PROJECT_IMAGE_REQUEST:
@@ -95,6 +120,64 @@ export default (state = initialState, action) => produce(state, (draft) => {
         case UPLOAD_PROJECT_FAILURE:
             draft.uploadProjectLoading = false;
             draft.uploadProjectError = action.error;
+            break;
+
+        case LOAD_PROJECT_REQUEST:
+            draft.loadProjectLoading = true;
+            draft.loadProjectError = null;
+            draft.loadProjectDone = false;
+            break;
+        case LOAD_PROJECT_SUCCESS:
+            draft.loadProjectLoading = false;
+            draft.loadProjectDone = true;
+            draft.loadProjects = action.data;
+            break;
+        case LOAD_PROJECT_FAILURE:
+            draft.loadProjectLoading = false;
+            draft.loadProjectError = action.error;
+            break;
+
+        case LOAD_PROJECT_DETAIL_REQUEST:
+            draft.loadProjectDetailLoading = true;
+            draft.loadProjectDetailError = null;
+            draft.loadProjectDetailDone = false;
+            break;
+        case LOAD_PROJECT_DETAIL_SUCCESS:
+            draft.loadProjectDetailLoading = false;
+            draft.loadProjectDetailDone = true;
+            draft.loadProjectDetail = action.data;
+            break;
+        case LOAD_PROJECT_DETAIL_FAILURE:
+            draft.loadProjectDetailLoading = false;
+            draft.loadProjectDetailError = action.error;
+            break;
+
+        case ADD_VIEW_COUNT_REQUEST:
+            draft.addViewCountLoading = true;
+            draft.addViewCountError = null;
+            draft.addViewCountDone = false;
+            break;
+        case ADD_VIEW_COUNT_SUCCESS:
+            draft.addViewCountLoading = false;
+            draft.addViewCountDone = true;
+            break;
+        case ADD_VIEW_COUNT_FAILURE:
+            draft.addViewCountLoading = false;
+            draft.addViewCountError = action.error;
+            break;
+
+        case DELETE_PROJECT_REQUEST:
+            draft.deleteProjectLoading = true;
+            draft.deleteProjectError = null;
+            draft.deleteProjectDone = false;
+            break;
+        case DELETE_PROJECT_SUCCESS:
+            draft.deleteProjectLoading = false;
+            draft.deleteProjectDone = true;
+            break;
+        case DELETE_PROJECT_FAILURE:
+            draft.deleteProjectLoading = false;
+            draft.deleteProjectError = action.error;
             break;
 
         default:

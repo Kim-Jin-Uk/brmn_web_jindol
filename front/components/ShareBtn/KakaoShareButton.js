@@ -27,7 +27,7 @@ const KakaoShareButton = (props) => {
                 content: {
                     title: props.title,
                     description: props.hash,
-                    imageUrl: 'IMAGE_URL', // i.e. process.env.FETCH_URL + '/logo.png'
+                    imageUrl: props.url, // i.e. process.env.FETCH_URL + '/logo.png'
                     link: {
                         mobileWebUrl: window.location.href,
                         webUrl: window.location.href,
@@ -36,13 +36,6 @@ const KakaoShareButton = (props) => {
                 buttons: [
                     {
                         title: '웹으로 보기',
-                        link: {
-                            mobileWebUrl: window.location.href,
-                            webUrl: window.location.href,
-                        },
-                    },
-                    {
-                        title: '앱으로 보기',
                         link: {
                             mobileWebUrl: window.location.href,
                             webUrl: window.location.href,

@@ -3,12 +3,15 @@ module.exports = (sequelize, DataTypes) => {
         tag_name:{
             type: DataTypes.STRING(150),
             allowNull:false,
-            unique:true
         },
         tag_type:{
             type: DataTypes.STRING(16),
             allowNull:false,
         },
+        visible_type:{
+            type: DataTypes.STRING(32),
+            allowNull:true,
+        }
     },{
         charset:"utf8mb4",
         collate:"utf8mb4_general_ci"

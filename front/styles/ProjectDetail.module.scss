@@ -45,6 +45,16 @@
   margin-bottom: 40px;
 }
 
+.card_text{
+  width: auto;
+  margin: 0 20px 0;
+  > pre{
+    margin: 0;
+    font-family: Spoqa Han Sans Neo;
+    font-size: 14px;
+  }
+}
+
 .main_hashtag_wrapper{
   list-style: none;
   padding: 0px;
@@ -413,6 +423,10 @@
     margin-left: 22px;
     margin-right: 22px;
   }
+
+  .card_text{
+    margin: 0 40px 0;
+  }
 }
 
 @media (min-width: 1024px) and (max-width: 1680px){
@@ -427,6 +441,10 @@
   .card_youtube{
     width: 100%;
     height: calc((100vw - 280px) * 117.5 / 210);
+  }
+
+  .card_text{
+    margin: 0 40px 0;
   }
 
   .back_btn{
@@ -453,6 +471,10 @@
   .card_youtube{
     width: 100%;
     height: calc(1400px * 117.5 / 210);
+  }
+
+  .card_text{
+    margin: 0 44px 0;
   }
 
   .back_btn{

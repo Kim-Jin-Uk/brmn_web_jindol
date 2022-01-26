@@ -111,11 +111,6 @@ export default function Menu(param) {
         };
     }, [param.side, side]);
 
-    useEffect(() => {
-        console.log("user",user)
-        console.log("profile",profile)
-    },[user,profile])
-
     return (
         <>
             {
@@ -175,7 +170,7 @@ export default function Menu(param) {
                                         <IconButton src={image_bell} onClick={() => alert("준비중인 기능입니다.")}/>
              */}
 
-                                                                    <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
+                                                                    <Dropdown key={"a"} overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
                                                                         <AntBtn className={styles.dropdown_button}>
                                                                             <Link href={
                                                                                 user && user.email
@@ -269,7 +264,7 @@ export default function Menu(param) {
                                                         ? (
                                                             <>
                                                                 <Button upload className={styles.create} onClick={()=>router.push("/project/upload").then((() =>window.scrollTo(0,0) ))}>프로젝트 업로드</Button>
-                                                                <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
+                                                                <Dropdown key={"b"} overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
                                                                     <AntBtn className={styles.dropdown_button}>
                                                                         <Link href={
                                                                             user && user.email

@@ -145,7 +145,6 @@ const TextEdit = (param) => {
     },[img])
 
     useEffect(() => {
-        console.log("scroll")
         bottomRef.current?.scrollIntoView({
             behavior: 'auto',
             block:"end",
@@ -188,10 +187,8 @@ const TextEdit = (param) => {
     },[imageInput.current])
 
     const onChangeImages = useCallback((e) => {
-        console.log("image select")
         const imageFormData = new FormData();
         imageFormData.append('projectImage', e.target.files[0]);
-        console.log(e.target.files[0])
         dispatch({
             type: UPLOAD_PROJECT_IMAGE_REQUEST,
             data: imageFormData
@@ -199,7 +196,6 @@ const TextEdit = (param) => {
     })
 
     useEffect(() => {
-        console.log(projectImagePath)
         if (projectImagePath){
             const imgString = `<img src="${projectImagePath.fileName}">`
             setImg(imgString)

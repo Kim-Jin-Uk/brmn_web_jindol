@@ -10,7 +10,7 @@ import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST} from "../../reducers/user";
 import Router from "next/router";
 import {useDispatch, useSelector} from "react-redux";
 import useInput from "../../hooks/useInput";
-import {UPLOAD_PROJECT_REQUEST, UPLOAD_PROJECT_THUMB_IMAGE_REQUEST} from "../../reducers/project";
+import {UPLOAD_PROJECT_DONE, UPLOAD_PROJECT_REQUEST, UPLOAD_PROJECT_THUMB_IMAGE_REQUEST} from "../../reducers/project";
 import ProfileThumbnail from "../../components/ProfileThumbnail";
 const { Option } = Select;
 const TextEdit = dynamic(
@@ -157,7 +157,7 @@ const Global = createGlobalStyle`
 const Upload = () => {
     const dispatch = useDispatch();
     const {user, logInDone, profile} = useSelector((state) => state.user);
-    const {projectThumbImagePath} = useSelector((state) => state.project);
+    const {projectThumbImagePath, uploadProjectDone} = useSelector((state) => state.project);
     const [uploadBtn, setUploadBtn] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [select, setSelect] = useState(true)
@@ -216,13 +216,23 @@ const Upload = () => {
 
     const onEnterHash = (e) => {
         if (e.key === "Enter"){
-            setHashList([...hashList,e.target.innerText.replace(/\n/gi,'')])
+            const item = e.target.innerText.replace(/\n/gi,'').toLowerCase()
+            if (!hashList.includes(item)){
+                setHashList([...hashList,item])
+            }else {
+                message.warning("동일한 태그를 입력하셨습니다.")
+            }
             e.target.innerText = ""
         }
     }
     const onEnterTech = (e) => {
         if (e.key === "Enter"){
-            setTechList([...techList,e.target.innerText.replace(/\n/gi,'')])
+            const item = e.target.innerText.replace(/\n/gi,'').toLowerCase()
+            if (!techList.includes(item)){
+                setTechList([...techList,item])
+            }else {
+                message.warning("동일한 태그를 입력하셨습니다.")
+            }
             e.target.innerText = ""
         }
     }
@@ -247,9 +257,15 @@ const Upload = () => {
     }
 
     const addModalFieldItem = () =>{
-        setFieldList([...fieldList, fieldName])
+        const item = fieldName.toLowerCase()
+        if (!fieldList.includes(item)){
+            setFieldList([...fieldList, item])
+            setModalVisible(false)
+        }else {
+            message.warning("동일한 태그가 존재합니다.")
+        }
         setFieldName("")
-        setModalVisible(false)
+
     }
 
     useEffect(() => {
@@ -303,9 +319,9 @@ const Upload = () => {
             message.warning("본문 내용을 입력해주세요.")
         }
         else if (title.length < 1){
-            message.warning("제목을 입력해주세요")
+            message.warning("제목을 입력해주세요.")
         }else if (projectField.length < 1){
-            message.warning("분야를 선택해주세요")
+            message.warning("분야를 선택해주세요.")
         }else if (imgUrl === "https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/project/img_select.svg"){
             message.warning("표지 이미지를 선택해주세요.")
         }else {
@@ -323,6 +339,16 @@ const Upload = () => {
             })
         }
     }
+
+    useEffect(() => {
+        if (uploadProjectDone){
+            dispatch({
+                type:UPLOAD_PROJECT_DONE
+            })
+            message.success("프로젝트가 성공적으로 업로드 되었습니다.")
+            Router.back()
+        }
+    },[uploadProjectDone])
 
     return(
         <>
