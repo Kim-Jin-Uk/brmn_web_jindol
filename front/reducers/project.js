@@ -25,6 +25,10 @@ export const initialState = {
     deleteProjectDone:false,
     deleteProjectError:null,
 
+    updateProjectLoading: false,
+    updateProjectDone:false,
+    updateProjectError:null,
+
     loadProjects:[],
     loadProjectDetail:null,
 
@@ -60,9 +64,15 @@ export const DELETE_PROJECT_REQUEST = "DELETE_PROJECT_REQUEST"
 export const DELETE_PROJECT_SUCCESS = "DELETE_PROJECT_SUCCESS"
 export const DELETE_PROJECT_FAILURE = "DELETE_PROJECT_FAILURE"
 
+export const UPDATE_PROJECT_REQUEST = "UPDATE_PROJECT_REQUEST"
+export const UPDATE_PROJECT_SUCCESS = "UPDATE_PROJECT_SUCCESS"
+export const UPDATE_PROJECT_FAILURE = "UPDATE_PROJECT_FAILURE"
+
 export const ADD_DONE_PROJECT_IMAGE = "ADD_DONE_PROJECT_IMAGE"
 
 export const UPLOAD_PROJECT_DONE = "UPLOAD_PROJECT_DONE"
+
+export const UPDATE_PROJECT_DONE = "UPDATE_PROJECT_DONE"
 
 export default (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
@@ -76,6 +86,12 @@ export default (state = initialState, action) => produce(state, (draft) => {
             draft.uploadProjectLoading = false;
             draft.uploadProjectError = null;
             draft.uploadProjectDone = false;
+            break;
+
+        case UPDATE_PROJECT_DONE:
+            draft.updateProjectLoading = false;
+            draft.updateProjectError = null;
+            draft.updateProjectDone = false;
             break;
 
         case UPLOAD_PROJECT_IMAGE_REQUEST:
@@ -178,6 +194,21 @@ export default (state = initialState, action) => produce(state, (draft) => {
         case DELETE_PROJECT_FAILURE:
             draft.deleteProjectLoading = false;
             draft.deleteProjectError = action.error;
+            break;
+
+        case UPDATE_PROJECT_REQUEST:
+            draft.updateProjectLoading = true;
+            draft.updateProjectError = null;
+            draft.updateProjectDone = false;
+            break;
+        case UPDATE_PROJECT_SUCCESS:
+            draft.updateProjectLoading = false;
+            draft.updateProjectDone = true;
+            draft.loadProjects = action.data;
+            break;
+        case UPDATE_PROJECT_FAILURE:
+            draft.updateProjectLoading = false;
+            draft.updateProjectError = action.error;
             break;
 
         default:

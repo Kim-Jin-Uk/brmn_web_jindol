@@ -937,7 +937,7 @@ const Edit = () => {
         if (updateMyProfileDone){
             message.success('프로필을 성공적으로 업데이트 하였습니다');
             dispatch({type:UPLOAD_MY_PROFILE_DONE})
-            Router.back()
+            Router.replace('/project')
         }
     },[updateMyProfileDone])
 

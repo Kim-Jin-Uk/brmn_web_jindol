@@ -14,7 +14,7 @@ import {
   LOAD_PROJECT_DETAIL_SUCCESS,
   LOAD_PROJECT_FAILURE,
   LOAD_PROJECT_REQUEST,
-  LOAD_PROJECT_SUCCESS,
+  LOAD_PROJECT_SUCCESS, UPDATE_PROJECT_FAILURE, UPDATE_PROJECT_REQUEST, UPDATE_PROJECT_SUCCESS,
   UPLOAD_PROJECT_FAILURE,
   UPLOAD_PROJECT_IMAGE_FAILURE,
   UPLOAD_PROJECT_IMAGE_REQUEST,
@@ -166,6 +166,26 @@ function* deleteProject(action){
   }
 }
 
+function updateProjectAPI(data){
+  return axios.post('project/update',data)
+}
+
+function* updateProject(action){
+  try{
+    const result = yield call(updateProjectAPI,action.data);
+    yield put({
+      type:UPDATE_PROJECT_SUCCESS,
+      data: result.data
+    })
+  }catch (err){
+    yield put({
+      type:UPDATE_PROJECT_FAILURE,
+      data:err.response.data
+    })
+    console.error(err)
+  }
+}
+
 
 function* watchUploadProjectImage() {
   yield takeLatest(UPLOAD_PROJECT_IMAGE_REQUEST, uploadProjectImage);
@@ -195,6 +215,10 @@ function* watchDeleteProject() {
   yield takeLatest(DELETE_PROJECT_REQUEST, deleteProject);
 }
 
+function* watchUpdateProject() {
+  yield takeLatest(UPDATE_PROJECT_REQUEST, updateProject);
+}
+
 
 export default function* projectSaga() {
   yield all([
@@ -205,5 +229,6 @@ export default function* projectSaga() {
     fork(watchLoadProjectDetail),
     fork(watchAddViewCount),
     fork(watchDeleteProject),
+    fork(watchUpdateProject),
   ])
 }

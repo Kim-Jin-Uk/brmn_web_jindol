@@ -226,5 +226,125 @@ router.post('/delete',async (req,res,next) => {
 
 })
 
+router.post('/update',isLoggendIn,async (req,res,next) => {
+    try{
+        const id = req.body.id
+        const mainText = req.body.mainText
+        const title = req.body.title
+        const field = req.body.field
+        const thumb_img = req.body.image
+        const copyright = req.body.copyright
+        const hashList = req.body.hashList
+        const techList = req.body.techList
+
+        const originProject = await Project.findOne({
+            where:{id:id}
+        })
+
+        await Project.update({
+            visible_type: "none",
+        },{
+            where:{id:req.body.id}
+        })
+        await ProjectDetail.update({
+            visible_type: "none",
+        },{
+            where:{projectId:req.body.id}
+        })
+
+        const project = await Project.create({
+            title:title,
+            thumb_img:thumb_img,
+            copyright:copyright,
+            view_count:originProject.dataValues.view_count,
+            userId:req.user.dataValues.id,
+            createdAt:originProject.dataValues.createdAt
+        })
+
+        for (let i = 0; i < mainText.length; i++) {
+            let text = mainText[i]
+            let type = "text"
+            if (text.substring(0,6) === "image:"){
+                type = "image"
+                text = text.substring(6)
+            }
+            if (text.substring(0,8) === "youtube:"){
+                type = "youtube"
+                text = text.substring(8)
+            }
+            await ProjectDetail.create({
+                contents:text,
+                detail_type:type,
+                projectId:project.id
+            })
+        }
+
+        Array.from(new Set(field))
+        const result1 = await Promise.all(field.map((tag) => Tag.findOrCreate({
+            where:{
+                tag_name:tag.toLowerCase(),
+                tag_type:"field"
+            },
+        })))
+        await project.addTags(result1.map((v) => v[0]))
+
+        Array.from(new Set(hashList))
+        const result2 = await Promise.all(hashList.map((tag) => Tag.findOrCreate({
+            where:{
+                tag_name:tag.toLowerCase(),
+                tag_type:"hash"
+            },
+        })))
+        await project.addTags(result2.map((v) => v[0]))
+
+        Array.from(new Set(techList))
+        const result3 = await Promise.all(techList.map((tag) => Tag.findOrCreate({
+            where:{
+                tag_name:tag.toLowerCase(),
+                tag_type:"tech"
+            },
+        })))
+        await project.addTags(result3.map((v) => v[0]))
+
+        let fullProjectList = []
+        const userData = await User.findOne({
+            where:{
+                email:req.body.email
+            }
+        })
+        const userProfile = await Profile.findOne({
+            where:{userId:userData.dataValues.id}
+        })
+
+        const projectList = await Project.findAll({
+            where:{
+                userId:userData.dataValues.id,
+                visible_type:null
+            },
+            order: [
+                ['createdAt', 'DESC'],
+            ],
+        })
+        for (let i = 0; i < projectList.length; i++) {
+            const project = projectList[i].dataValues
+            const user = userProfile.dataValues
+            const projectItem = {
+                id:project.id,
+                title:project.title,
+                imgUrl:project.thumb_img,
+                profImg:user.profile_img,
+                nickname:user.nickname,
+                email:req.body.email
+            }
+            fullProjectList.push(projectItem)
+        }
+        return res.status(200).json(fullProjectList)
+    }catch (err){
+        console.error(err)
+        next(err)
+    }
+
+})
+
 
 module.exports = router

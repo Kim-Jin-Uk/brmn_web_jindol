@@ -1,5 +1,6 @@
 const passport = require('passport')
 const kakao = require('./kakaoStrategy')
+const naver = require('./naverStrategy')
 const {User} = require('../models')
 
 module.exports = () => {
@@ -18,4 +19,5 @@ module.exports = () => {
     })
 
     kakao()
+    naver()
 }

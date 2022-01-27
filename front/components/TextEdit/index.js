@@ -17,7 +17,7 @@ const Global = createGlobalStyle`
   .ql-editor {
     font-family: Spoqa Han Sans Neo;
     font-style: normal;
-    font-weight: 500;
+    font-weight: normal;
     font-size: 14px;
     line-height: 150%;
     color: #1D1D1D;
@@ -131,6 +131,36 @@ const TextEdit = (param) => {
     const [index, setIndex] = useState(null)
     const imageInput = useRef();
     const bottomRef = useRef(null)
+    const [inputChecker,setInputChecker] = useState(true)
+
+    useEffect(() => {
+        if (param.mainText.length > 1 && inputChecker){
+            setInputChecker(false)
+            console.log(param.mainText)
+            let inputText = ''
+            let imgArray = []
+            for (let i = 0; i < param.mainText.length; i++) {
+                const text = param.mainText[i]
+                if (text.detail_type === "youtube"){
+                    inputText += `<p><img src="https://i.ytimg.com/vi/${text.contents}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBEsg2dBu3QxwppLU0hIrT3b00q3g"></p>`
+                    imgArray.push(`<img src="https://i.ytimg.com/vi/${text.contents}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBEsg2dBu3QxwppLU0hIrT3b00q3g">`)
+                }
+                if (text.detail_type === "image"){
+                    inputText += `<p><img src="${text.contents}"></p>`
+                    imgArray.push(`<img src="${text.contents}">`)
+                }
+                if (text.detail_type === "text"){
+                    inputText += `<p>${text.contents}</p>`
+                }
+            }
+            setValue(inputText)
+            setImgList(imgArray)
+        }
+    },[param.mainText])
+
+    useEffect(() => {
+        console.log(imgList)
+    },[imgList])
 
     useEffect(()=>{
         if (img !== ""){

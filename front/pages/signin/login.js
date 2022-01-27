@@ -6,11 +6,26 @@ import styles from "../../styles/Sign.module.scss"
 import fontStyles from "../../styles/font.module.scss"
 import SignWrapper from "../../components/SignWrapper";
 import {useDispatch, useSelector} from "react-redux";
-import {LOG_IN_REQUEST} from "../../reducers/user";
+import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST} from "../../reducers/user";
 import backUrl from "../../config/config";
 import Router from "next/router";
 
 const LogIn = () => {
+    const dispatch = useDispatch()
+    const {user} = useSelector((state) => state.user);
+
+    useEffect(() => {
+        dispatch({
+            type:LOG_IN_REQUEST
+        })
+    },[])
+
+    useEffect(() => {
+        if (user){
+            Router.replace('/project')
+        }
+    },[user])
+
     return(
         <>
             <SignWrapper>
@@ -26,7 +41,7 @@ const LogIn = () => {
                 </div>
 
                 <div style={{marginTop:"52px"}}>
-                    <div style={{ paddingLeft: "calc(50% - 93.5px)", paddingRight: "calc(50% - 93.5px)"}} className={styles.naver_btn}>
+                    <div onClick={() => Router.replace(`${backUrl}/auth/naver`)} style={{ paddingLeft: "calc(50% - 93.5px)", paddingRight: "calc(50% - 93.5px)"}} className={styles.naver_btn}>
                         <div className={styles.naver_icon}></div>
                         <div style={{marginTop:"1px"}}>네이버 아이디로 로그인</div>
                     </div>

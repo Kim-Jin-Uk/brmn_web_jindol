@@ -121,7 +121,7 @@ const Index = () =>{
     useEffect(() => {
         if (user !== null){
             if (user === "not agreement"){
-                Router.replace("http://localhost:3060/signin/agreements")
+                Router.replace("/signin/agreements")
             }else {
                 dispatch({
                     type:GET_MY_PROFILE_REQUEST,
@@ -130,6 +130,10 @@ const Index = () =>{
             }
         }
     },[user])
+
+    useEffect(() => {
+
+    })
 
     return(
         <div>

@@ -16,6 +16,8 @@ import SignWrapper from "../../components/SignWrapper";
 import Agreements from "/components/Agreements"
 import backUrl from "../../config/config";
 import Router from "next/router";
+import {useDispatch, useSelector} from "react-redux";
+import {LOG_IN_REQUEST} from "../../reducers/user";
 
 
 const SignUp = memo(() => {
@@ -144,6 +146,21 @@ const SignUp = memo(() => {
         return `${m}:${s}`
     }
 
+    const dispatch = useDispatch()
+    const {user} = useSelector((state) => state.user);
+
+    useEffect(() => {
+        dispatch({
+            type:LOG_IN_REQUEST
+        })
+    },[])
+
+    useEffect(() => {
+        if (user){
+            Router.replace('/project')
+        }
+    },[user])
+
     return(
         <>
             <SignWrapper>
@@ -159,7 +176,7 @@ const SignUp = memo(() => {
                 </div>
 
                 <div style={{marginTop:"52px"}}>
-                    <div className={styles.naver_btn}>
+                    <div onClick={() => Router.replace(`${backUrl}/auth/naver`)} className={styles.naver_btn}>
                         <div className={styles.naver_icon}></div>
                         <div style={{marginTop:"1px"}}>네이버 아이디로 가입</div>
                     </div>

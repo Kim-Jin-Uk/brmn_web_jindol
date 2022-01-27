@@ -1,36 +1,37 @@
 const passport = require('passport');
-const KakaoStrategy = require('passport-kakao').Strategy;
+const NaverStrategy = require('passport-naver-v2').Strategy;
 const {User,Profile} = require('../models');
 const dotenv = require('dotenv')
 dotenv.config()
 
 module.exports = () => {
-    passport.use(new KakaoStrategy({
-        clientID: process.env.KAKAO_API_KEY,
-        callbackURL: 'http://localhost:3065/oauth',
+    passport.use(new NaverStrategy({
+        clientID: process.env.NAVER_API_KEY,
+        clientSecret:process.env.NAVER_API_SECRET_KEY,
+        callbackURL: 'http://localhost:3065/naver/oauth',
     }, async (accessToken, refreshToken, profile, done) => {
         try {
-            console.log("kakaoprofile",profile)
-            if (profile._json.kakao_account.email === undefined){
+            console.log("naverprofilereq",profile)
+            if (profile.email === undefined){
                 done("error!!!!!!!!!!!!!!!!","error!!!!!!!!!")
             }else {
-                const naverUser = await User.findOne({
-                    where: { email: profile._json.kakao_account.email, provider: 'naver'},
+                const kakaoUser = await User.findOne({
+                    where: { email: profile.email, provider: 'kakao'},
                 })
-                if (naverUser){
-                    done(null,'naver')
+                if (kakaoUser){
+                    done(null,'kakao')
                 }else {
                     const exUser = await User.findOne({
-                        where: { email: profile._json.kakao_account.email, provider: 'kakao'},
+                        where: { email: profile.email, provider: 'naver'},
                     });
                     if (exUser) {
                         done(null, exUser);
                     } else {
                         const newUser = await User.create({
-                            email: profile._json && profile._json.kakao_account.email,
-                            age: profile._json && profile._json.kakao_account.age_range,
-                            gender: profile._json && profile._json.kakao_account.gender,
-                            provider: 'kakao',
+                            email: profile.email,
+                            age: profile.age,
+                            gender: profile.gender,
+                            provider: 'naver',
                         });
                         await Profile.create({
                             userId:newUser.dataValues.id,

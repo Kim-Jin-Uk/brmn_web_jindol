@@ -195,3 +195,29 @@
     height: 24px;
     margin-top: -4px;
 }
+
+.pop_btn{
+    display: inline-block !important;
+    float: right;
+    width: 66px !important;
+    height: 36px !important;
+    text-align: center !important;
+    padding-top: 11px !important;
+    padding-bottom: 11px !important;
+    vertical-align: top;
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: normal !important;
+    font-size: 14px !important;
+    line-height: 100% !important;
+    text-align: center !important;
+    border-radius: 2px !important;
+}
+
+.save_btn{
+    background: #33F4A3 !important;
+    color: #1D1D1D !important;
+    &:hover{
+        background: #15C07E !important;
+    }
+}

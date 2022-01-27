@@ -30,7 +30,7 @@ passportConfig()
 app.use(helmet())
 
 app.use(cors({
-    origin:['http://localhost:3060','http://3.38.232.129','http://brmnmusic.com'],
+    origin:[process.env.FRONT_URL,'http://3.38.232.129','http://brmnmusic.com'],
     credentials: true,
 }))
 app.use('/',express.static(path.join(__dirname,'profileImages')))
@@ -67,20 +67,55 @@ app.use('/user',userRouter)
 app.use('/project',projectRouter)
 app.use('/auth',authRouter)
 
-app.get('/oauth', passport.authenticate('kakao'), async function (req, res, next) {
-    // 로그인 시작시 state 값을 받을 수 있음
-    try{
-        const userData = await User.findOne({
-            where:{id:req.user.dataValues.id}
-        })
-        if (userData.agreement){
-            return res.redirect('http://localhost:3060/project')
-        }
-        res.redirect('http://localhost:3060/signin/agreements')
-    }catch (err){
-        console.error(err)
-        next(err)
-    }
+app.get('/naver/oauth', async function (req, res, next) {
+    passport.authenticate('naver', async function (err, user) {
+        console.log('passport.authenticate(naver)실행');
+        if (!user) { return res.redirect(`${process.env.FRONT_URL}/signin/fail`); }
+        req.logIn(user, async function (err) {
+            console.log('naver/callback user : ', user);
+            if (user === "kakao"){
+                return res.redirect(`${process.env.FRONT_URL}/signin/overlap`)
+            }
+            try{
+                const userData = await User.findOne({
+                    where:{id:req.user.dataValues.id}
+                })
+                if (userData.agreement){
+                    return res.redirect(`${process.env.FRONT_URL}/project`)
+                }
+                return res.redirect(`${process.env.FRONT_URL}/signin/agreements`)
+            }catch (err){
+                console.error(err)
+                next(err)
+            }
+        });
+    })(req, res);
+});
+
+app.get('/oauth', async function (req, res, next) {
+    passport.authenticate('kakao', async function (err, user) {
+        console.log('passport.authenticate(naver)실행');
+        if (!user) { return res.redirect(`${process.env.FRONT_URL}/signin/fail`); }
+        req.logIn(user, async function (err) {
+            console.log('kakao/callback user : ', user);
+            if (user === "naver"){
+                return res.redirect(`${process.env.FRONT_URL}/signin/overlap`)
+            }
+            try{
+                const userData = await User.findOne({
+                    where:{id:req.user.dataValues.id}
+                })
+                if (userData.agreement){
+                    return res.redirect(`${process.env.FRONT_URL}/project`)
+                }
+                return res.redirect(`${process.env.FRONT_URL}/signin/agreements`)
+            }catch (err){
+                console.error(err)
+                next(err)
+            }
+        });
+    })(req, res);
+
 
 })
 
