@@ -193,7 +193,7 @@ const Upload = () => {
 
 
     const [fieldList, setFieldList] = useState([
-        "보컬","랩","작사","작곡","연주","음향 엔지니어","디자인"
+        "보컬","촬영편집","사운드","기획","디자인"
     ])
     const [fieldName, setFieldName] = useState("")
 

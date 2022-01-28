@@ -1205,7 +1205,7 @@
 
 @media (min-width: 1025px) and (max-width: 1280px){
   .card_group{
-    width: calc(100% / 2);
+    width: calc(100% / 2) !important;
     padding: 10px;
   }
   .edit_card_checkbox{
@@ -1224,7 +1224,7 @@
 
 @media (min-width: 1280px) and (max-width: 1680px){
   .card_group{
-    width: calc(100% / 3);
+    width: calc(100% / 3) !important;
     padding: 10px;
   }
   .edit_card_checkbox{
@@ -1316,7 +1316,7 @@
   }
 
   .card_group{
-    width: calc(100% / 4);
+    width: calc(100% / 4) !important;
     padding: 10px;
   }
 

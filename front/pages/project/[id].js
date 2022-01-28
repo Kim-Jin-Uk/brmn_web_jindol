@@ -350,7 +350,7 @@ const ProjectPage = () => {
                 <div className={styles.main_title}>{
                     loadProjectDetail
                         ? loadProjectDetail.title
-                        :""
+                        :"제목"
                 }</div>
                 <div className={styles.main_field}>분야</div>
                 {projectList.map((props, index) => (
@@ -371,7 +371,7 @@ const ProjectPage = () => {
                 >{
                     loadProjectDetail
                         ? loadProjectDetail.title
-                        : ""
+                        : "제목"
                 }</div>
                 <div className={styles.main_info}>
                     <div>{fieldList.join(", ")}</div>
@@ -414,12 +414,12 @@ const ProjectPage = () => {
                     <div className={styles.main_artist_name}>{
                         loadProjectDetail
                             ? loadProjectDetail.user.profile.nickname
-                            : ""
+                            : "닉네임"
                     }</div>
                     <div className={styles.main_artist_info}>{
                         loadProjectDetail
                             ? loadProjectDetail.user.profile.job
-                            : ""
+                            : "직업"
                     }</div>
                     <Link href={`/profile/${
                         loadProjectDetail

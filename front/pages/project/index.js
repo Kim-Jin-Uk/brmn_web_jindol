@@ -13,6 +13,13 @@ import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST, LOG_OUT_REQUEST} from "../../red
 import ProfileThumbnail from "../../components/ProfileThumbnail";
 import Router from "next/router";
 import sideStyles from "../../styles/Project.module.scss";
+import {useInView} from "react-intersection-observer";
+import {
+    CHANGE_CHECKER,
+    LOAD_ALL_PROJECT_REQUEST, LOAD_DESIGN_PROJECT_REQUEST,
+    LOAD_EDIT_PROJECT_REQUEST, LOAD_ETC_PROJECT_REQUEST, LOAD_PLAN_PROJECT_REQUEST, LOAD_SOUND_PROJECT_REQUEST,
+    LOAD_VOCAL_PROJECT_REQUEST
+} from "../../reducers/project";
 
 const { Option } = Select;
 const Global = createGlobalStyle`
@@ -92,9 +99,49 @@ const Index = () =>{
         "n5": false,
         "n6": false,
         "n7": false,
-        "n8": false,
     })
-    const {loadProjects} = useSelector((state) => state.project);
+    const [active, setActive] = useState("n1")
+    useEffect(() => {
+        if (navActive['n1']){
+            setActive('n1')
+        }
+        else if (navActive['n2']){
+            setActive('n2')
+        }
+        else if (navActive['n3']){
+            setActive('n3')
+        }
+        else if (navActive['n4']){
+            setActive('n4')
+        }
+        else if (navActive['n5']){
+            setActive('n5')
+        }
+        else if (navActive['n6']){
+            setActive('n6')
+        }
+        else if (navActive['n7']){
+            setActive('n7')
+        }
+    },[navActive])
+    const {hasMoreProject,
+        loadAllProjects,loadAllProjectLoading,
+        loadVocalProjects,loadVocalProjectLoading,
+        loadEditProjects,loadEditProjectLoading,
+        loadSoundProjects,loadSoundProjectLoading,
+        loadPlanProjects,loadPlanProjectLoading,
+        loadDesignProjects,loadDesignProjectLoading,
+        loadEtcProjects,loadEtcProjectLoading,
+    } = useSelector((state) => state.project);
+    const [ref1, inView1] = useInView();
+    const [ref2, inView2] = useInView();
+    const [ref3, inView3] = useInView();
+    const [ref4, inView4] = useInView();
+    const [ref5, inView5] = useInView();
+    const [ref6, inView6] = useInView();
+    const [ref7, inView7] = useInView();
+    const [cardList,setCardList] = useState([])
+
 
     const onCLickNav = useCallback((name) => {
         const field = {}
@@ -138,6 +185,141 @@ const Index = () =>{
         })
     })
 
+    useEffect(() => {
+        dispatch({type:CHANGE_CHECKER})
+    },[active])
+
+    useEffect(() => {
+        if (active === 'n1'){
+            if (inView1 && hasMoreProject && !loadAllProjectLoading && loadAllProjects) {
+                const lastId = loadAllProjects[loadAllProjects.length - 1]?.id;
+                dispatch({
+                    type: LOAD_ALL_PROJECT_REQUEST,
+                    data:{
+                        checker:active,
+                        lastId:lastId
+                    },
+                });
+            }
+        }
+    }, [inView1, hasMoreProject, loadAllProjectLoading, loadAllProjects, active]);
+    useEffect(() => {
+        if (active === 'n2'){
+            if (inView2 && hasMoreProject && !loadVocalProjectLoading && loadVocalProjects) {
+                const lastId = loadVocalProjects[loadVocalProjects.length - 1]?.id;
+                dispatch({
+                    type: LOAD_VOCAL_PROJECT_REQUEST,
+                    data:{
+                        checker:active,
+                        lastId:lastId
+                    },
+                });
+            }
+        }
+    }, [inView2, hasMoreProject, loadVocalProjectLoading, loadVocalProjects, active]);
+    useEffect(() => {
+        if (active === 'n3'){
+            if (inView3 && hasMoreProject && !loadEditProjectLoading && loadEditProjects) {
+                const lastId = loadEditProjects[loadEditProjects.length - 1]?.id;
+                dispatch({
+                    type: LOAD_EDIT_PROJECT_REQUEST,
+                    data:{
+                        checker:active,
+                        lastId:lastId
+                    },
+                });
+            }
+        }
+    }, [inView3, hasMoreProject, loadEditProjectLoading, loadEditProjects, active]);
+    useEffect(() => {
+        if (active === 'n4'){
+            if (inView4 && hasMoreProject && !loadSoundProjectLoading && loadSoundProjects) {
+                const lastId = loadSoundProjects[loadSoundProjects.length - 1]?.id;
+                dispatch({
+                    type: LOAD_SOUND_PROJECT_REQUEST,
+                    data:{
+                        checker:active,
+                        lastId:lastId
+                    },
+                });
+            }
+        }
+    }, [inView4, hasMoreProject, loadSoundProjectLoading, loadSoundProjects, active]);
+    useEffect(() => {
+        if (active === 'n5'){
+            if (inView5 && hasMoreProject && !loadPlanProjectLoading && loadPlanProjects) {
+                const lastId = loadPlanProjects[loadPlanProjects.length - 1]?.id;
+                dispatch({
+                    type: LOAD_PLAN_PROJECT_REQUEST,
+                    data:{
+                        checker:active,
+                        lastId:lastId
+                    },
+                });
+            }
+        }
+    }, [inView5, hasMoreProject, loadPlanProjectLoading, loadPlanProjects, active]);
+    useEffect(() => {
+        if (active === 'n6'){
+            if (inView6 && hasMoreProject && !loadDesignProjectLoading && loadDesignProjects) {
+                const lastId = loadDesignProjects[loadDesignProjects.length - 1]?.id;
+                dispatch({
+                    type: LOAD_DESIGN_PROJECT_REQUEST,
+                    data:{
+                        checker:active,
+                        lastId:lastId
+                    },
+                });
+            }
+        }
+    }, [inView6, hasMoreProject, loadDesignProjectLoading, loadDesignProjects, active]);
+    useEffect(() => {
+        if (active === 'n7'){
+            if (inView7 && hasMoreProject && !loadEtcProjectLoading && loadEtcProjects) {
+                const lastId = loadEtcProjects[loadEtcProjects.length - 1]?.id;
+                dispatch({
+                    type: LOAD_ETC_PROJECT_REQUEST,
+                    data:{
+                        checker:active,
+                        lastId:lastId
+                    },
+                });
+            }
+        }
+    }, [inView7, hasMoreProject, loadEtcProjectLoading, loadEtcProjects, active]);
+
+    useEffect(() => {
+        if (active === 'n1'){
+            if (loadAllProjects){
+                setCardList(loadAllProjects)
+            }
+        }else if (active === 'n2'){
+            if (loadVocalProjects){
+                setCardList(loadVocalProjects)
+            }
+        }else if (active === 'n3'){
+            if (loadEditProjects){
+                setCardList(loadEditProjects)
+            }
+        }else if (active === 'n4'){
+            if (loadSoundProjects){
+                setCardList(loadSoundProjects)
+            }
+        }else if (active === 'n5'){
+            if (loadPlanProjects){
+                setCardList(loadPlanProjects)
+            }
+        }else if (active === 'n6'){
+            if (loadDesignProjects){
+                setCardList(loadDesignProjects)
+            }
+        }else if (active === 'n7'){
+            if (loadEtcProjects){
+                setCardList(loadEtcProjects)
+            }
+        }
+    },[loadAllProjects,loadVocalProjects,loadEditProjects,loadSoundProjects,
+        loadPlanProjects,loadDesignProjects,loadEtcProjects,active])
 
     return(
         <div>
@@ -152,15 +334,14 @@ const Index = () =>{
                         <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble} user={user} profile={profile}  isLoggedin={logInDone}/>
 
                         <div className={styles.body_color}>
-                            <Select defaultValue="분야 선택" className={styles.nav_mobile}>
-                                <Option value="전체">전체</Option>
-                                <Option value="보컬">보컬</Option>
-                                <Option value="랩">랩</Option>
-                                <Option value="작사">작사</Option>
-                                <Option value="작곡">작곡</Option>
-                                <Option value="연주">연주</Option>
-                                <Option value="음향 엔지니어">음향 엔지니어</Option>
-                                <Option value="디자인">디자인</Option>
+                            <Select defaultValue="n1" className={styles.nav_mobile} value={active}>
+                                <Option value="n1">전체</Option>
+                                <Option value="n2">보컬</Option>
+                                <Option value="n3">촬영편집</Option>
+                                <Option value="n4">사운드</Option>
+                                <Option value="n5">기획</Option>
+                                <Option value="n6">디자인</Option>
+                                <Option value="n7">기타</Option>
                             </Select>
                             <div className={styles.nav_desktop_wrapper}>
                                 {
@@ -198,13 +379,13 @@ const Index = () =>{
                                         ?(
                                             <button className={styles.nav_desktop_active}
                                                     onClick={() => {onCLickNav('n3')}}>
-                                                <div>🎤  랩</div>
+                                                <div>🎥  촬영편집</div>
                                             </button>
                                         )
                                         :(
                                             <button className={styles.nav_desktop}
                                                     onClick={() => {onCLickNav('n3')}}>
-                                                <div>🎤  랩</div>
+                                                <div>🎥  촬영편집</div>
                                             </button>
                                         )
                                 }
@@ -213,13 +394,13 @@ const Index = () =>{
                                         ?(
                                             <button className={styles.nav_desktop_active}
                                                     onClick={() => {onCLickNav('n4')}}>
-                                                <div>✏  작사</div>
+                                                <div>🎛  사운드</div>
                                             </button>
                                         )
                                         :(
                                             <button className={styles.nav_desktop}
                                                     onClick={() => {onCLickNav('n4')}}>
-                                                <div>✏  작사</div>
+                                                <div>🎛  사운드</div>
                                             </button>
                                         )
                                 }
@@ -228,13 +409,13 @@ const Index = () =>{
                                         ?(
                                             <button className={styles.nav_desktop_active}
                                                     onClick={() => {onCLickNav('n5')}}>
-                                                <div>💿  작곡</div>
+                                                <div>✏  기획</div>
                                             </button>
                                         )
                                         :(
                                             <button className={styles.nav_desktop}
                                                     onClick={() => {onCLickNav('n5')}}>
-                                                <div>💿  작곡</div>
+                                                <div>✏  기획</div>
                                             </button>
                                         )
                                 }
@@ -243,13 +424,13 @@ const Index = () =>{
                                         ?(
                                             <button className={styles.nav_desktop_active}
                                                     onClick={() => {onCLickNav('n6')}}>
-                                                <div>🎷  연주</div>
+                                                <div>🎨  디자인</div>
                                             </button>
                                         )
                                         :(
                                             <button className={styles.nav_desktop}
                                                     onClick={() => {onCLickNav('n6')}}>
-                                                <div>🎷  연주</div>
+                                                <div>🎨  디자인</div>
                                             </button>
                                         )
                                 }
@@ -258,39 +439,31 @@ const Index = () =>{
                                         ?(
                                             <button className={styles.nav_desktop_active}
                                                     onClick={() => {onCLickNav('n7')}}>
-                                                <div>🎛  음향 엔지니어</div>
+                                                <div>👀  기타</div>
                                             </button>
                                         )
                                         :(
                                             <button className={styles.nav_desktop}
                                                     onClick={() => {onCLickNav('n7')}}>
-                                                <div>🎛  음향 엔지니어</div>
-                                            </button>
-                                        )
-                                }
-                                {
-                                    navActive['n8']
-                                        ?(
-                                            <button className={styles.nav_desktop_active}
-                                                    onClick={() => {onCLickNav('n8')}}>
-                                                <div>🎨  디자인</div>
-                                            </button>
-                                        )
-                                        :(
-                                            <button className={styles.nav_desktop}
-                                                    onClick={() => {onCLickNav('n8')}}>
-                                                <div>🎨  디자인</div>
+                                                <div>👀  기타</div>
                                             </button>
                                         )
                                 }
 
                             </div>
                             <div className={styles.card_wrapper}>
-                                {loadProjects.map((card, index) => (
+                                {cardList.map((card, index) => (
                                     <>
                                         <MainCard card={card}></MainCard>
                                     </>
                                 ))}
+                                <div ref={hasMoreProject && !loadAllProjectLoading ? ref1 : undefined} />
+                                <div ref={hasMoreProject && !loadVocalProjectLoading ? ref2 : undefined} />
+                                <div ref={hasMoreProject && !loadEditProjectLoading ? ref3 : undefined} />
+                                <div ref={hasMoreProject && !loadSoundProjectLoading ? ref4 : undefined} />
+                                <div ref={hasMoreProject && !loadPlanProjectLoading ? ref5 : undefined} />
+                                <div ref={hasMoreProject && !loadDesignProjectLoading ? ref6 : undefined} />
+                                <div ref={hasMoreProject && !loadEtcProjectLoading ? ref7 : undefined} />
                             </div>
 
                         </div>

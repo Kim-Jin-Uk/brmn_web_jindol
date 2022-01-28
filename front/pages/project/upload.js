@@ -3,7 +3,7 @@ import Header from "../../components/Header";
 import dynamic from "next/dynamic";
 import {createGlobalStyle} from "styled-components";
 import styles from "../../styles/Project.module.scss"
-import {Select, Divider, Input, Checkbox, Modal, message} from "antd";
+import {Select, Divider, Input, Checkbox, Modal, message, Progress} from "antd";
 import Image from "next/image";
 import Button from "../../components/Button";
 import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST} from "../../reducers/user";
@@ -152,19 +152,30 @@ const Global = createGlobalStyle`
         margin-right: 4px;
       }
     }
+  .ant-progress-bg{
+    background-color: #33F4A3;
+  }
+  .ant-progress-text{
+    display: none;
+  }
+  .ant-progress-outer{
+    padding: 0 32px !important;
+    margin-bottom: 36px;
+  }
 `
 
 const Upload = () => {
     const dispatch = useDispatch();
     const {user, logInDone, profile} = useSelector((state) => state.user);
-    const {projectThumbImagePath, uploadProjectDone} = useSelector((state) => state.project);
+    const {projectThumbImagePath, uploadProjectDone,uploadProjectLoading} = useSelector((state) => state.project);
     const [uploadBtn, setUploadBtn] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [select, setSelect] = useState(true)
     const onSelcetChange = useCallback(() => {
         setSelect(!select)
     })
-
+    const [percent,setPercent] = useState(0)
+    let timer = null
     const [title,onChangeTitle,setTitle] = useInput("")
     const [projectField, setProjectField] = useState([])
     const [imgUrl, setImgUrl] = useState("https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/project/img_select.svg")
@@ -185,7 +196,7 @@ const Upload = () => {
 
 
     const [fieldList, setFieldList] = useState([
-        "보컬","랩","작사","작곡","연주","음향 엔지니어","디자인"
+        "보컬","촬영편집","사운드","기획","디자인"
     ])
     const [fieldName, setFieldName] = useState("")
 
@@ -279,6 +290,21 @@ const Upload = () => {
             type:LOG_IN_REQUEST
         })
     },[])
+
+    useEffect(() => {
+        if (!uploadProjectLoading){
+            clearTimeout(timer)
+        }else {
+            timer = setTimeout(() => {
+                if (percent < 100){
+                    setPercent(percent + 1)
+                }
+                else {
+                    setPercent(0)
+                }
+            },100)
+        }
+    },[uploadProjectLoading])
 
     useEffect(() => {
         if (user !== null){
@@ -458,6 +484,11 @@ const Upload = () => {
                         :<></>
                 }
             </div>
+
+            <Modal title="" visible={uploadProjectLoading} footer={null}>
+                <div className={styles.progress_title}>저장 중입니다. 잠시만 기다려주세요</div>
+                <Progress percent={percent}></Progress>
+            </Modal>
 
             <Modal
                 visible={modalVisible}

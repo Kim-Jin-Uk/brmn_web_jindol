@@ -7,7 +7,7 @@ import sideStyles from "../../styles/Project.module.scss";
 import styles from "../../styles/Profile.module.scss"
 import cardStyle from '../../styles/Project.module.scss'
 import Footer from "../../components/Footer";
-import {Card, Dropdown, Menu as AntMenu, message} from "antd";
+import {Card, Dropdown, Menu as AntMenu, message, Modal, Progress} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {
     FOLLOW_REQUEST,
@@ -23,7 +23,9 @@ import {
 import useInput from "../../hooks/useInput";
 import ProfileThumbnail from "../../components/ProfileThumbnail";
 import profile_image_default from "/images/default/profimg_default.svg"
-import {LOAD_PROJECT_REQUEST} from "../../reducers/project";
+import {CHANGE_CHECKER, LOAD_PROJECT_REQUEST} from "../../reducers/project";
+import {createGlobalStyle} from "styled-components";
+import {useInView} from "react-intersection-observer";
 
 function MainCard(props) {
     const onClickCard = () => {
@@ -99,12 +101,38 @@ function InfoCard(props) {
 
 }
 
+const Global = createGlobalStyle`
+    .ant-modal{
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .ant-modal-close{
+      display: none;
+    }
+    .ant-modal-body{
+      padding: 64px 52px;
+    }
+    .ant-modal-content{
+      border-radius: 4px;
+    }
+    
+    .ant-progress-text{
+      display: none;
+    }
+    .ant-progress-outer{
+      padding: 0 !important;
+    }
+    .ant-progress-bg{
+      background-color: #33F4A3;
+    }
+`;
+
 const ProfileProject = () => {
     const router = useRouter()
     const [id,setId] = useState(router.query.id)
     const dispatch = useDispatch()
-    const {user,profile, logInDone, otherProfile, otherProfileDetail,imagePath,otherUser,followingDone,unfollowingDone} = useSelector((state) => state.user);
-    const {uploadProjectDone,loadProjects} = useSelector((state) => state.project);
+    const {user,profile, logInDone, otherProfile, otherProfileDetail,imagePath,otherUser} = useSelector((state) => state.user);
+    const {loadUserProjects,hasMoreProject,loadProjectLoading} = useSelector((state) => state.project);
 
     const [openAble,setOpenAble] = useState(true)
     const [isMe,setIsMe] = useState(true)
@@ -124,9 +152,8 @@ const ProfileProject = () => {
     const [awardList, setAwardList] = useState([])
     const [eduList, setEduList] = useState([])
     const [createList, setCreateList] = useState([])
-    const [followerNum,setFollowerNum] = useState(0)
-    const [followingNum,setFollowingNum] = useState(0)
     const imageInput = useRef();
+    const [ref, inView] = useInView();
     const [isFollowing,setIsFollowing] = useState(null)
 
     const [navActive,setNavActive] = useState({
@@ -228,10 +255,10 @@ const ProfileProject = () => {
                 type:GET_OTHER_PROFILE_REQUEST,
                 data:id
             })
-            dispatch({
-                type:LOAD_PROJECT_REQUEST,
-                data:{email:id}
-            })
+            // dispatch({
+            //     type:LOAD_PROJECT_REQUEST,
+            //     data:{email:id}
+            // })
         }
     },[user, id])
 
@@ -239,6 +266,10 @@ const ProfileProject = () => {
         dispatch({
             type:LOG_IN_REQUEST
         })
+    },[])
+
+    useEffect(() => {
+        dispatch({type:CHANGE_CHECKER})
     },[])
 
     useEffect(() => {
@@ -258,7 +289,6 @@ const ProfileProject = () => {
 
     useEffect(() => {
         if (otherProfile){
-            console.log(otherProfile)
             setUserName(id)
             dispatch({
                 type:GET_OTHER_PROFILE_DETAIL_REQUEST,
@@ -371,8 +401,8 @@ const ProfileProject = () => {
     },[imagePath])
 
     useEffect(() => {
-        setCardList(loadProjects)
-    },[loadProjects])
+        setCardList(loadUserProjects)
+    },[loadUserProjects])
 
     useEffect(() => {
         if (user && otherUser){
@@ -405,9 +435,22 @@ const ProfileProject = () => {
         })
     })
 
+    useEffect(() => {
+            if (inView && hasMoreProject && !loadProjectLoading && loadUserProjects) {
+                const lastId = loadUserProjects[loadUserProjects.length - 1]?.id;
+                dispatch({
+                    type: LOAD_PROJECT_REQUEST,
+                     data:{
+                         email:id,
+                         lastId:lastId
+                     },
+                });
+            }
+        }, [inView, hasMoreProject, loadProjectLoading, loadUserProjects, id]);
 
     return(
         <>
+            <Global></Global>
             <Header openAble = {openAble} setOpenAble={setOpenAble} user={user} profile={profile}  isLoggedin={logInDone}></Header>
             <div style={{background:"#FAFAFA", minHeight:"calc(100vh - 92px)"}}>
                 {
@@ -605,6 +648,7 @@ const ProfileProject = () => {
                                             <MainCard card={card}></MainCard>
                                         </>
                                     ))}
+                                    <div ref={hasMoreProject && !loadProjectLoading ? ref : undefined} />
                                 </div>
                             )
                             :(
@@ -993,7 +1037,6 @@ const ProfileProject = () => {
                             )
                     }
                 </div>
-
             </div>
 
 

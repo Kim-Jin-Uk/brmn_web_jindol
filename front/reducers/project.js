@@ -13,6 +13,34 @@ export const initialState = {
     loadProjectDone:false,
     loadProjectError:null,
 
+    loadAllProjectLoading: false,
+    loadAllProjectDone:false,
+    loadAllProjectError:null,
+
+    loadVocalProjectLoading: false,
+    loadVocalProjectDone:false,
+    loadVocalProjectError:null,
+
+    loadEditProjectLoading: false,
+    loadEditProjectDone:false,
+    loadEditProjectError:null,
+
+    loadSoundProjectLoading: false,
+    loadSoundProjectDone:false,
+    loadSoundProjectError:null,
+
+    loadPlanProjectLoading: false,
+    loadPlanProjectDone:false,
+    loadPlanProjectError:null,
+
+    loadDesignProjectLoading: false,
+    loadDesignProjectDone:false,
+    loadDesignProjectError:null,
+
+    loadEtcProjectLoading: false,
+    loadEtcProjectDone:false,
+    loadEtcProjectError:null,
+
     loadProjectDetailLoading: false,
     loadProjectDetailDone:false,
     loadProjectDetailError:null,
@@ -29,11 +57,20 @@ export const initialState = {
     updateProjectDone:false,
     updateProjectError:null,
 
-    loadProjects:[],
+    loadAllProjects:[],
+    loadVocalProjects:[],
+    loadEditProjects:[],
+    loadSoundProjects:[],
+    loadPlanProjects:[],
+    loadDesignProjects:[],
+    loadEtcProjects:[],
+    loadUserProjects:[],
     loadProjectDetail:null,
 
     projectImagePath:null,
     projectThumbImagePath:null,
+
+    hasMoreProject: true,
 }
 
 export const UPLOAD_PROJECT_IMAGE_REQUEST = "UPLOAD_PROJECT_IMAGE_REQUEST"
@@ -47,6 +84,34 @@ export const UPLOAD_PROJECT_THUMB_IMAGE_FAILURE = "UPLOAD_PROJECT_THUMB_IMAGE_FA
 export const UPLOAD_PROJECT_REQUEST = "UPLOAD_PROJECT_REQUEST"
 export const UPLOAD_PROJECT_SUCCESS = "UPLOAD_PROJECT_SUCCESS"
 export const UPLOAD_PROJECT_FAILURE = "UPLOAD_PROJECT_FAILURE"
+
+export const LOAD_ALL_PROJECT_REQUEST = "LOAD_ALL_PROJECT_REQUEST"
+export const LOAD_ALL_PROJECT_SUCCESS = "LOAD_ALL_PROJECT_SUCCESS"
+export const LOAD_ALL_PROJECT_FAILURE = "LOAD_ALL_PROJECT_FAILURE"
+
+export const LOAD_VOCAL_PROJECT_REQUEST = "LOAD_VOCAL_PROJECT_REQUEST"
+export const LOAD_VOCAL_PROJECT_SUCCESS = "LOAD_VOCAL_PROJECT_SUCCESS"
+export const LOAD_VOCAL_PROJECT_FAILURE = "LOAD_VOCAL_PROJECT_FAILURE"
+
+export const LOAD_EDIT_PROJECT_REQUEST = "LOAD_EDIT_PROJECT_REQUEST"
+export const LOAD_EDIT_PROJECT_SUCCESS = "LOAD_EDIT_PROJECT_SUCCESS"
+export const LOAD_EDIT_PROJECT_FAILURE = "LOAD_EDIT_PROJECT_FAILURE"
+
+export const LOAD_SOUND_PROJECT_REQUEST = "LOAD_SOUND_PROJECT_REQUEST"
+export const LOAD_SOUND_PROJECT_SUCCESS = "LOAD_SOUND_PROJECT_SUCCESS"
+export const LOAD_SOUND_PROJECT_FAILURE = "LOAD_SOUND_PROJECT_FAILURE"
+
+export const LOAD_PLAN_PROJECT_REQUEST = "LOAD_PLAN_PROJECT_REQUEST"
+export const LOAD_PLAN_PROJECT_SUCCESS = "LOAD_PLAN_PROJECT_SUCCESS"
+export const LOAD_PLAN_PROJECT_FAILURE = "LOAD_PLAN_PROJECT_FAILURE"
+
+export const LOAD_DESIGN_PROJECT_REQUEST = "LOAD_DESIGN_PROJECT_REQUEST"
+export const LOAD_DESIGN_PROJECT_SUCCESS = "LOAD_DESIGN_PROJECT_SUCCESS"
+export const LOAD_DESIGN_PROJECT_FAILURE = "LOAD_DESIGN_PROJECT_FAILURE"
+
+export const LOAD_ETC_PROJECT_REQUEST = "LOAD_ETC_PROJECT_REQUEST"
+export const LOAD_ETC_PROJECT_SUCCESS = "LOAD_ETC_PROJECT_SUCCESS"
+export const LOAD_ETC_PROJECT_FAILURE = "LOAD_ETC_PROJECT_FAILURE"
 
 export const LOAD_PROJECT_REQUEST = "LOAD_PROJECT_REQUEST"
 export const LOAD_PROJECT_SUCCESS = "LOAD_PROJECT_SUCCESS"
@@ -74,8 +139,15 @@ export const UPLOAD_PROJECT_DONE = "UPLOAD_PROJECT_DONE"
 
 export const UPDATE_PROJECT_DONE = "UPDATE_PROJECT_DONE"
 
+export const CHANGE_CHECKER = "CHANGE_CHECKER"
+
 export default (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
+        case CHANGE_CHECKER:
+            draft.hasMoreProject = true
+            draft.loadProjectLoading = false
+            break;
+
         case ADD_DONE_PROJECT_IMAGE:
             draft.uploadProjectImageLoading = false;
             draft.uploadProjectImageDone = true;
@@ -146,11 +218,124 @@ export default (state = initialState, action) => produce(state, (draft) => {
         case LOAD_PROJECT_SUCCESS:
             draft.loadProjectLoading = false;
             draft.loadProjectDone = true;
-            draft.loadProjects = action.data;
+            draft.loadUserProjects = draft.loadUserProjects.concat(action.data);
+            draft.hasMoreProject = action.data.length === 50;
             break;
         case LOAD_PROJECT_FAILURE:
             draft.loadProjectLoading = false;
             draft.loadProjectError = action.error;
+            break;
+
+        case LOAD_ALL_PROJECT_REQUEST:
+            draft.loadAllProjectLoading = true;
+            draft.loadAllProjectError = null;
+            draft.loadAllProjectDone = false;
+            break;
+        case LOAD_ALL_PROJECT_SUCCESS:
+            draft.loadAllProjectLoading = false;
+            draft.loadAllProjectDone = true;
+            draft.loadAllProjects = draft.loadAllProjects.concat(action.data);
+            draft.hasMoreProject = action.data.length === 50;
+            break;
+        case LOAD_ALL_PROJECT_FAILURE:
+            draft.loadAllProjectLoading = false;
+            draft.loadAllProjectError = action.error;
+            break;
+
+        case LOAD_VOCAL_PROJECT_REQUEST:
+            draft.loadVocalProjectLoading = true;
+            draft.loadVocalProjectError = null;
+            draft.loadVocalProjectDone = false;
+            break;
+        case LOAD_VOCAL_PROJECT_SUCCESS:
+            draft.loadVocalProjectLoading = false;
+            draft.loadVocalProjectDone = true;
+            draft.loadVocalProjects = draft.loadVocalProjects.concat(action.data);
+            draft.hasMoreProject = action.data.length === 50;
+            break;
+        case LOAD_VOCAL_PROJECT_FAILURE:
+            draft.loadVocalProjectLoading = false;
+            draft.loadVocalProjectError = action.error;
+            break;
+
+        case LOAD_EDIT_PROJECT_REQUEST:
+            draft.loadEditProjectLoading = true;
+            draft.loadEditProjectError = null;
+            draft.loadEditProjectDone = false;
+            break;
+        case LOAD_EDIT_PROJECT_SUCCESS:
+            draft.loadEditProjectLoading = false;
+            draft.loadEditProjectDone = true;
+            draft.loadEditProjects = draft.loadEditProjects.concat(action.data);
+            draft.hasMoreProject = action.data.length === 50;
+            break;
+        case LOAD_EDIT_PROJECT_FAILURE:
+            draft.loadEditProjectLoading = false;
+            draft.loadEditProjectError = action.error;
+            break;
+
+        case LOAD_SOUND_PROJECT_REQUEST:
+            draft.loadSoundProjectLoading = true;
+            draft.loadSoundProjectError = null;
+            draft.loadSoundProjectDone = false;
+            break;
+        case LOAD_SOUND_PROJECT_SUCCESS:
+            draft.loadSoundProjectLoading = false;
+            draft.loadSoundProjectDone = true;
+            draft.loadSoundProjects = draft.loadSoundProjects.concat(action.data);
+            draft.hasMoreProject = action.data.length === 50;
+            break;
+        case LOAD_SOUND_PROJECT_FAILURE:
+            draft.loadSoundProjectLoading = false;
+            draft.loadSoundProjectError = action.error;
+            break;
+
+        case LOAD_PLAN_PROJECT_REQUEST:
+            draft.loadPlanProjectLoading = true;
+            draft.loadPlanProjectError = null;
+            draft.loadPlanProjectDone = false;
+            break;
+        case LOAD_PLAN_PROJECT_SUCCESS:
+            draft.loadPlanProjectLoading = false;
+            draft.loadPlanProjectDone = true;
+            draft.loadPlanProjects = draft.loadPlanProjects.concat(action.data);
+            draft.hasMoreProject = action.data.length === 50;
+            break;
+        case LOAD_PLAN_PROJECT_FAILURE:
+            draft.loadPlanProjectLoading = false;
+            draft.loadPlanProjectError = action.error;
+            break;
+
+        case LOAD_DESIGN_PROJECT_REQUEST:
+            draft.loadDesignProjectLoading = true;
+            draft.loadDesignProjectError = null;
+            draft.loadDesignProjectDone = false;
+            break;
+        case LOAD_DESIGN_PROJECT_SUCCESS:
+            draft.loadDesignProjectLoading = false;
+            draft.loadDesignProjectDone = true;
+            draft.loadDesignProjects = draft.loadDesignProjects.concat(action.data);
+            draft.hasMoreProject = action.data.length === 50;
+            break;
+        case LOAD_DESIGN_PROJECT_FAILURE:
+            draft.loadDesignProjectLoading = false;
+            draft.loadDesignProjectError = action.error;
+            break;
+
+        case LOAD_ETC_PROJECT_REQUEST:
+            draft.loadEtcProjectLoading = true;
+            draft.loadEtcProjectError = null;
+            draft.loadEtcProjectDone = false;
+            break;
+        case LOAD_ETC_PROJECT_SUCCESS:
+            draft.loadEtcProjectLoading = false;
+            draft.loadEtcProjectDone = true;
+            draft.loadEtcProjects = draft.loadEtcProjects.concat(action.data);
+            draft.hasMoreProject = action.data.length === 50;
+            break;
+        case LOAD_ETC_PROJECT_FAILURE:
+            draft.loadEtcProjectLoading = false;
+            draft.loadEtcProjectError = action.error;
             break;
 
         case LOAD_PROJECT_DETAIL_REQUEST:
@@ -204,7 +389,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
         case UPDATE_PROJECT_SUCCESS:
             draft.updateProjectLoading = false;
             draft.updateProjectDone = true;
-            draft.loadProjects = action.data;
+            draft.loadUserProjects = action.data;
             break;
         case UPDATE_PROJECT_FAILURE:
             draft.updateProjectLoading = false;

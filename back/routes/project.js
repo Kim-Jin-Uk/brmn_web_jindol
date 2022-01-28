@@ -3,6 +3,7 @@ const {isNotLoggendIn, isLoggendIn} = require("./middlewares");
 const multer = require('multer')
 const path = require("path");
 const fs = require("fs");
+const {Op} = require('sequelize')
 const multerS3 = require('multer-s3')
 const AWS = require('aws-sdk')
 const {Project,ProjectDetail,Tag, User, Profile} = require("../models");
@@ -120,14 +121,26 @@ router.post('/load',async (req,res,next) => {
             const userProfile = await Profile.findOne({
                 where:{userId:userData.dataValues.id}
             })
+            let where ={
+                userId:userData.dataValues.id,
+                visible_type:null
+            }
+
+            if (req.body.lastId){
+                console.log("LAST_ID",req.body.lastId)
+                if (parseInt(req.body.lastId, 10)) {
+                    where.id = { [Op.lt]: parseInt(req.body.lastId, 10)}
+                }else {
+                    console.log('else')
+                }
+            }
 
             const projectList = await Project.findAll({
-                where:{
-                    userId:userData.dataValues.id,
-                    visible_type:null
-                },
+                where,
+                limit:50,
                 order: [
                     ['createdAt', 'DESC'],
+                    ['id', 'DESC'],
                 ],
             })
             for (let i = 0; i < projectList.length; i++) {
@@ -144,6 +157,421 @@ router.post('/load',async (req,res,next) => {
                 fullProjectList.push(projectItem)
             }
         return res.status(200).json(fullProjectList)
+        }
+        else if (req.body.checker){
+            if (req.body.checker === 'n1'){
+                let where = {
+                    visible_type:null
+                }
+                if (req.body.lastId){
+                    console.log("LAST_ID",req.body.lastId)
+                    if (parseInt(req.body.lastId, 10)) {
+                        where.id = { [Op.lt]: parseInt(req.body.lastId, 10)}
+                    }else {
+                        console.log('else')
+                    }
+                }
+
+                const projectList = await Project.findAll({
+                    where,
+                    limit:50,
+                    order: [
+                        ['createdAt', 'DESC'],
+                        ['id', 'DESC'],
+                    ],
+                    include: [{
+                        model: User,
+                        attributes: ['email'],
+                        include: [{
+                            model: Profile,
+                            attributes: ['nickname','profile_img'],
+                        }]
+                    }]
+                })
+                for (let i = 0; i < projectList.length; i++) {
+                    const project = projectList[i].dataValues
+                    try{
+                        const projectItem = {
+                            id:project.id,
+                            title:project.title,
+                            imgUrl:project.thumb_img,
+                            profImg:project.user.dataValues.profile.dataValues.profile_img,
+                            nickname:project.user.dataValues.profile.dataValues.nickname,
+                            email:project.user.dataValues.email
+                        }
+                        fullProjectList.push(projectItem)
+                    }catch (e){
+                        continue
+                    }
+                }
+                return res.status(200).json(fullProjectList)
+            }
+            if (req.body.checker === 'n2'){
+                let where = {
+                    visible_type:null
+                }
+                if (req.body.lastId){
+                    console.log("LAST_ID",req.body.lastId)
+                    if (parseInt(req.body.lastId, 10)) {
+                        where.id = { [Op.lt]: parseInt(req.body.lastId, 10)}
+                    }else {
+                        console.log('else')
+                    }
+                }
+
+                const projectList = await Project.findAll({
+                    where,
+                    limit:50,
+                    order: [
+                        ['createdAt', 'DESC'],
+                        ['id', 'DESC'],
+                    ],
+                    include: [{
+                        model: User,
+                        attributes: ['email'],
+                        include: [{
+                            model: Profile,
+                            attributes: ['nickname','profile_img'],
+                        }]
+                    },{
+                        model:Tag
+                    }]
+                })
+                for (let i = 0; i < projectList.length; i++) {
+                    const project = projectList[i].dataValues
+                    try{
+                        let check = false
+                        for (let j = 0; j < project.tags.length; j++) {
+                            const tag = project.tags[j]
+                            if (tag.dataValues.tag_type === 'field'){
+                                if (tag.dataValues.tag_name === "보컬"){
+                                    check = true
+                                }
+                            }
+                        }
+                        if (check){
+                            const projectItem = {
+                                id:project.id,
+                                title:project.title,
+                                imgUrl:project.thumb_img,
+                                profImg:project.user.dataValues.profile.dataValues.profile_img,
+                                nickname:project.user.dataValues.profile.dataValues.nickname,
+                                email:project.user.dataValues.email
+                            }
+                            fullProjectList.push(projectItem)
+                        }
+                    }catch (e){
+                        continue
+                    }
+                }
+                return res.status(200).json(fullProjectList)
+            }
+            if (req.body.checker === 'n3'){
+                let where = {
+                    visible_type:null
+                }
+                if (req.body.lastId){
+                    console.log("LAST_ID",req.body.lastId)
+                    if (parseInt(req.body.lastId, 10)) {
+                        where.id = { [Op.lt]: parseInt(req.body.lastId, 10)}
+                    }else {
+                        console.log('else')
+                    }
+                }
+
+                const projectList = await Project.findAll({
+                    where,
+                    limit:50,
+                    order: [
+                        ['createdAt', 'DESC'],
+                        ['id', 'DESC'],
+                    ],
+                    include: [{
+                        model: User,
+                        attributes: ['email'],
+                        include: [{
+                            model: Profile,
+                            attributes: ['nickname','profile_img'],
+                        }]
+                    },{
+                        model:Tag
+                    }]
+                })
+                for (let i = 0; i < projectList.length; i++) {
+                    const project = projectList[i].dataValues
+                    try{
+                        let check = false
+                        for (let j = 0; j < project.tags.length; j++) {
+                            const tag = project.tags[j]
+                            if (tag.dataValues.tag_type === 'field'){
+                                if (tag.dataValues.tag_name === "촬영편집"){
+                                    check = true
+                                }
+                            }
+                        }
+                        if (check){
+                            const projectItem = {
+                                id:project.id,
+                                title:project.title,
+                                imgUrl:project.thumb_img,
+                                profImg:project.user.dataValues.profile.dataValues.profile_img,
+                                nickname:project.user.dataValues.profile.dataValues.nickname,
+                                email:project.user.dataValues.email
+                            }
+                            fullProjectList.push(projectItem)
+                        }
+                    }catch (e){
+                        continue
+                    }
+                }
+                return res.status(200).json(fullProjectList)
+            }
+            if (req.body.checker === 'n4'){
+                let where = {
+                    visible_type:null
+                }
+                if (req.body.lastId){
+                    console.log("LAST_ID",req.body.lastId)
+                    if (parseInt(req.body.lastId, 10)) {
+                        where.id = { [Op.lt]: parseInt(req.body.lastId, 10)}
+                    }else {
+                        console.log('else')
+                    }
+                }
+
+                const projectList = await Project.findAll({
+                    where,
+                    limit:50,
+                    order: [
+                        ['createdAt', 'DESC'],
+                        ['id', 'DESC'],
+                    ],
+                    include: [{
+                        model: User,
+                        attributes: ['email'],
+                        include: [{
+                            model: Profile,
+                            attributes: ['nickname','profile_img'],
+                        }]
+                    },{
+                        model:Tag
+                    }]
+                })
+                for (let i = 0; i < projectList.length; i++) {
+                    const project = projectList[i].dataValues
+                    try{
+                        let check = false
+                        for (let j = 0; j < project.tags.length; j++) {
+                            const tag = project.tags[j]
+                            if (tag.dataValues.tag_type === 'field'){
+                                if (tag.dataValues.tag_name === "사운드"){
+                                    check = true
+                                }
+                            }
+                        }
+                        if (check){
+                            const projectItem = {
+                                id:project.id,
+                                title:project.title,
+                                imgUrl:project.thumb_img,
+                                profImg:project.user.dataValues.profile.dataValues.profile_img,
+                                nickname:project.user.dataValues.profile.dataValues.nickname,
+                                email:project.user.dataValues.email
+                            }
+                            fullProjectList.push(projectItem)
+                        }
+                    }catch (e){
+                        continue
+                    }
+                }
+                return res.status(200).json(fullProjectList)
+            }
+            if (req.body.checker === 'n5'){
+                let where = {
+                    visible_type:null
+                }
+                if (req.body.lastId){
+                    console.log("LAST_ID",req.body.lastId)
+                    if (parseInt(req.body.lastId, 10)) {
+                        where.id = { [Op.lt]: parseInt(req.body.lastId, 10)}
+                    }else {
+                        console.log('else')
+                    }
+                }
+
+                const projectList = await Project.findAll({
+                    where,
+                    limit:50,
+                    order: [
+                        ['createdAt', 'DESC'],
+                        ['id', 'DESC'],
+                    ],
+                    include: [{
+                        model: User,
+                        attributes: ['email'],
+                        include: [{
+                            model: Profile,
+                            attributes: ['nickname','profile_img'],
+                        }]
+                    },{
+                        model:Tag
+                    }]
+                })
+                for (let i = 0; i < projectList.length; i++) {
+                    const project = projectList[i].dataValues
+                    try{
+                        let check = false
+                        for (let j = 0; j < project.tags.length; j++) {
+                            const tag = project.tags[j]
+                            if (tag.dataValues.tag_type === 'field'){
+                                if (tag.dataValues.tag_name === "기획"){
+                                    check = true
+                                }
+                            }
+                        }
+                        if (check){
+                            const projectItem = {
+                                id:project.id,
+                                title:project.title,
+                                imgUrl:project.thumb_img,
+                                profImg:project.user.dataValues.profile.dataValues.profile_img,
+                                nickname:project.user.dataValues.profile.dataValues.nickname,
+                                email:project.user.dataValues.email
+                            }
+                            fullProjectList.push(projectItem)
+                        }
+                    }catch (e){
+                        continue
+                    }
+                }
+                return res.status(200).json(fullProjectList)
+            }
+            if (req.body.checker === 'n6'){
+                let where = {
+                    visible_type:null
+                }
+                if (req.body.lastId){
+                    console.log("LAST_ID",req.body.lastId)
+                    if (parseInt(req.body.lastId, 10)) {
+                        where.id = { [Op.lt]: parseInt(req.body.lastId, 10)}
+                    }else {
+                        console.log('else')
+                    }
+                }
+
+                const projectList = await Project.findAll({
+                    where,
+                    limit:50,
+                    order: [
+                        ['createdAt', 'DESC'],
+                        ['id', 'DESC'],
+                    ],
+                    include: [{
+                        model: User,
+                        attributes: ['email'],
+                        include: [{
+                            model: Profile,
+                            attributes: ['nickname','profile_img'],
+                        }]
+                    },{
+                        model:Tag
+                    }]
+                })
+                for (let i = 0; i < projectList.length; i++) {
+                    const project = projectList[i].dataValues
+                    try{
+                        let check = false
+                        for (let j = 0; j < project.tags.length; j++) {
+                            const tag = project.tags[j]
+                            if (tag.dataValues.tag_type === 'field'){
+                                if (tag.dataValues.tag_name === "디자인"){
+                                    check = true
+                                }
+                            }
+                        }
+                        if (check){
+                            const projectItem = {
+                                id:project.id,
+                                title:project.title,
+                                imgUrl:project.thumb_img,
+                                profImg:project.user.dataValues.profile.dataValues.profile_img,
+                                nickname:project.user.dataValues.profile.dataValues.nickname,
+                                email:project.user.dataValues.email
+                            }
+                            fullProjectList.push(projectItem)
+                        }
+                    }catch (e){
+                        continue
+                    }
+                }
+                return res.status(200).json(fullProjectList)
+            }
+            if (req.body.checker === 'n7'){
+                let where = {
+                    visible_type:null
+                }
+                if (req.body.lastId){
+                    console.log("LAST_ID",req.body.lastId)
+                    if (parseInt(req.body.lastId, 10)) {
+                        where.id = { [Op.lt]: parseInt(req.body.lastId, 10)}
+                    }else {
+                        console.log('else')
+                    }
+                }
+
+                const projectList = await Project.findAll({
+                    where,
+                    limit:50,
+                    order: [
+                        ['createdAt', 'DESC'],
+                        ['id', 'DESC'],
+                    ],
+                    include: [{
+                        model: User,
+                        attributes: ['email'],
+                        include: [{
+                            model: Profile,
+                            attributes: ['nickname','profile_img'],
+                        }]
+                    },{
+                        model:Tag
+                    }]
+                })
+                for (let i = 0; i < projectList.length; i++) {
+                    const project = projectList[i].dataValues
+                    try{
+                        let check = true
+                        for (let j = 0; j < project.tags.length; j++) {
+                            const tag = project.tags[j]
+                            if (tag.dataValues.tag_type === 'field'){
+                                if (
+                                    tag.dataValues.tag_name === "보컬" ||
+                                    tag.dataValues.tag_name === "촬영편집" ||
+                                    tag.dataValues.tag_name === "사운드" ||
+                                    tag.dataValues.tag_name === "기획" ||
+                                    tag.dataValues.tag_name === "디자인"
+                                ){
+                                    check = false
+                                }
+                            }
+                        }
+                        if (check){
+                            const projectItem = {
+                                id:project.id,
+                                title:project.title,
+                                imgUrl:project.thumb_img,
+                                profImg:project.user.dataValues.profile.dataValues.profile_img,
+                                nickname:project.user.dataValues.profile.dataValues.nickname,
+                                email:project.user.dataValues.email
+                            }
+                            fullProjectList.push(projectItem)
+                        }
+                    }catch (e){
+                        continue
+                    }
+                }
+                return res.status(200).json(fullProjectList)
+            }
         }
         res.status(200).send("ok")
     }catch (err){
@@ -179,6 +607,7 @@ router.post('/load/detail',async (req,res,next) => {
                 }
             }]
         })
+        console.log("errorCheck",project)
         res.status(200).json(project.dataValues)
     }catch (err){
         console.error(err)
