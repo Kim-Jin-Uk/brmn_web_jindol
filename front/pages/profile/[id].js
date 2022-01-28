@@ -10,11 +10,12 @@ import Footer from "../../components/Footer";
 import {Card, Dropdown, Menu as AntMenu, message} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {
+    FOLLOW_REQUEST,
     GET_MY_PROFILE_REQUEST,
     GET_OTHER_PROFILE_DETAIL_REQUEST,
-    GET_OTHER_PROFILE_REQUEST,
+    GET_OTHER_PROFILE_REQUEST, GET_OTHER_USER_REQUEST,
     LOG_IN_REQUEST,
-    LOG_OUT_REQUEST,
+    LOG_OUT_REQUEST, UNFOLLOW_REQUEST,
     UPDATE_PROFILE_IMAGE_DEFAULT_REQUEST,
     UPDATE_PROFILE_IMAGE_REQUEST,
     UPLOAD_PROFILE_IMAGE_REQUEST
@@ -102,7 +103,7 @@ const ProfileProject = () => {
     const router = useRouter()
     const [id,setId] = useState(router.query.id)
     const dispatch = useDispatch()
-    const {user,profile, logInDone, otherProfile, otherProfileDetail,imagePath} = useSelector((state) => state.user);
+    const {user,profile, logInDone, otherProfile, otherProfileDetail,imagePath,otherUser,followingDone,unfollowingDone} = useSelector((state) => state.user);
     const {uploadProjectDone,loadProjects} = useSelector((state) => state.project);
 
     const [openAble,setOpenAble] = useState(true)
@@ -126,11 +127,7 @@ const ProfileProject = () => {
     const [followerNum,setFollowerNum] = useState(0)
     const [followingNum,setFollowingNum] = useState(0)
     const imageInput = useRef();
-    const isFollowing = user?.Followings.find((v) => v.id === otherProfile.id);
-
-    useEffect(() => {
-        console.log(user)
-    },[user])
+    const [isFollowing,setIsFollowing] = useState(null)
 
     const [navActive,setNavActive] = useState({
         "n1": true,
@@ -223,6 +220,10 @@ const ProfileProject = () => {
             setIsMe(false)
         }
         if (id){
+            dispatch({
+                type:GET_OTHER_USER_REQUEST,
+                data:id
+            })
             dispatch({
                 type:GET_OTHER_PROFILE_REQUEST,
                 data:id
@@ -373,24 +374,30 @@ const ProfileProject = () => {
         setCardList(loadProjects)
     },[loadProjects])
 
+    useEffect(() => {
+        if (user && otherUser){
+            setIsFollowing(user?.Followings.find((v) => v.id === otherUser.id))
+        }
+    },[user,otherUser])
+
     const onClickFollowButton = useCallback(() => {
-        if (user){
+        if (user && otherUser){
             if (isFollowing) {
                 dispatch({
                     type: UNFOLLOW_REQUEST,
-                    data: post.User.id,
+                    data: otherUser.id,
                 });
             } else {
                 dispatch({
                     type: FOLLOW_REQUEST,
-                    data: post.User.id,
+                    data: otherUser.id,
                 });
             }
         }else {
             message.warning('로그인 이후 이용해주세요.')
         }
 
-    },[isFollowing])
+    },[isFollowing,user,otherUser])
 
     const onCLickLogOut = useCallback(() => {
         dispatch({
@@ -430,11 +437,19 @@ const ProfileProject = () => {
                                         </Button>
                                         <div>
                                             <div className={styles.profile_top_follow}>팔로워</div>
-                                            <div className={styles.profile_top_follow_num}>{followerNum}</div>
+                                            <div className={styles.profile_top_follow_num}>{
+                                                otherUser
+                                                    ? otherUser.Followers.length
+                                                    : 0
+                                            }</div>
                                         </div>
                                         <div>
                                             <div className={styles.profile_top_follow}>팔로잉</div>
-                                            <div className={styles.profile_top_follow_num}>{followingNum}</div>
+                                            <div className={styles.profile_top_follow_num}>{
+                                                otherUser
+                                                    ? otherUser.Followings.length
+                                                    : 0
+                                            }</div>
                                         </div>
                                         <div className={styles.side_sns_wrapper}>
                                             {
@@ -500,11 +515,19 @@ const ProfileProject = () => {
 
                                         <div>
                                             <div className={styles.profile_top_follow}>팔로워</div>
-                                            <div className={styles.profile_top_follow_num}>{followerNum}</div>
+                                            <div className={styles.profile_top_follow_num}>{
+                                                otherUser
+                                                    ? otherUser.Followers.length
+                                                    : 0
+                                            }</div>
                                         </div>
                                         <div>
                                             <div className={styles.profile_top_follow}>팔로잉</div>
-                                            <div className={styles.profile_top_follow_num}>{followingNum}</div>
+                                            <div className={styles.profile_top_follow_num}>{
+                                                otherUser
+                                                    ? otherUser.Followings.length
+                                                    : 0
+                                            }</div>
                                         </div>
                                         <div className={styles.side_sns_wrapper}>
                                             {
@@ -594,11 +617,19 @@ const ProfileProject = () => {
                                             <div className={styles.profile_profile_top_sub}>{userLocation}</div>
                                             <div style={{marginTop:"24px"}}>
                                                 <div className={styles.profile_profile_top_follow}>팔로워</div>
-                                                <div className={styles.profile_profile_top_follow_num}>{followerNum}</div>
+                                                <div className={styles.profile_profile_top_follow_num}>{
+                                                    otherUser
+                                                        ? otherUser.Followers.length
+                                                        : 0
+                                                }</div>
                                             </div>
                                             <div style={{marginTop:"1px"}}>
                                                 <div className={styles.profile_profile_top_follow}>팔로잉</div>
-                                                <div className={styles.profile_profile_top_follow_num}>{followingNum}</div>
+                                                <div className={styles.profile_profile_top_follow_num}>{
+                                                    otherUser
+                                                        ? otherUser.Followings.length
+                                                        : 0
+                                                }</div>
                                             </div>
                                             <div className={styles.profile_sns_wrapper}>
                                                 {

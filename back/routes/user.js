@@ -31,8 +31,27 @@ const upload = multer({
     limits:{fileSize:20*1024*1024},
 })
 
-router.post('/', (req,res,next) => {
-    res.status(200).send('ok')
+router.post('/', async (req,res,next) => {
+    try{
+        const userData = await User.findOne({
+            where:{
+                email:req.body.id
+            },
+            include: [{
+                model: User,
+                as: 'Followings',
+                attributes: ['id'],
+            }, {
+                model: User,
+                as: 'Followers',
+                attributes: ['id'],
+            }]
+        })
+        res.status(200).json(userData)
+    }catch (err){
+        console.error(err)
+        next(err)
+    }
 })
 
 router.get('/login',async (req,res,next) => {
@@ -421,6 +440,39 @@ router.post('/update/profile/image',isLoggendIn, upload.none(), async (req,res,n
         next(err)
     }
 })
+
+router.patch('/:userId/follow',isLoggendIn,async (req, res, next) => {
+    try{
+        const user = await User.findOne({
+            where:{id:req.params.userId}
+        })
+        if (!user){
+            return res.status(400).send('no user')
+        }
+        await user.addFollowers(req.user.id)
+        res.status(200).json({UserId:parseInt(req.params.userId,10)})
+    }catch (err){
+        console.error(err)
+        next(err)
+    }
+})
+
+router.delete('/:userId/follow',isLoggendIn,async (req, res, next) => {
+    try{
+        const user = await User.findOne({
+            where:{id:req.params.userId}
+        })
+        if (!user){
+            return res.status(400).send('no user')
+        }
+        await user.removeFollowers(req.user.id)
+        res.status(200).json({UserId:parseInt(req.params.userId,10)})
+    }catch (err){
+        console.error(err)
+        next(err)
+    }
+})
+
 
 module.exports = router
 

@@ -5,7 +5,7 @@ import axios from 'axios';
 import {
   CHECK_AGREEMENT_FAILURE,
   CHECK_AGREEMENT_REQUEST,
-  CHECK_AGREEMENT_SUCCESS,
+  CHECK_AGREEMENT_SUCCESS, FOLLOW_FAILURE, FOLLOW_REQUEST, FOLLOW_SUCCESS,
   GET_MY_PROFILE_DETAIL_FAILURE,
   GET_MY_PROFILE_DETAIL_REQUEST,
   GET_MY_PROFILE_DETAIL_SUCCESS,
@@ -17,12 +17,12 @@ import {
   GET_OTHER_PROFILE_DETAIL_SUCCESS,
   GET_OTHER_PROFILE_FAILURE,
   GET_OTHER_PROFILE_REQUEST,
-  GET_OTHER_PROFILE_SUCCESS,
+  GET_OTHER_PROFILE_SUCCESS, GET_OTHER_USER_FAILURE, GET_OTHER_USER_REQUEST, GET_OTHER_USER_SUCCESS,
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS, LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
-  LOG_OUT_SUCCESS,
+  LOG_OUT_SUCCESS, UNFOLLOW_FAILURE, UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS,
   UPDATE_AGREEMENT_FAILURE,
   UPDATE_AGREEMENT_REQUEST,
   UPDATE_AGREEMENT_SUCCESS,
@@ -162,6 +162,26 @@ function* getMyProfileDetail(action){
   }
 }
 
+function getOtherUserAPI(data){
+  return axios.post('user/',{id:data})
+}
+
+function* getOtherUser(action){
+  try{
+    const result = yield call(getOtherUserAPI,action.data);
+    yield put({
+      type:GET_OTHER_USER_SUCCESS,
+      data: result.data
+    })
+  }catch (err){
+    yield put({
+      type:GET_OTHER_USER_FAILURE,
+      data:err.response.data
+    })
+    console.error(err)
+  }
+}
+
 function getOtherProfileAPI(data){
   return axios.post('user/profile',{id:data})
 }
@@ -282,6 +302,46 @@ function* updateProfileImage(action){
   }
 }
 
+function followingAPI(data) {
+  return axios.patch(`/user/${data}/follow`);
+}
+
+function* following(action) {
+  try {
+    const result = yield call(followingAPI, action.data);
+    yield put({
+      type: FOLLOW_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: FOLLOW_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+function unfollowingAPI(data) {
+  return axios.delete(`/user/${data}/follow`);
+}
+
+function* unfollowing(action) {
+  try {
+    const result = yield call(unfollowingAPI, action.data);
+    yield put({
+      type: UNFOLLOW_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: UNFOLLOW_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
 
 
 function* watchLogIn() {
@@ -308,6 +368,10 @@ function* watchGetMyProfileDetail() {
   yield takeLatest(GET_MY_PROFILE_DETAIL_REQUEST, getMyProfileDetail);
 }
 
+function* watchGetOtherUser() {
+  yield takeLatest(GET_OTHER_USER_REQUEST, getOtherUser);
+}
+
 function* watchGetOtherProfile() {
   yield takeLatest(GET_OTHER_PROFILE_REQUEST, getOtherProfile);
 }
@@ -332,6 +396,14 @@ function* watchUpdateProfileImage() {
   yield takeLatest(UPDATE_PROFILE_IMAGE_REQUEST, updateProfileImage);
 }
 
+function* watchFollowing() {
+  yield takeLatest(FOLLOW_REQUEST, following);
+}
+
+function* watchUnfollowing() {
+  yield takeLatest(UNFOLLOW_REQUEST, unfollowing);
+}
+
 
 export default function* userSaga() {
   yield all([
@@ -341,11 +413,14 @@ export default function* userSaga() {
     fork(watchLogOut),
     fork(watchGetMyProfile),
     fork(watchGetMyProfileDetail),
+    fork(watchGetOtherUser),
     fork(watchGetOtherProfile),
     fork(watchGetOtherProfileDetail),
     fork(watchUpdateMyProfile),
     fork(watchUpdateProfileImageDefault),
     fork(watchUploadProfileImage),
     fork(watchUpdateProfileImage),
+    fork(watchFollowing),
+    fork(watchUnfollowing),
   ])
 }

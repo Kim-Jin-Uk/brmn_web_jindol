@@ -25,6 +25,10 @@ export const initialState = {
     getMyProfileDetailDone:false,
     getMyProfileDetailError:null,
 
+    getOtherUserLoading: false,
+    getOtherUserDone:false,
+    getOtherUserError:null,
+
     getOtherProfileLoading: false,
     getOtherProfileDone:false,
     getOtherProfileError:null,
@@ -49,6 +53,14 @@ export const initialState = {
     updateProfileImageDone:false,
     updateProfileImageError:null,
 
+    followingLoading: false,
+    followingDone: false,
+    followingError: null,
+
+    unfollowingLoading: false,
+    unfollowingDone: false,
+    unfollowingError: null,
+
     user:null,
     agreement:null,
     profile:null,
@@ -62,7 +74,6 @@ export const initialState = {
 };
 
 export const UPLOAD_MY_PROFILE_DONE = "UPLOAD_MY_PROFILE_DONE"
-
 
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST"
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS"
@@ -88,6 +99,10 @@ export const GET_MY_PROFILE_DETAIL_REQUEST = "GET_MY_PROFILE_DETAIL_REQUEST"
 export const GET_MY_PROFILE_DETAIL_SUCCESS = "GET_MY_PROFILE_DETAIL_SUCCESS"
 export const GET_MY_PROFILE_DETAIL_FAILURE = "GET_MY_PROFILE_DETAIL_FAILURE"
 
+export const GET_OTHER_USER_REQUEST = "GET_OTHER_USER_REQUEST"
+export const GET_OTHER_USER_SUCCESS = "GET_OTHER_USER_SUCCESS"
+export const GET_OTHER_USER_FAILURE = "GET_OTHER_USER_FAILURE"
+
 export const GET_OTHER_PROFILE_REQUEST = "GET_OTHER_PROFILE_REQUEST"
 export const GET_OTHER_PROFILE_SUCCESS = "GET_OTHER_PROFILE_SUCCESS"
 export const GET_OTHER_PROFILE_FAILURE = "GET_OTHER_PROFILE_FAILURE"
@@ -112,6 +127,14 @@ export const UPDATE_PROFILE_IMAGE_REQUEST = "UPDATE_PROFILE_IMAGE_REQUEST"
 export const UPDATE_PROFILE_IMAGE_SUCCESS = "UPDATE_PROFILE_IMAGE_SUCCESS"
 export const UPDATE_PROFILE_IMAGE_FAILURE = "UPDATE_PROFILE_IMAGE_FAILURE"
 
+export const FOLLOW_REQUEST = 'FOLLOW_REQUEST';
+export const FOLLOW_SUCCESS = 'FOLLOW_SUCCESS';
+export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
+
+export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST';
+export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
+export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
+
 export default (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
         case UPLOAD_MY_PROFILE_DONE:
@@ -119,7 +142,6 @@ export default (state = initialState, action) => produce(state, (draft) => {
             draft.updateMyProfileError = null;
             draft.updateMyProfileDone = false;
             break;
-
 
         case LOG_IN_REQUEST:
             draft.logInLoading = true;
@@ -212,6 +234,21 @@ export default (state = initialState, action) => produce(state, (draft) => {
             draft.getMyProfileDetailError = action.error;
             break;
 
+        case GET_OTHER_USER_REQUEST:
+            draft.getOtherUserLoading = true;
+            draft.getOtherUserError = null;
+            draft.getOtherUserDone = false;
+            break;
+        case GET_OTHER_USER_SUCCESS:
+            draft.getOtherUserLoading = false;
+            draft.getOtherUserDone = true;
+            draft.otherUser = action.data;
+            break;
+        case GET_OTHER_USER_FAILURE:
+            draft.getOtherUserLoading = false;
+            draft.getOtherUserError = action.error;
+            break;
+
         case GET_OTHER_PROFILE_REQUEST:
             draft.getOtherProfileLoading = true;
             draft.getOtherProfileError = null;
@@ -299,6 +336,35 @@ export default (state = initialState, action) => produce(state, (draft) => {
         case UPDATE_PROFILE_IMAGE_FAILURE:
             draft.updateProfileImageLoading = false;
             draft.updateProfileImageError = action.error;
+            break;
+
+        case FOLLOW_REQUEST:
+            draft.followingLoading = true;
+            draft.followingError = null;
+            draft.followingDone = false;
+            break;
+        case FOLLOW_SUCCESS:
+            draft.followingLoading = false;
+            draft.user.Followings.push({ id: action.data.UserId });
+            draft.followingDone = true;
+            break;
+        case FOLLOW_FAILURE:
+            draft.followingLoading = false;
+            draft.followingError = action.error;
+            break;
+        case UNFOLLOW_REQUEST:
+            draft.unfollowingLoading = true;
+            draft.unfollowingError = null;
+            draft.unfollowingDone = false;
+            break;
+        case UNFOLLOW_SUCCESS:
+            draft.unfollowingLoading = false;
+            draft.user.Followings = draft.user.Followings.filter((v) => v.id !== action.data.UserId);
+            draft.unfollowingDone = true;
+            break;
+        case UNFOLLOW_FAILURE:
+            draft.unfollowingLoading = false;
+            draft.unfollowingError = action.error;
             break;
 
         default:
