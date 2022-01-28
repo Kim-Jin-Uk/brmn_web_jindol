@@ -94,9 +94,13 @@ export default function Menu(param) {
                     </div>
                 </div>
                 <div className={styles.dropdown_bottom}>
-                    <Link href={"/"}><a className={styles.dropdown_item_bottom}>작업물 관리</a></Link>
+                    <Link href={
+                        user && user.email
+                            ?`/profile/${user.email}`
+                            :`/profile/1`
+                    }><a className={styles.dropdown_item_bottom}>작업물 관리</a></Link>
                     <Link href={"/profile/edit"}><a className={styles.dropdown_item_bottom}>프로필 편집</a></Link>
-                    <Link href={"/"}><a className={styles.dropdown_item_bottom}>문의하기</a></Link>
+                    <Link href={"/agreements/question"}><a className={styles.dropdown_item_bottom}>문의하기</a></Link>
                     <div onClick={() => onCLickLogOut()} className={styles.dropdown_item_bottom}>로그아웃</div>
                 </div>
             </div>

@@ -39,10 +39,20 @@ router.get('/login',async (req,res,next) => {
     if (req.isAuthenticated()){
         try{
             const userData = await User.findOne({
-                where:{id:req.user.dataValues.id}
+                where:{id:req.user.dataValues.id},
+                attributes: ['email','agreement'],
+                include: [{
+                    model: User,
+                    as: 'Followings',
+                    attributes: ['id'],
+                }, {
+                    model: User,
+                    as: 'Followers',
+                    attributes: ['id'],
+                }]
             })
             if (userData.agreement){
-                return res.status(200).json({email:req.user.dataValues.email})
+                return res.status(200).json(userData)
             }
             return res.status(200).json('not agreement')
         }catch (err){
@@ -100,7 +110,16 @@ router.post('/profile',async (req,res,next) => {
         const userData = await User.findOne({
             where:{
                 email:req.body.id
-            }
+            },
+            include: [{
+                model: User,
+                as: 'Followings',
+                attributes: ['id'],
+            }, {
+                model: User,
+                as: 'Followers',
+                attributes: ['id'],
+            }]
         })
         const userProfile = await Profile.findOne({
             where:{

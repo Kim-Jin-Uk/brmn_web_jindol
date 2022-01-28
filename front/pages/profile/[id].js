@@ -7,7 +7,7 @@ import sideStyles from "../../styles/Project.module.scss";
 import styles from "../../styles/Profile.module.scss"
 import cardStyle from '../../styles/Project.module.scss'
 import Footer from "../../components/Footer";
-import {Card, Dropdown, Menu as AntMenu} from "antd";
+import {Card, Dropdown, Menu as AntMenu, message} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {
     GET_MY_PROFILE_REQUEST,
@@ -126,6 +126,11 @@ const ProfileProject = () => {
     const [followerNum,setFollowerNum] = useState(0)
     const [followingNum,setFollowingNum] = useState(0)
     const imageInput = useRef();
+    const isFollowing = user?.Followings.find((v) => v.id === otherProfile.id);
+
+    useEffect(() => {
+        console.log(user)
+    },[user])
 
     const [navActive,setNavActive] = useState({
         "n1": true,
@@ -252,6 +257,7 @@ const ProfileProject = () => {
 
     useEffect(() => {
         if (otherProfile){
+            console.log(otherProfile)
             setUserName(id)
             dispatch({
                 type:GET_OTHER_PROFILE_DETAIL_REQUEST,
@@ -367,6 +373,32 @@ const ProfileProject = () => {
         setCardList(loadProjects)
     },[loadProjects])
 
+    const onClickFollowButton = useCallback(() => {
+        if (user){
+            if (isFollowing) {
+                dispatch({
+                    type: UNFOLLOW_REQUEST,
+                    data: post.User.id,
+                });
+            } else {
+                dispatch({
+                    type: FOLLOW_REQUEST,
+                    data: post.User.id,
+                });
+            }
+        }else {
+            message.warning('로그인 이후 이용해주세요.')
+        }
+
+    },[isFollowing])
+
+    const onCLickLogOut = useCallback(() => {
+        dispatch({
+            type:LOG_OUT_REQUEST
+        })
+    })
+
+
     return(
         <>
             <Header openAble = {openAble} setOpenAble={setOpenAble} user={user} profile={profile}  isLoggedin={logInDone}></Header>
@@ -451,10 +483,21 @@ const ProfileProject = () => {
                                         <div className={styles.profile_top_sub}>{userField.join(", ")}</div>
                                         <div className={styles.profile_top_sub}>{userJob}</div>
                                         <div className={styles.profile_top_sub}>{userLocation}</div>
-                                        <Button className={styles.profile_top_button_not_me}>
-                                            <div className={styles.profile_top_button_icon_not_me}></div>
-                                            <div className={styles.profile_top_button_text_not_me}>팔로우</div>
-                                        </Button>
+                                        {
+                                            isFollowing
+                                                ?
+                                                <Button className={styles.profile_top_button_isfollowing} onClick={onClickFollowButton}>
+                                                    <div className={styles.profile_top_button_text_not_me}>팔로잉</div>
+                                                    <div className={styles.profile_top_button_text_not_me_isfollowing}>팔로우 취소</div>
+                                                </Button>
+                                                :
+                                                <Button className={styles.profile_top_button_not_me} onClick={onClickFollowButton}>
+                                                    <div className={styles.profile_top_button_icon_not_me}></div>
+                                                    <div className={styles.profile_top_button_text_not_me}>팔로우</div>
+                                                </Button>
+                                        }
+
+
                                         <div>
                                             <div className={styles.profile_top_follow}>팔로워</div>
                                             <div className={styles.profile_top_follow_num}>{followerNum}</div>
@@ -967,15 +1010,15 @@ const ProfileProject = () => {
                                                     <div className={sideStyles.side_nav_1}></div>
                                                     <div className={sideStyles.side_nav_content}>이용안내</div>
                                                 </a></Link>
-                                                <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                <Link href={"/project"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
                                                     <div className={sideStyles.side_nav_2}></div>
                                                     <div className={sideStyles.side_nav_content}>프로젝트</div>
                                                 </a></Link>
-                                                <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
-                                                    <div className={sideStyles.side_nav_3}></div>
-                                                    <div className={sideStyles.side_nav_content}>신청하기</div>
-                                                </a></Link>
-                                                <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                <Link href={
+                                                    user && user.email
+                                                        ?`/profile/${user.email}`
+                                                        :`/profile/1`
+                                                }><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
                                                     <div className={sideStyles.side_nav_4}></div>
                                                     <div className={sideStyles.side_nav_content}>작업물 관리</div>
                                                 </a></Link>
@@ -983,10 +1026,10 @@ const ProfileProject = () => {
                                                     <div className={sideStyles.side_nav_5}></div>
                                                     <div className={sideStyles.side_nav_content}>프로필 편집</div>
                                                 </a></Link>
-                                                <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                <div onClick={() => onCLickLogOut()} style={{cursor:"pointer", display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
                                                     <div className={sideStyles.side_nav_6}></div>
                                                     <div className={sideStyles.side_nav_content}>로그아웃</div>
-                                                </a></Link>
+                                                </div>
 
                                                 <div
                                                     style={{
@@ -996,15 +1039,13 @@ const ProfileProject = () => {
                                                         minWidth:"320px"
                                                     }}>
                                                     <div className={sideStyles.side_link_wrapper}>
-                                                        <Link href={"/"}><a>서비스소개</a></Link>
-                                                        <Link href={"/"}><a>자주묻는질문</a></Link>
-                                                        <Link href={"/"}><a>문의하기</a></Link>
+                                                        <Link href={"/agreements/service"}><a>고객센터</a></Link>
                                                     </div>
                                                     <div className={sideStyles.side_sns_wrapper}>
-                                                        <Link href={"/"}><a><div className={sideStyles.side_sns_1}></div></a></Link>
-                                                        <Link href={"/"}><a><div className={sideStyles.side_sns_2}></div></a></Link>
-                                                        <Link href={"/"}><a><div className={sideStyles.side_sns_3}></div></a></Link>
-                                                        <Link href={"/"}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                                        <Link href="https://www.instagram.com/brmn.music/" target="_blank" rel="noreferrer"><a><div className={sideStyles.side_sns_1}></div></a></Link>
+                                                        <Link href="https://www.youtube.com/channel/UCCkwGVEZn-c6udCK-RXO2ig" target="_blank" rel="noreferrer"><a><div className={sideStyles.side_sns_2}></div></a></Link>
+                                                        <Link href="https://www.facebook.com/%EB%B8%8C%EB%A0%88%EB%A9%98-brmn-100401712331312/" target="_blank" rel="noreferrer"><a><div className={sideStyles.side_sns_3}></div></a></Link>
+                                                        <Link href="https://twitter.com/brmn_music" target="_blank" rel="noreferrer"><a><div className={sideStyles.side_sns_4}></div></a></Link>
                                                     </div>
                                                     <div className={sideStyles.side_bottom_content}>
                                                         Copyright brmn all right reserved
@@ -1031,13 +1072,9 @@ const ProfileProject = () => {
                                                     <div className={sideStyles.side_nav_1}></div>
                                                     <div className={sideStyles.side_nav_content}>이용안내</div>
                                                 </a></Link>
-                                                <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                <Link href={"/project"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
                                                     <div className={sideStyles.side_nav_2}></div>
                                                     <div className={sideStyles.side_nav_content}>프로젝트</div>
-                                                </a></Link>
-                                                <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
-                                                    <div className={sideStyles.side_nav_3}></div>
-                                                    <div className={sideStyles.side_nav_content}>신청하기</div>
                                                 </a></Link>
 
                                                 <div
@@ -1048,9 +1085,7 @@ const ProfileProject = () => {
                                                         minWidth:"320px"
                                                     }}>
                                                     <div className={sideStyles.side_link_wrapper}>
-                                                        <Link href={"/"}><a>서비스소개</a></Link>
-                                                        <Link href={"/"}><a>자주묻는질문</a></Link>
-                                                        <Link href={"/"}><a>문의하기</a></Link>
+                                                        <Link href={"/agreements/service"}><a>고객센터</a></Link>
                                                     </div>
                                                     <div className={sideStyles.side_sns_wrapper}>
                                                         <Link href={"/"}><a><div className={sideStyles.side_sns_1}></div></a></Link>

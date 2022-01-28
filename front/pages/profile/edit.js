@@ -15,7 +15,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     GET_MY_PROFILE_DETAIL_REQUEST,
     GET_MY_PROFILE_REQUEST,
-    LOG_IN_REQUEST,
+    LOG_IN_REQUEST, LOG_OUT_REQUEST,
     UPDATE_MY_PROFILE_REQUEST,
     UPLOAD_MY_PROFILE_DONE
 } from "../../reducers/user";
@@ -977,6 +977,13 @@ const Edit = () => {
         })
     }
 
+    const onCLickLogOut = useCallback(() => {
+        dispatch({
+            type:LOG_OUT_REQUEST
+        })
+    })
+
+
     return(
         <div>
             <Global></Global>
@@ -1444,15 +1451,15 @@ const Edit = () => {
                                                         <div className={sideStyles.side_nav_1}></div>
                                                         <div className={sideStyles.side_nav_content}>이용안내</div>
                                                     </a></Link>
-                                                    <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                    <Link href={"/project"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
                                                         <div className={sideStyles.side_nav_2}></div>
                                                         <div className={sideStyles.side_nav_content}>프로젝트</div>
                                                     </a></Link>
-                                                    <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
-                                                        <div className={sideStyles.side_nav_3}></div>
-                                                        <div className={sideStyles.side_nav_content}>신청하기</div>
-                                                    </a></Link>
-                                                    <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                    <Link href={
+                                                        user && user.email
+                                                            ?`/profile/${user.email}`
+                                                            :`/profile/1`
+                                                    }><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
                                                         <div className={sideStyles.side_nav_4}></div>
                                                         <div className={sideStyles.side_nav_content}>작업물 관리</div>
                                                     </a></Link>
@@ -1460,10 +1467,10 @@ const Edit = () => {
                                                         <div className={sideStyles.side_nav_5}></div>
                                                         <div className={sideStyles.side_nav_content}>프로필 편집</div>
                                                     </a></Link>
-                                                    <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                    <div onClick={() => onCLickLogOut()} style={{cursor:"pointer", display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
                                                         <div className={sideStyles.side_nav_6}></div>
                                                         <div className={sideStyles.side_nav_content}>로그아웃</div>
-                                                    </a></Link>
+                                                    </div>
 
                                                     <div
                                                         style={{
@@ -1473,15 +1480,13 @@ const Edit = () => {
                                                             minWidth:"320px"
                                                         }}>
                                                         <div className={sideStyles.side_link_wrapper}>
-                                                            <Link href={"/"}><a>서비스소개</a></Link>
-                                                            <Link href={"/"}><a>자주묻는질문</a></Link>
-                                                            <Link href={"/"}><a>문의하기</a></Link>
+                                                            <Link href={"/agreements/service"}><a>고객센터</a></Link>
                                                         </div>
                                                         <div className={sideStyles.side_sns_wrapper}>
-                                                            <Link href={"/"}><a><div className={sideStyles.side_sns_1}></div></a></Link>
-                                                            <Link href={"/"}><a><div className={sideStyles.side_sns_2}></div></a></Link>
-                                                            <Link href={"/"}><a><div className={sideStyles.side_sns_3}></div></a></Link>
-                                                            <Link href={"/"}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                                            <Link href="https://www.instagram.com/brmn.music/" target="_blank" rel="noreferrer"><a><div className={sideStyles.side_sns_1}></div></a></Link>
+                                                            <Link href="https://www.youtube.com/channel/UCCkwGVEZn-c6udCK-RXO2ig" target="_blank" rel="noreferrer"><a><div className={sideStyles.side_sns_2}></div></a></Link>
+                                                            <Link href="https://www.facebook.com/%EB%B8%8C%EB%A0%88%EB%A9%98-brmn-100401712331312/" target="_blank" rel="noreferrer"><a><div className={sideStyles.side_sns_3}></div></a></Link>
+                                                            <Link href="https://twitter.com/brmn_music" target="_blank" rel="noreferrer"><a><div className={sideStyles.side_sns_4}></div></a></Link>
                                                         </div>
                                                         <div className={sideStyles.side_bottom_content}>
                                                             Copyright brmn all right reserved
@@ -1508,13 +1513,9 @@ const Edit = () => {
                                                         <div className={sideStyles.side_nav_1}></div>
                                                         <div className={sideStyles.side_nav_content}>이용안내</div>
                                                     </a></Link>
-                                                    <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                    <Link href={"/project"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
                                                         <div className={sideStyles.side_nav_2}></div>
                                                         <div className={sideStyles.side_nav_content}>프로젝트</div>
-                                                    </a></Link>
-                                                    <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
-                                                        <div className={sideStyles.side_nav_3}></div>
-                                                        <div className={sideStyles.side_nav_content}>신청하기</div>
                                                     </a></Link>
 
                                                     <div
@@ -1525,9 +1526,7 @@ const Edit = () => {
                                                             minWidth:"320px"
                                                         }}>
                                                         <div className={sideStyles.side_link_wrapper}>
-                                                            <Link href={"/"}><a>서비스소개</a></Link>
-                                                            <Link href={"/"}><a>자주묻는질문</a></Link>
-                                                            <Link href={"/"}><a>문의하기</a></Link>
+                                                            <Link href={"/agreements/service"}><a>고객센터</a></Link>
                                                         </div>
                                                         <div className={sideStyles.side_sns_wrapper}>
                                                             <Link href={"/"}><a><div className={sideStyles.side_sns_1}></div></a></Link>
