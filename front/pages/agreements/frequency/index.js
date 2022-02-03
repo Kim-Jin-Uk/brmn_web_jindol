@@ -5,12 +5,18 @@ import Link from "next/link";
 import Button from "../../../components/Button";
 import styles from "../../../styles/agreements.module.scss"
 import Router from "next/router";
-import { Pagination } from 'antd';
+import {message, Pagination} from 'antd';
 import {createGlobalStyle} from "styled-components";
 import ProfileThumbnail from "../../../components/ProfileThumbnail";
 import Footer from "../../../components/Footer";
 import {useDispatch, useSelector} from "react-redux";
-import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST, LOG_OUT_REQUEST} from "../../../reducers/user";
+import {
+    FREQUENCY_REQUEST,
+    GET_MY_PROFILE_REQUEST,
+    LOG_IN_REQUEST,
+    LOG_OUT_REQUEST,
+    NOTICE_REQUEST
+} from "../../../reducers/user";
 import profile_image_default from "/images/default/profimg_default.svg"
 
 const Global = createGlobalStyle`
@@ -118,22 +124,19 @@ const Global = createGlobalStyle`
 const Index = () => {
     const dispatch = useDispatch()
     const [openAble,setOpenAble] = useState(true)
-    const {user,profile,logInDone} = useSelector((state) => state.user);
+    const {user,profile,logInDone,frequencyList,getMyProfileError,logOutError,frequencyError} = useSelector((state) => state.user);
 
     const onClickClose = useCallback(() => {
         setOpenAble(!openAble)
     },[openAble])
 
-    const [frequencyList, setFrequencyList] = useState([
-        {id:"1",title:"계정을 삭제하고 싶습니다. 어떻게 하면 될까요?", date:"2022. 05. 01"},
-        {id:"1",title:"메이커가 프로젝트를 펑크 냈어요. 계약금 뿐만 아니라 프로젝트 비용에도 손실이 났습니다. 보상받을 수 있는 방법이 있나요? ", date:"2022. 05. 01"},
-    ])
-
     const [pageNum, setPageNum] = useState(1)
 
-    const onClickFrequency =(id) => {
-        Router.push(`/agreements/frequency/${id}`).then((() =>window.scrollTo(0,0) ))
-    }
+    useEffect(() => {
+        dispatch({
+            type:FREQUENCY_REQUEST
+        })
+    },[])
 
     const onChange = (pn) => {
         setPageNum(pn)
@@ -154,11 +157,23 @@ const Index = () => {
         }
     },[user])
 
+    useEffect(() => {
+        if (getMyProfileError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[getMyProfileError])
+
     const onCLickLogOut = useCallback(() => {
         dispatch({
             type:LOG_OUT_REQUEST
         })
     })
+
+    useEffect(() => {
+        if (logOutError || frequencyError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[logOutError,frequencyError])
 
     return(
         <>
@@ -169,7 +184,12 @@ const Index = () => {
                 <div className={styles.notice_item_wrapper}>
                     {frequencyList.slice((pageNum - 1)*10,pageNum*10).map((v, i) => (
                         <div style={{height:"auto", paddingBottom:"28px", position:"relative"}}>
-                            <div style={{marginLeft:"27px"}} onClick={()=>onClickFrequency(v.id)}>{v.title}</div>
+                            <Link href={{
+                                pathname: `/agreements/frequency/item`, // 라우팅 id
+                                query: {
+                                    item: JSON.stringify(v),
+                                }, // props
+                            }}><a><div style={{marginLeft:"27px"}}>{v.title}</div></a></Link>
                             <div className={styles.frequency_q}>Q.</div>
                         </div>
                     ))}

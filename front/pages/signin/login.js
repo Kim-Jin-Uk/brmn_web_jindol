@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect} from "react";
+import React, {useEffect} from "react";
 import Image from "next/image"
 import Link from "next/link"
 import image_logo from "../../images/logo.svg"
@@ -6,7 +6,7 @@ import styles from "../../styles/Sign.module.scss"
 import fontStyles from "../../styles/font.module.scss"
 import SignWrapper from "../../components/SignWrapper";
 import {useDispatch, useSelector} from "react-redux";
-import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST} from "../../reducers/user";
+import {LOG_IN_REQUEST} from "../../reducers/user";
 import backUrl from "../../config/config";
 import Router from "next/router";
 

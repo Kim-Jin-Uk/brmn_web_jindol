@@ -1,5 +1,3 @@
-import Image from "next/image"
-// import { fileUrl } from "utils/api"
 import styles from "./styles.module.scss"
 
 export default function ProfileThumbnail(props) {

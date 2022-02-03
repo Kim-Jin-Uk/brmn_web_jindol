@@ -6,7 +6,7 @@ import Button from "../../components/Button";
 import Link from "next/link"
 import Footer from "../../components/Footer";
 import profile_image_default from "/images/default/profimg_default.svg"
-import {Modal, Select} from 'antd';
+import {message, Select} from 'antd';
 import {createGlobalStyle} from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
 import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST, LOG_OUT_REQUEST} from "../../reducers/user";
@@ -89,7 +89,7 @@ function MainCard(props) {
 
 const Index = () =>{
     const dispatch = useDispatch();
-    const {user, logInDone, profile} = useSelector((state) => state.user);
+    const {user, logInDone, profile, getMyProfileError, logOutError} = useSelector((state) => state.user);
     const [openAble,setOpenAble] = useState(true)
     const [navActive,setNavActive] = useState({
         "n1": true,
@@ -132,6 +132,13 @@ const Index = () =>{
         loadPlanProjects,loadPlanProjectLoading,
         loadDesignProjects,loadDesignProjectLoading,
         loadEtcProjects,loadEtcProjectLoading,
+        loadAllProjectError,
+        loadVocalProjectError,
+        loadEditProjectError,
+        loadSoundProjectError,
+        loadPlanProjectError,
+        loadDesignProjectError,
+        loadEtcProjectError,
     } = useSelector((state) => state.project);
     const [ref1, inView1] = useInView();
     const [ref2, inView2] = useInView();
@@ -141,7 +148,6 @@ const Index = () =>{
     const [ref6, inView6] = useInView();
     const [ref7, inView7] = useInView();
     const [cardList,setCardList] = useState([])
-
 
     const onCLickNav = useCallback((name) => {
         const field = {}
@@ -179,6 +185,12 @@ const Index = () =>{
         }
     },[user])
 
+    useEffect(() => {
+        if (getMyProfileError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[getMyProfileError])
+
     const onCLickLogOut = useCallback(() => {
         dispatch({
             type:LOG_OUT_REQUEST
@@ -188,6 +200,20 @@ const Index = () =>{
     useEffect(() => {
         dispatch({type:CHANGE_CHECKER})
     },[active])
+
+    useEffect(() => {
+        if (logOutError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[logOutError])
+
+    useEffect(() => {
+        if (loadAllProjectError || loadVocalProjectError || loadEditProjectError || loadSoundProjectError || loadPlanProjectError ||
+            loadDesignProjectError || loadEtcProjectError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[loadAllProjectError,loadVocalProjectError,loadEditProjectError,loadSoundProjectError,loadPlanProjectError,
+    loadDesignProjectError,loadEtcProjectError])
 
     useEffect(() => {
         if (active === 'n1'){

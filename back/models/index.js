@@ -12,6 +12,9 @@ db.ProfileDetail = require('./profile_detail')(sequelize, Sequelize)
 db.Project = require('./project')(sequelize, Sequelize)
 db.ProjectDetail = require('./project_detail')(sequelize, Sequelize)
 db.Tag = require('./tag')(sequelize, Sequelize)
+db.Report = require('./report')(sequelize, Sequelize)
+db.Notice = require('./notice')(sequelize, Sequelize)
+db.Log = require('./log')(sequelize, Sequelize)
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

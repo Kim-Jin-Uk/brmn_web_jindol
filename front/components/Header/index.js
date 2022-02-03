@@ -1,5 +1,5 @@
 import Menu from "/components/Menu";
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 
 export default function Header(param) {
     const [side, setSide] = useState(false)

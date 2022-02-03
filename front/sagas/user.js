@@ -5,7 +5,10 @@ import axios from 'axios';
 import {
   CHECK_AGREEMENT_FAILURE,
   CHECK_AGREEMENT_REQUEST,
-  CHECK_AGREEMENT_SUCCESS, FOLLOW_FAILURE, FOLLOW_REQUEST, FOLLOW_SUCCESS,
+  CHECK_AGREEMENT_SUCCESS,
+  FOLLOW_FAILURE,
+  FOLLOW_REQUEST,
+  FOLLOW_SUCCESS, FREQUENCY_FAILURE, FREQUENCY_REQUEST, FREQUENCY_SUCCESS,
   GET_MY_PROFILE_DETAIL_FAILURE,
   GET_MY_PROFILE_DETAIL_REQUEST,
   GET_MY_PROFILE_DETAIL_SUCCESS,
@@ -17,12 +20,22 @@ import {
   GET_OTHER_PROFILE_DETAIL_SUCCESS,
   GET_OTHER_PROFILE_FAILURE,
   GET_OTHER_PROFILE_REQUEST,
-  GET_OTHER_PROFILE_SUCCESS, GET_OTHER_USER_FAILURE, GET_OTHER_USER_REQUEST, GET_OTHER_USER_SUCCESS,
+  GET_OTHER_PROFILE_SUCCESS,
+  GET_OTHER_USER_FAILURE,
+  GET_OTHER_USER_REQUEST,
+  GET_OTHER_USER_SUCCESS,
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
-  LOG_IN_SUCCESS, LOG_OUT_FAILURE,
+  LOG_IN_SUCCESS,
+  LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
-  LOG_OUT_SUCCESS, UNFOLLOW_FAILURE, UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS,
+  LOG_OUT_SUCCESS, NOTICE_FAILURE, NOTICE_REQUEST, NOTICE_SUCCESS, QUESTION_FAILURE,
+  QUESTION_REQUEST, QUESTION_SUCCESS, REPORT_FAILURE,
+  REPORT_REQUEST,
+  REPORT_SUCCESS,
+  UNFOLLOW_FAILURE,
+  UNFOLLOW_REQUEST,
+  UNFOLLOW_SUCCESS,
   UPDATE_AGREEMENT_FAILURE,
   UPDATE_AGREEMENT_REQUEST,
   UPDATE_AGREEMENT_SUCCESS,
@@ -342,6 +355,86 @@ function* unfollowing(action) {
   }
 }
 
+function reportAPI(data) {
+  return axios.post("/user/report",data);
+}
+
+function* report(action) {
+  try {
+    const result = yield call(reportAPI, action.data);
+    yield put({
+      type: REPORT_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: REPORT_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+function questionAPI(data) {
+  return axios.post("/user/question",data);
+}
+
+function* question(action) {
+  try {
+    const result = yield call(questionAPI, action.data);
+    yield put({
+      type: QUESTION_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: QUESTION_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+function noticeAPI() {
+  return axios.post("/user/notice");
+}
+
+function* notice() {
+  try {
+    const result = yield call(noticeAPI);
+    yield put({
+      type: NOTICE_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: NOTICE_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+function frequencyAPI() {
+  return axios.post("/user/frequency");
+}
+
+function* frequency() {
+  try {
+    const result = yield call(frequencyAPI);
+    yield put({
+      type: FREQUENCY_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: FREQUENCY_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
 
 
 function* watchLogIn() {
@@ -404,6 +497,22 @@ function* watchUnfollowing() {
   yield takeLatest(UNFOLLOW_REQUEST, unfollowing);
 }
 
+function* watchReport() {
+  yield takeLatest(REPORT_REQUEST, report);
+}
+
+function* watchQuestion() {
+  yield takeLatest(QUESTION_REQUEST, question);
+}
+
+function* watchNotice() {
+  yield takeLatest(NOTICE_REQUEST, notice);
+}
+
+function* watchFrequency() {
+  yield takeLatest(FREQUENCY_REQUEST, frequency);
+}
+
 
 export default function* userSaga() {
   yield all([
@@ -422,5 +531,9 @@ export default function* userSaga() {
     fork(watchUpdateProfileImage),
     fork(watchFollowing),
     fork(watchUnfollowing),
+    fork(watchReport),
+    fork(watchQuestion),
+    fork(watchNotice),
+    fork(watchFrequency),
   ])
 }

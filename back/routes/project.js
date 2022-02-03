@@ -6,7 +6,8 @@ const fs = require("fs");
 const {Op} = require('sequelize')
 const multerS3 = require('multer-s3')
 const AWS = require('aws-sdk')
-const {Project,ProjectDetail,Tag, User, Profile} = require("../models");
+const {Project,ProjectDetail,Tag, User, Profile, Log} = require("../models");
+const requestIp = require("request-ip");
 
 const router = express.Router()
 
@@ -31,10 +32,34 @@ const upload = multer({
     limits:{fileSize:20*1024*1024},
 })
 
-router.post('/upload/image',isLoggendIn, upload.single('projectImage'), (req,res,next)=>{
-    res.send({
-        fileName: req.file.location
-    });
+router.post('/upload/image',isLoggendIn, upload.single('projectImage'), async (req,res,next)=>{
+    try{
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:req.user.dataValues.id,
+            ip:ip,
+            type:"upload image project",
+            contents:req.file.location,
+        })
+        res.send({
+            fileName: req.file.location
+        });
+    }catch (err) {
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:req.user.dataValues.id,
+                ip:ip,
+                type:"upload image project error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
+    }
 })
 
 router.post('/upload',isLoggendIn,async (req,res,next) => {
@@ -100,11 +125,31 @@ router.post('/upload',isLoggendIn,async (req,res,next) => {
         })))
         await project.addTags(result3.map((v) => v[0]))
 
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:req.user.dataValues.id,
+            ip:ip,
+            type:"upload project",
+            contents:null,
+        })
+
         res.status(200).send("ok")
 
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:req.user.dataValues.id,
+                ip:ip,
+                type:"upload project error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
 
 })
@@ -112,6 +157,7 @@ router.post('/upload',isLoggendIn,async (req,res,next) => {
 router.post('/load',async (req,res,next) => {
     try{
         let fullProjectList = []
+        console.log("load logger",req.body)
         if (req.body.email){
             const userData = await User.findOne({
                 where:{
@@ -573,10 +619,30 @@ router.post('/load',async (req,res,next) => {
                 return res.status(200).json(fullProjectList)
             }
         }
+
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:null,
+            ip:ip,
+            type:"load project",
+            contents:null,
+        })
         res.status(200).send("ok")
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:null,
+                ip:ip,
+                type:"load project error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
 
 })
@@ -607,11 +673,29 @@ router.post('/load/detail',async (req,res,next) => {
                 }
             }]
         })
-        console.log("errorCheck",project)
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:null,
+            ip:ip,
+            type:"load project detail",
+            contents:null,
+        })
         res.status(200).json(project.dataValues)
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:null,
+                ip:ip,
+                type:"load project detail error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
 
 })
@@ -627,15 +711,34 @@ router.post('/add/viewcount',async (req,res,next) => {
         },{
             where:{id:req.body.id}
         })
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:null,
+            ip:ip,
+            type:"add view count",
+            contents:req.body.id,
+        })
         res.status(200).send("ok")
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:null,
+                ip:ip,
+                type:"add view count error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
 
 })
 
-router.post('/delete',async (req,res,next) => {
+router.post('/delete',isLoggendIn,async (req,res,next) => {
     try{
         await Project.update({
             visible_type: "none",
@@ -647,10 +750,29 @@ router.post('/delete',async (req,res,next) => {
         },{
             where:{projectId:req.body.id}
         })
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:req.user.dataValues.id,
+            ip:ip,
+            type:"delete project error",
+            contents:req.body.id,
+        })
         res.status(200).send("ok")
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:req.user.dataValues.id,
+                ip:ip,
+                type:"delete project error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
 
 })
@@ -767,10 +889,29 @@ router.post('/update',isLoggendIn,async (req,res,next) => {
             }
             fullProjectList.push(projectItem)
         }
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:req.user.dataValues.id,
+            ip:ip,
+            type:"update project",
+            contents:req.body.id + " - " + project.id,
+        })
         return res.status(200).json(fullProjectList)
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:req.user.dataValues.id,
+                ip:ip,
+                type:"update project error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
 
 })

@@ -7,10 +7,7 @@ import logo from "/images/logo.svg"
 import Button from "../Button";
 import ProfileThumbnail from "../ProfileThumbnail";
 import IconButton from "../IconButton";
-import {Menu as AntMenu, Dropdown, Button as AntBtn, ConfigProvider, Switch} from 'antd';
-import image_message from "/images/icons/message.svg"
-import image_bell from "/images/icons/bell.svg"
-import image_arrow_down from "/images/icons/arrow_down.svg"
+import {Menu as AntMenu, Dropdown, Button as AntBtn, ConfigProvider, Switch, message} from 'antd';
 import profile_image_default from "/images/default/profimg_default.svg"
 import image_search from "/images/icons/search.svg"
 import image_menu from "/images/icons/menu.svg"
@@ -38,7 +35,7 @@ export default function Menu(param) {
     const dispatch = useDispatch()
     const [side, setSide] = useState(false)
     const router = useRouter()
-    const {user, profile, logInDone} = useSelector((state) => state.user);
+    const {user, profile, logInDone, logOutError} = useSelector((state) => state.user);
     const onClickMenu = useCallback(() => {
         if (param.openAble){
             param.setOpenAble(false)
@@ -60,6 +57,12 @@ export default function Menu(param) {
             type:LOG_OUT_REQUEST
         })
     })
+
+    useEffect(() => {
+        if (logOutError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[logOutError])
 
     const ProfileMenu = (
         <AntMenu>

@@ -4,13 +4,12 @@ import sideStyles from "../../../styles/Project.module.scss";
 import Link from "next/link";
 import Button from "../../../components/Button";
 import styles from "../../../styles/agreements.module.scss"
-import Router from "next/router";
-import { Pagination } from 'antd';
+import {message, Pagination} from 'antd';
 import {createGlobalStyle} from "styled-components";
 import ProfileThumbnail from "../../../components/ProfileThumbnail";
 import Footer from "../../../components/Footer";
 import {useDispatch, useSelector} from "react-redux";
-import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST, LOG_OUT_REQUEST} from "../../../reducers/user";
+import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST, LOG_OUT_REQUEST, NOTICE_REQUEST} from "../../../reducers/user";
 import profile_image_default from "/images/default/profimg_default.svg"
 
 const Global = createGlobalStyle`
@@ -118,25 +117,23 @@ const Global = createGlobalStyle`
 const Index = () => {
     const dispatch = useDispatch()
     const [openAble,setOpenAble] = useState(true)
-    const {user,profile,logInDone} = useSelector((state) => state.user);
+    const {user,profile,logInDone,noticeList,getMyProfileError,logOutError,noticeError} = useSelector((state) => state.user);
 
     const onClickClose = useCallback(() => {
         setOpenAble(!openAble)
     },[openAble])
 
-    const [noticeList, setNoticeList] = useState([
-        {id:"1",title:"1v3.1.0 업데이트 소식을 전해드립니다.", date:"2022. 05. 01"},
-    ])
-
     const [pageNum, setPageNum] = useState(1)
-
-    const onClickNotice =(id) => {
-        Router.push(`/agreements/notice/${id}`).then((() =>window.scrollTo(0,0) ))
-    }
 
     const onChange = (pn) => {
         setPageNum(pn)
     }
+
+    useEffect(() => {
+        dispatch({
+            type:NOTICE_REQUEST
+        })
+    },[])
 
     useEffect(() => {
         dispatch({
@@ -153,11 +150,23 @@ const Index = () => {
         }
     },[user])
 
+    useEffect(() => {
+        if (getMyProfileError || noticeError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[getMyProfileError,noticeError])
+
     const onCLickLogOut = useCallback(() => {
         dispatch({
             type:LOG_OUT_REQUEST
         })
     })
+
+    useEffect(() => {
+        if (logOutError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[logOutError])
 
     return(
         <>
@@ -166,18 +175,30 @@ const Index = () => {
             <div className={styles.notice_wrapper}>
                 <div className={styles.notice_title}>공지사항</div>
                 <div className={styles.notice_item_wrapper}>
-                    {noticeList.slice((pageNum - 1)*10,pageNum*10).map((v, i) => (
-                        <div>
-                            <div onClick={()=>onClickNotice(v.id)}>{v.title}</div>
-                            <div>{v.date}</div>
-                        </div>
-                    ))}
+                    {noticeList
+                        ? noticeList.slice((pageNum - 1)*10,pageNum*10).map((v, i) => (
+                            <div>
+                                <Link href={{
+                                    pathname: `/agreements/notice/item`, // 라우팅 id
+                                    query: {
+                                        item: JSON.stringify(v),
+                                    }, // props
+                                }}><a><div>{v.title}</div></a></Link>
+                                <div>{v.updatedAt.split("T")[0].replace(/-/gi,".")}</div>
+                            </div>
+                        ))
+                        :<></>
+                    }
                 </div>
                 <Pagination
                     showSizeChanger
                     onChange={onChange}
                     defaultCurrent={1}
-                    total={noticeList.length * 10}
+                    total={
+                        noticeList
+                            ? noticeList.length * 10
+                            : 0
+                    }
                 />
             </div>
             <>

@@ -7,12 +7,12 @@ import styles from "../../styles/Sign.module.scss";
 import Button from "../../components/Button";
 import Router from 'next/router'
 import {useDispatch, useSelector} from "react-redux";
-import {CHECK_AGREEMENT_REQUEST, GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST} from "../../reducers/user";
-import Agreements from "../../components/Agreements";
+import { GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST} from "../../reducers/user";
+import {message} from "antd";
 
 const Complete = () => {
     const dispatch = useDispatch()
-    const {agreement,user,profile} = useSelector((state) => state.user);
+    const {user,profile,getMyProfileError} = useSelector((state) => state.user);
 
 
     const onCLickTop = useCallback(() => {
@@ -37,6 +37,12 @@ const Complete = () => {
             })
         }
     },[user])
+
+    useEffect(() => {
+        if (getMyProfileError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[getMyProfileError])
 
     return(
         <>

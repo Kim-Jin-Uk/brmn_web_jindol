@@ -3,8 +3,7 @@ import Header from "../../components/Header";
 import dynamic from "next/dynamic";
 import {createGlobalStyle} from "styled-components";
 import styles from "../../styles/Project.module.scss"
-import {Select, Divider, Input, Checkbox, Modal, message, Progress} from "antd";
-import Image from "next/image";
+import {Select, Checkbox, Modal, message, Progress} from "antd";
 import Button from "../../components/Button";
 import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST} from "../../reducers/user";
 import Router from "next/router";
@@ -166,8 +165,9 @@ const Global = createGlobalStyle`
 
 const Upload = () => {
     const dispatch = useDispatch();
-    const {user, logInDone, profile} = useSelector((state) => state.user);
-    const {projectThumbImagePath, uploadProjectDone,uploadProjectLoading} = useSelector((state) => state.project);
+    const {user, logInDone, getMyProfileError} = useSelector((state) => state.user);
+    const {projectThumbImagePath, uploadProjectDone,uploadProjectLoading, uploadProjectImageError,
+        uploadProjectError} = useSelector((state) => state.project);
     const [uploadBtn, setUploadBtn] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [select, setSelect] = useState(true)
@@ -176,7 +176,7 @@ const Upload = () => {
     })
     const [percent,setPercent] = useState(0)
     let timer = null
-    const [title,onChangeTitle,setTitle] = useInput("")
+    const [title,onChangeTitle] = useInput("")
     const [projectField, setProjectField] = useState([])
     const [imgUrl, setImgUrl] = useState("https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/project/img_select.svg")
     const [imgSet,setImgSet] = useState(false)
@@ -217,6 +217,12 @@ const Upload = () => {
 
         }
     }
+
+    useEffect(() => {
+        if (uploadProjectImageError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[uploadProjectImageError])
 
     useEffect(() => {
         if (projectThumbImagePath){
@@ -319,6 +325,12 @@ const Upload = () => {
         }
     },[user])
 
+    useEffect(() => {
+        if (getMyProfileError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[getMyProfileError])
+
     const onChangeField = (v) => {
         if (v.length > 10){
             return message.warning('분야는 최대 10개까지 선택 가능합니다.')
@@ -365,6 +377,12 @@ const Upload = () => {
             })
         }
     }
+
+    useEffect(() => {
+        if (uploadProjectError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[uploadProjectError])
 
     useEffect(() => {
         if (uploadProjectDone){

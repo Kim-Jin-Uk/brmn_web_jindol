@@ -1,22 +1,17 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
 import Header from "../../../components/Header";
 import styles from '../../../styles/Intro.module.scss'
-import { Steps } from 'antd';
+import {message, Steps} from 'antd';
 import { createGlobalStyle } from 'styled-components';
 import Link from 'next/link'
 import sideStyles from "../../../styles/Project.module.scss";
 import Button from "../../../components/Button";
-
-const { Step } = Steps;
-
-import Router from "next/router"
 import {useDispatch, useSelector} from "react-redux";
 import ProfileThumbnail from "../../../components/ProfileThumbnail";
 import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST, LOG_OUT_REQUEST} from "../../../reducers/user";
-
 import profile_image_default from "/images/default/profimg_default.svg"
 import Footer from "../../../components/Footer";
-
+const { Step } = Steps;
 const Global = createGlobalStyle`
   *{
     -ms-user-select: none;
@@ -138,7 +133,7 @@ const Global = createGlobalStyle`
 const Index = () => {
     const dispatch = useDispatch()
     const [openAble,setOpenAble] = useState(true)
-    const {user,profile,logInDone} = useSelector((state) => state.user);
+    const {user,profile,logInDone,getMyProfileError,logOutError} = useSelector((state) => state.user);
     const Ref = useRef(null)
 
     const onClickClose = useCallback(() => {
@@ -159,6 +154,24 @@ const Index = () => {
             })
         }
     },[user])
+
+    useEffect(() => {
+        if (getMyProfileError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[getMyProfileError])
+
+    const onCLickLogOut = useCallback(() => {
+        dispatch({
+            type:LOG_OUT_REQUEST
+        })
+    })
+
+    useEffect(() => {
+        if (logOutError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[logOutError])
 
     const customDot = (dot, { status, index }) => (
         index === 0
@@ -182,13 +195,6 @@ const Index = () => {
                     <div className={styles.after_line}></div>
                 </div>
     );
-
-    const onCLickLogOut = useCallback(() => {
-        dispatch({
-            type:LOG_OUT_REQUEST
-        })
-    })
-
 
     return(
         <>

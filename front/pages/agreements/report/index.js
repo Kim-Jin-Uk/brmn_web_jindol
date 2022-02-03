@@ -6,12 +6,12 @@ import Button from "../../../components/Button";
 import styles from "../../../styles/agreements.module.scss"
 import {createGlobalStyle} from "styled-components";
 import useInput from "../../../hooks/useInput";
-import {Checkbox, Modal} from "antd";
+import {Checkbox, message, Modal} from "antd";
 import Router from "next/router";
 import ProfileThumbnail from "../../../components/ProfileThumbnail";
 import Footer from "../../../components/Footer";
 import {useDispatch, useSelector} from "react-redux";
-import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST, LOG_OUT_REQUEST} from "../../../reducers/user";
+import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST, LOG_OUT_REQUEST, REPORT_REQUEST} from "../../../reducers/user";
 import profile_image_default from "/images/default/profimg_default.svg"
 
 const Global = createGlobalStyle`
@@ -104,7 +104,7 @@ const Global = createGlobalStyle`
 const Index = () => {
     const dispatch = useDispatch()
     const [openAble,setOpenAble] = useState(true)
-    const {user,profile,logInDone} = useSelector((state) => state.user);
+    const {user,profile,logInDone,getMyProfileError,logOutError,reportError} = useSelector((state) => state.user);
     const [name, onChangeName] = useInput("")
     const [phone, onChangePhone] = useInput("")
     const [email, onChangeEmail] = useInput("")
@@ -121,7 +121,21 @@ const Index = () => {
     }
 
     const onClickBtn = () => {
-        setVisible(true)
+        const regPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/
+        const regEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
+        if (name === ""){
+            message.warning("이름을 입력해주세요")
+        }else if (!regPhone.test(phone)){
+            message.warning("올바른 핸드폰 번호를 입력해주세요")
+        }else if (!regEmail.test(email)){
+            message.warning("올바른 이메일을 입력해주세요")
+        }else if (content.length < 10){
+            message.warning("내용을 최소 10글자 이상 입력해주세요")
+        }else if (!agree){
+            message.warning("개인정보 수집·이용에 동의해주세요")
+        }else {
+            setVisible(true)
+        }
     }
 
     const handleClose = () => {
@@ -130,6 +144,15 @@ const Index = () => {
 
     const handleOk = () => {
         setVisible(false)
+        dispatch({
+            type:REPORT_REQUEST,
+            data:{
+                name:name,
+                phone_num:phone,
+                email:email,
+                contents:content,
+            }
+        })
         Router.replace("/agreements/report/send")
     }
 
@@ -148,11 +171,23 @@ const Index = () => {
         }
     },[user])
 
+    useEffect(() => {
+        if (getMyProfileError || reportError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[getMyProfileError,reportError])
+
     const onCLickLogOut = useCallback(() => {
         dispatch({
             type:LOG_OUT_REQUEST
         })
     })
+
+    useEffect(() => {
+        if (logOutError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[logOutError])
 
     return(
         <>

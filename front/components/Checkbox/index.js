@@ -1,5 +1,4 @@
 import Image from "next/image"
-import { useState } from "react"
 import icon_check from "./images/icon_check.svg"
 import styles from "./style.module.scss"
 

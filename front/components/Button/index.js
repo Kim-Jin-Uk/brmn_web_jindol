@@ -1,5 +1,3 @@
-import Image from "next/image"
-import { useState } from "react"
 import styles from "./style.module.scss"
 
 export default function Button(props) {

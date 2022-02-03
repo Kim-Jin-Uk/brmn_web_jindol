@@ -1,18 +1,16 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import Header from "../../../components/Header";
 import styles from '../../../styles/MakerIntro.module.scss'
-import { Steps } from 'antd';
+import {message, Steps} from 'antd';
 import { createGlobalStyle } from 'styled-components';
 import Link from 'next/link'
 import sideStyles from "../../../styles/Project.module.scss";
 import Button from "../../../components/Button";
-
 import profile_image_default from "/images/default/profimg_default.svg"
 import {useDispatch, useSelector} from "react-redux";
 import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST, LOG_OUT_REQUEST} from "../../../reducers/user";
 import ProfileThumbnail from "../../../components/ProfileThumbnail";
 import Footer from "../../../components/Footer";
-
 const { Step } = Steps;
 
 const Global = createGlobalStyle`
@@ -136,7 +134,7 @@ const Global = createGlobalStyle`
 const Index = () => {
     const dispatch = useDispatch()
     const [openAble,setOpenAble] = useState(true)
-    const {user,profile,logInDone} = useSelector((state) => state.user);
+    const {user,profile,logInDone,getMyProfileError,logOutError} = useSelector((state) => state.user);
 
     const onClickClose = useCallback(() => {
         setOpenAble(!openAble)
@@ -179,11 +177,23 @@ const Index = () => {
         }
     },[user])
 
+    useEffect(() => {
+        if (getMyProfileError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[getMyProfileError])
+
     const onCLickLogOut = useCallback(() => {
         dispatch({
             type:LOG_OUT_REQUEST
         })
     })
+
+    useEffect(() => {
+        if (logOutError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[logOutError])
 
 
     return(

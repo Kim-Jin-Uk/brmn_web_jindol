@@ -3,18 +3,14 @@ import Header from "../../../components/Header";
 import dynamic from "next/dynamic";
 import {createGlobalStyle} from "styled-components";
 import styles from "../../../styles/Project.module.scss"
-import {Select, Divider, Input, Checkbox, Modal, message} from "antd";
-import Image from "next/image";
+import {Select, Checkbox, Modal, message} from "antd";
 import Button from "../../../components/Button";
-import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST, LOG_OUT_REQUEST} from "../../../reducers/user";
+import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST} from "../../../reducers/user";
 import Router, {useRouter} from "next/router";
 import {useDispatch, useSelector} from "react-redux";
 import useInput from "../../../hooks/useInput";
 import {
-    ADD_VIEW_COUNT_REQUEST,
     LOAD_PROJECT_DETAIL_REQUEST, UPDATE_PROJECT_DONE, UPDATE_PROJECT_REQUEST,
-    UPLOAD_PROJECT_DONE,
-    UPLOAD_PROJECT_REQUEST,
     UPLOAD_PROJECT_THUMB_IMAGE_REQUEST
 } from "../../../reducers/project";
 import ProfileThumbnail from "../../../components/ProfileThumbnail";
@@ -164,8 +160,9 @@ const Upload = () => {
     const dispatch = useDispatch();
     const router = useRouter()
     const [id,setId] = useState(router.query.id)
-    const {user, logInDone, profile} = useSelector((state) => state.user);
-    const {projectThumbImagePath, updateProjectDone, loadProjectDetail} = useSelector((state) => state.project);
+    const {user, logInDone} = useSelector((state) => state.user);
+    const {projectThumbImagePath, updateProjectDone, loadProjectDetail, uploadProjectImageError
+    ,loadProjectDetailError, getMyProfileError, updateProjectError} = useSelector((state) => state.project);
     const [uploadBtn, setUploadBtn] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [select, setSelect] = useState(true)
@@ -213,6 +210,12 @@ const Upload = () => {
 
         }
     }
+
+    useEffect(() => {
+        if (uploadProjectImageError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[uploadProjectImageError])
 
     useEffect(() => {
         if (projectThumbImagePath){
@@ -304,6 +307,12 @@ const Upload = () => {
     },[id])
 
     useEffect(() => {
+        if (loadProjectDetailError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[loadProjectDetailError])
+
+    useEffect(() => {
         if (user !== null){
             if (user === "not agreement"){
                 Router.replace("/signin/agreements")
@@ -315,6 +324,12 @@ const Upload = () => {
             }
         }
     },[user])
+
+    useEffect(() => {
+        if (getMyProfileError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[getMyProfileError])
 
     useEffect(() => {
         if (user && loadProjectDetail){
@@ -409,6 +424,12 @@ const Upload = () => {
             })
         }
     }
+
+    useEffect(() => {
+        if (updateProjectError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[updateProjectError])
 
     useEffect(() => {
         if (updateProjectDone){

@@ -587,7 +587,8 @@ function AddCard(value) {
 
 const Edit = () => {
     const dispatch = useDispatch();
-    const {user, logInDone, profile,profileDetail, updateMyProfileDone, updateMyProfileError} = useSelector((state) => state.user);
+    const {user, logInDone, profile,profileDetail, updateMyProfileDone, updateMyProfileError,
+        getMyProfileError, getMyProfileDetailError, logOutError} = useSelector((state) => state.user);
     const [userName, onChangeUserName, setUserName] = useInput("")
     const [userJob, onChangeUserJob, setUserJob] = useInput("")
     const locationList = [
@@ -822,6 +823,12 @@ const Edit = () => {
     },[user])
 
     useEffect(() => {
+        if (getMyProfileError || getMyProfileDetailError || updateMyProfileError || logOutError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[getMyProfileError, getMyProfileDetailError, updateMyProfileError, logOutError])
+
+    useEffect(() => {
         if (profile){
             dispatch({
                 type:GET_MY_PROFILE_DETAIL_REQUEST,
@@ -940,12 +947,6 @@ const Edit = () => {
             Router.replace('/project')
         }
     },[updateMyProfileDone])
-
-    useEffect(() => {
-        if (updateMyProfileError){
-            message.warning('업데이트 도중 얘기치 않은 문제가 발생하였습니다')
-        }
-    },[updateMyProfileError])
 
     useEffect(() => {
         const antSelect = document.getElementById("antSelect")

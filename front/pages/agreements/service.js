@@ -11,6 +11,7 @@ import Footer from "../../components/Footer";
 import {useDispatch, useSelector} from "react-redux";
 import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST, LOG_OUT_REQUEST} from "../../reducers/user";
 import profile_image_default from "/images/default/profimg_default.svg"
+import {message} from "antd";
 
 const Global = createGlobalStyle`
   body{
@@ -21,7 +22,7 @@ const Global = createGlobalStyle`
 const Service = () => {
     const dispatch = useDispatch()
     const [openAble,setOpenAble] = useState(true)
-    const {user,profile,logInDone} = useSelector((state) => state.user);
+    const {user,profile,logInDone,getMyProfileError,logOutError} = useSelector((state) => state.user);
 
     const onClickClose = useCallback(() => {
         setOpenAble(!openAble)
@@ -58,11 +59,23 @@ const Service = () => {
         }
     },[user])
 
+    useEffect(() => {
+        if (getMyProfileError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[getMyProfileError])
+
     const onCLickLogOut = useCallback(() => {
         dispatch({
             type:LOG_OUT_REQUEST
         })
     })
+
+    useEffect(() => {
+        if (logOutError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[logOutError])
 
     return(
         <>

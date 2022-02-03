@@ -1,5 +1,4 @@
 import Image from "next/image"
-import Link from "next/link"
 
 import image_logo_white from "../images/logo_white.svg"
 import styles from "../styles/components/SignWrapper.module.scss"

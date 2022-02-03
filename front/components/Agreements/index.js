@@ -5,7 +5,7 @@ import btn_styles from "../../styles/Sign.module.scss"
 import Button from "../Button";
 import {message, Modal} from "antd";
 import Router from 'next/router'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {UPDATE_AGREEMENT_REQUEST} from "../../reducers/user";
 
 export default function Agreements(props) {
@@ -13,6 +13,8 @@ export default function Agreements(props) {
     const [hidden, setHidden] = useState(true)
     const [allowAll, setAllowAll] = useState(false)
     const [requiredToggle, setRequiredToggle] = useState(false)
+    const {updateAgreementError} = useSelector((state) => state.user);
+
     const [checked, setChecked] = useState({
         "c1": false,
         "c2": false,
@@ -36,6 +38,12 @@ export default function Agreements(props) {
             message.warning('필수항목을 체크해주세요.');
         }
     },[requiredToggle])
+
+    useEffect(() => {
+        if (updateAgreementError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[updateAgreementError])
 
     const toggle = () => setHidden(!hidden)
     const onAllowAll = () => {

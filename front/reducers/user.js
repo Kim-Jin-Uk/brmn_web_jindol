@@ -61,6 +61,22 @@ export const initialState = {
     unfollowingDone: false,
     unfollowingError: null,
 
+    reportLoading: false,
+    reportDone: false,
+    reportError: null,
+
+    questionLoading: false,
+    questionDone: false,
+    questionError: null,
+
+    noticeLoading: false,
+    noticeDone: false,
+    noticeError: null,
+
+    frequencyLoading: false,
+    frequencyDone: false,
+    frequencyError: null,
+
     user:null,
     agreement:null,
     profile:null,
@@ -71,6 +87,9 @@ export const initialState = {
     otherProfileDetail:null,
 
     imagePath:null,
+
+    noticeList:[],
+    frequencyList:[],
 };
 
 export const UPLOAD_MY_PROFILE_DONE = "UPLOAD_MY_PROFILE_DONE"
@@ -134,6 +153,22 @@ export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
 export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST';
 export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
 export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
+
+export const REPORT_REQUEST = 'REPORT_REQUEST';
+export const REPORT_SUCCESS = 'REPORT_SUCCESS';
+export const REPORT_FAILURE = 'REPORT_FAILURE';
+
+export const QUESTION_REQUEST = 'QUESTION_REQUEST';
+export const QUESTION_SUCCESS = 'QUESTION_SUCCESS';
+export const QUESTION_FAILURE = 'QUESTION_FAILURE';
+
+export const NOTICE_REQUEST = 'NOTICE_REQUEST';
+export const NOTICE_SUCCESS = 'NOTICE_SUCCESS';
+export const NOTICE_FAILURE = 'NOTICE_FAILURE';
+
+export const FREQUENCY_REQUEST = 'FREQUENCY_REQUEST';
+export const FREQUENCY_SUCCESS = 'FREQUENCY_SUCCESS';
+export const FREQUENCY_FAILURE = 'FREQUENCY_FAILURE';
 
 export default (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
@@ -365,6 +400,64 @@ export default (state = initialState, action) => produce(state, (draft) => {
         case UNFOLLOW_FAILURE:
             draft.unfollowingLoading = false;
             draft.unfollowingError = action.error;
+            break;
+
+        case REPORT_REQUEST:
+            draft.reportLoading = true;
+            draft.reportError = null;
+            draft.reportDone = false;
+            break;
+        case REPORT_SUCCESS:
+            draft.reportLoading = false;
+            draft.reportDone = true;
+            break;
+        case REPORT_FAILURE:
+            draft.reportLoading = false;
+            draft.reportError = action.error;
+            break;
+
+        case QUESTION_REQUEST:
+            draft.questionLoading = true;
+            draft.questionError = null;
+            draft.questionDone = false;
+            break;
+        case QUESTION_SUCCESS:
+            draft.questionLoading = false;
+            draft.questionDone = true;
+            break;
+        case QUESTION_FAILURE:
+            draft.questionLoading = false;
+            draft.questionError = action.error;
+            break;
+
+        case NOTICE_REQUEST:
+            draft.noticeLoading = true;
+            draft.noticeError = null;
+            draft.noticeDone = false;
+            break;
+        case NOTICE_SUCCESS:
+            draft.noticeLoading = false;
+            draft.noticeDone = true;
+            draft.noticeList = action.data;
+            break;
+        case NOTICE_FAILURE:
+            draft.noticeLoading = false;
+            draft.noticeError = action.error;
+            break;
+
+        case FREQUENCY_REQUEST:
+            draft.frequencyLoading = true;
+            draft.frequencyError = null;
+            draft.frequencyDone = false;
+            break;
+        case FREQUENCY_SUCCESS:
+            draft.frequencyLoading = false;
+            draft.frequencyDone = true;
+            draft.frequencyList = action.data;
+            break;
+        case FREQUENCY_FAILURE:
+            draft.frequencyLoading = false;
+            draft.frequencyError = action.error;
             break;
 
         default:

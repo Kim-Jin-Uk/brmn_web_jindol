@@ -11,11 +11,12 @@ import ProfileThumbnail from "../components/ProfileThumbnail";
 
 import profile_image_default from "/images/default/profimg_default.svg"
 import Footer from "../components/Footer";
+import {message} from "antd";
 
 const Home = () => {
     const dispatch = useDispatch()
     const [openAble,setOpenAble] = useState(true)
-    const {user,profile,logInDone} = useSelector((state) => state.user);
+    const {user,profile,logInDone,getMyProfileError,logOutError} = useSelector((state) => state.user);
 
     const onClickClose = useCallback(() => {
         setOpenAble(!openAble)
@@ -44,11 +45,23 @@ const Home = () => {
         }
     },[user])
 
+    useEffect(() => {
+        if (getMyProfileError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[getMyProfileError])
+
     const onCLickLogOut = useCallback(() => {
         dispatch({
             type:LOG_OUT_REQUEST
         })
     })
+
+    useEffect(() => {
+        if (logOutError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[logOutError])
 
     return(
         <>

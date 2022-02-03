@@ -3,7 +3,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import {createGlobalStyle} from "styled-components";
 import styles from './styles.module.scss'
-import {Modal, Popover} from "antd";
+import {message, Modal, Popover} from "antd";
 import Button from "../Button";
 import {useDispatch, useSelector} from "react-redux";
 import {ADD_DONE_PROJECT_IMAGE, UPLOAD_PROJECT_IMAGE_REQUEST} from "../../reducers/project";
@@ -121,7 +121,7 @@ function BtnOk(onClickBtnOk){
 
 const TextEdit = (param) => {
     const dispatch = useDispatch()
-    const {projectImagePath} = useSelector((state) => state.project);
+    const {projectImagePath,uploadProjectImageError} = useSelector((state) => state.project);
     const [value, setValue] = useState("");
     const [img, setImg] = useState("")
     const [visible, setVisible] = useState(false);
@@ -224,6 +224,12 @@ const TextEdit = (param) => {
             data: imageFormData
         });
     })
+
+    useEffect(() => {
+        if (uploadProjectImageError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[uploadProjectImageError])
 
     useEffect(() => {
         if (projectImagePath){

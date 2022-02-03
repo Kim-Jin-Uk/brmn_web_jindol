@@ -1,5 +1,5 @@
 const express = require('express')
-const {User,Profile,ProfileDetail} = require('../models')
+const {User,Profile,ProfileDetail,Report,Notice,Log} = require('../models')
 const {isNotLoggendIn, isLoggendIn} = require("./middlewares");
 const passport = require("passport");
 const multer = require('multer')
@@ -7,6 +7,7 @@ const path = require("path");
 const fs = require("fs");
 const multerS3 = require('multer-s3')
 const AWS = require('aws-sdk')
+const requestIp = require('request-ip');
 
 const router = express.Router()
 
@@ -47,10 +48,29 @@ router.post('/', async (req,res,next) => {
                 attributes: ['id'],
             }]
         })
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:null,
+            ip:ip,
+            type:"get user",
+            contents:req.body.id,
+        })
         res.status(200).json(userData)
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:req.user.dataValues.id,
+                ip:ip,
+                type:"get user error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
 })
 
@@ -71,21 +91,72 @@ router.get('/login',async (req,res,next) => {
                 }]
             })
             if (userData.agreement){
+                let ip = requestIp.getClientIp(req);
+                await Log.create({
+                    UserId:req.user.dataValues.id,
+                    ip:ip,
+                    type:"login user (agreement)",
+                    contents:req.user.dataValues.id,
+                })
                 return res.status(200).json(userData)
             }
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:null,
+                ip:ip,
+                type:"login user (not agreement)",
+                contents:req.user.dataValues.id,
+            })
             return res.status(200).json('not agreement')
         }catch (err){
-            console.error(err)
-            next(err)
+            try{
+                let ip = requestIp.getClientIp(req);
+                await Log.create({
+                    UserId:req.user.dataValues.id,
+                    ip:ip,
+                    type:"get login user error",
+                    contents:err,
+                })
+                console.error(err)
+                next(err)
+            }catch (err) {
+                console.error(err)
+                next(err)
+            }
         }
     }
     res.status(400).send('not login')
 })
 
-router.post('/logout',(req,res,next) => {
-    req.logout()
-    req.session.destroy()
-    res.status(200).send('ok')
+router.post('/logout',isLoggendIn,async (req,res,next) => {
+    try{
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:req.user.dataValues.id,
+            ip:ip,
+            type:"logout user",
+            contents:null,
+        })
+        req.logout()
+        req.session.destroy()
+        res.status(200).send('ok')
+    }catch (err) {
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:req.user.dataValues.id,
+                ip:ip,
+                type:"logout user error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
+    }
+
 })
 
 router.get('/agreement',isLoggendIn,async (req,res,next) => {
@@ -93,10 +164,29 @@ router.get('/agreement',isLoggendIn,async (req,res,next) => {
         const userData = await User.findOne({
             where:{id:req.user.dataValues.id}
         })
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:req.user.dataValues.id,
+            ip:ip,
+            type:"get agreement user",
+            contents:req.user.dataValues.id,
+        })
         res.status(200).json(userData.agreement)
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:req.user.dataValues.id,
+                ip:ip,
+                type:"get agreement user error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
 })
 
@@ -117,10 +207,29 @@ router.post('/agreement',isLoggendIn,async (req,res,next) => {
         },{
             where:{id:req.user.dataValues.id}
         })
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:req.user.dataValues.id,
+            ip:ip,
+            type:"update agreement user",
+            contents:agreements.join(", "),
+        })
         res.status(200).send(agreements.join(", "))
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:req.user.dataValues.id,
+                ip:ip,
+                type:"update agreement user error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
 })
 
@@ -145,10 +254,29 @@ router.post('/profile',async (req,res,next) => {
                 userId:userData.dataValues.id
             }
         })
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:null,
+            ip:ip,
+            type:"get profile user",
+            contents:userData.dataValues.id,
+        })
         res.status(200).json(userProfile)
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:null,
+                ip:ip,
+                type:"get profile user error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
 
 })
@@ -171,10 +299,29 @@ router.post('/profile/detail',async (req,res,next) => {
                 }
             ]
         })
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:null,
+            ip:ip,
+            type:"get profile detail user",
+            contents:userData.dataValues.id,
+        })
         res.status(200).json(userProfile)
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:null,
+                ip:ip,
+                type:"get profile detail user error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
 
 })
@@ -378,12 +525,39 @@ router.post('/update/myprofile',isLoggendIn,async (req,res,next) => {
                 })
             }
         }
-
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:req.user.dataValues.id,
+            ip:ip,
+            type:"update profile user",
+            contents:"nickname: " + req.body.name +
+                ",job: " + req.body.job +
+                ",location: " + req.body.location +
+                ",introduce: " + req.body.introduce +
+                ",field: " + req.body.field +
+                ",instagram_link: " + req.body.instagram +
+                ",youtube_link: " + req.body.youtube +
+                ",soundcloud_link: " + req.body.soundcloud +
+                ",facebook_link: " + req.body.facebook +
+                ",twitter_link: " + req.body.twitter
+        })
         res.status(200).send("ok")
 
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:req.user.dataValues.id,
+                ip:ip,
+                type:"update profile user error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
 
 })
@@ -407,18 +581,61 @@ router.post('/update/profile/default',isLoggendIn,async (req,res,next) => {
                 userId:userData.dataValues.id
             }
         })
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:req.user.dataValues.id,
+            ip:ip,
+            type:"update profile image default",
+            contents:null,
+        })
         res.status(200).json(userProfile)
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:req.user.dataValues.id,
+                ip:ip,
+                type:"update profile image default error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
 
 })
 
-router.post('/upload/profile/image',isLoggendIn, upload.single('profileImage'), (req,res,next)=>{
-    res.send({
-        fileName: req.file.location
-    });
+router.post('/upload/profile/image',isLoggendIn, upload.single('profileImage'), async (req,res,next)=>{
+    try{
+        await Log.create({
+            UserId:req.user.dataValues.id,
+            ip:ip,
+            type:"upload profile image",
+            contents:req.file.location,
+        })
+        res.send({
+            fileName: req.file.location
+        });
+    }catch (err) {
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:req.user.dataValues.id,
+                ip:ip,
+                type:"upload profile image error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
+    }
+
 })
 
 router.post('/update/profile/image',isLoggendIn, upload.none(), async (req,res,next)=>{
@@ -434,10 +651,29 @@ router.post('/update/profile/image',isLoggendIn, upload.none(), async (req,res,n
                 userId:req.user.dataValues.id
             }
         })
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:req.user.dataValues.id,
+            ip:ip,
+            type:"update profile image error",
+            contents:req.body.fileName,
+        })
         res.status(200).json(userProfile)
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:req.user.dataValues.id,
+                ip:ip,
+                type:"update profile image error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
 })
 
@@ -450,10 +686,29 @@ router.patch('/:userId/follow',isLoggendIn,async (req, res, next) => {
             return res.status(400).send('no user')
         }
         await user.addFollowers(req.user.id)
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:req.user.dataValues.id,
+            ip:ip,
+            type:"add follow user",
+            contents:req.params.userId + " - " + req.user.id,
+        })
         res.status(200).json({UserId:parseInt(req.params.userId,10)})
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:req.user.dataValues.id,
+                ip:ip,
+                type:"add follow user error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
 })
 
@@ -466,11 +721,166 @@ router.delete('/:userId/follow',isLoggendIn,async (req, res, next) => {
             return res.status(400).send('no user')
         }
         await user.removeFollowers(req.user.id)
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:req.user.dataValues.id,
+            ip:ip,
+            type:"remove follow user",
+            contents:req.params.userId + " - " + req.user.id,
+        })
         res.status(200).json({UserId:parseInt(req.params.userId,10)})
     }catch (err){
-        console.error(err)
-        next(err)
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:req.user.dataValues.id,
+                ip:ip,
+                type:"remove follow user error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
     }
+})
+
+router.post('/report',async (req,res,next) => {
+    try{
+        await Report.create({
+            type:"report",
+            name:req.body.name,
+            phone_num:req.body.phone_num,
+            email:req.body.email,
+            contents:req.body.contents,
+        })
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:null,
+            ip:ip,
+            type:"report user",
+            contents:"name: " + req.body.name + ",phone_num: " + req.body.phone_num + ",email: " + req.body.email + ",contents: " + req.body.contents
+        })
+        res.status(200).send("ok")
+    }catch (err){
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:null,
+                ip:ip,
+                type:"report user error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
+    }
+
+})
+
+router.post('/question',async (req,res,next) => {
+    try{
+        await Report.create({
+            type:"question",
+            name:req.body.name,
+            phone_num:req.body.phone_num,
+            email:req.body.email,
+            contents:req.body.contents,
+        })
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:null,
+            ip:ip,
+            type:"question user",
+            contents:"name: " + req.body.name + ",phone_num: " + req.body.phone_num + ",email: " + req.body.email + ",contents: " + req.body.contents
+        })
+        res.status(200).send("ok")
+    }catch (err){
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:null,
+                ip:ip,
+                type:"question user error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
+    }
+
+})
+
+router.post('/notice',async (req,res,next) => {
+    try{
+        const noticeList = await Notice.findAll({
+            where:{type:"notice"}
+        })
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:null,
+            ip:ip,
+            type:"get notice user",
+            contents:null,
+        })
+        res.status(200).json(noticeList)
+    }catch (err){
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:null,
+                ip:ip,
+                type:"get notice user error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
+    }
+
+})
+
+router.post('/frequency',async (req,res,next) => {
+    try{
+        const frequencyList = await Notice.findAll({
+            where:{type:"frequency"}
+        })
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:null,
+            ip:ip,
+            type:"get frequency user",
+            contents:null,
+        })
+        res.status(200).json(frequencyList)
+    }catch (err){
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:null,
+                ip:ip,
+                type:"get frequency user error",
+                contents:err,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
+    }
+
 })
 
 

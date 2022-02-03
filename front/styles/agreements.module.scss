@@ -129,15 +129,17 @@
 }
 
 .notice_item_wrapper{
+  width: 100%;
   margin-top: 32px;
   position: relative;
   display: inline-block;
   > div{
+    width: 100%;
     margin-top: 28px;
     height: 76px;
     border-bottom: 1px solid #E8E8E8;
     cursor: pointer;
-    > div:first-child{
+    > a:first-child{
       font-family: Spoqa Han Sans Neo;
       font-style: normal;
       font-weight: bold;

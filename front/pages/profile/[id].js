@@ -7,7 +7,7 @@ import sideStyles from "../../styles/Project.module.scss";
 import styles from "../../styles/Profile.module.scss"
 import cardStyle from '../../styles/Project.module.scss'
 import Footer from "../../components/Footer";
-import {Card, Dropdown, Menu as AntMenu, message, Modal, Progress} from "antd";
+import {Dropdown, Menu as AntMenu, message} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {
     FOLLOW_REQUEST,
@@ -131,8 +131,10 @@ const ProfileProject = () => {
     const router = useRouter()
     const [id,setId] = useState(router.query.id)
     const dispatch = useDispatch()
-    const {user,profile, logInDone, otherProfile, otherProfileDetail,imagePath,otherUser} = useSelector((state) => state.user);
-    const {loadUserProjects,hasMoreProject,loadProjectLoading} = useSelector((state) => state.project);
+    const {user,profile, logInDone, otherProfile, otherProfileDetail,imagePath,otherUser,
+        uploadProfileImageError,updateProfileImageDefaultError,getOtherUserError,getOtherProfileError,logOutError,
+        getMyProfileError, getOtherProfileDetailError, updateProfileImageError, unfollowingError, followingError} = useSelector((state) => state.user);
+    const {loadUserProjects,hasMoreProject,loadProjectLoading,loadProjectError} = useSelector((state) => state.project);
 
     const [openAble,setOpenAble] = useState(true)
     const [isMe,setIsMe] = useState(true)
@@ -392,6 +394,12 @@ const ProfileProject = () => {
     },[otherProfileDetail])
 
     useEffect(() => {
+        if (loadUserProjects){
+            console.log(loadUserProjects)
+        }
+    },[loadUserProjects])
+
+    useEffect(() => {
         if (imagePath){
             dispatch({
                 type: UPDATE_PROFILE_IMAGE_REQUEST,
@@ -429,6 +437,16 @@ const ProfileProject = () => {
 
     },[isFollowing,user,otherUser])
 
+    useEffect(() => {
+        if (uploadProfileImageError || updateProfileImageDefaultError || getOtherUserError || getOtherProfileError ||
+            logOutError || getMyProfileError || getOtherProfileDetailError || updateProfileImageError || unfollowingError ||
+            followingError || loadProjectError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[uploadProfileImageError,updateProfileImageDefaultError,getOtherUserError,getOtherProfileError,logOutError,
+        getMyProfileError, getOtherProfileDetailError, updateProfileImageError, unfollowingError, followingError,
+        loadProjectError])
+
     const onCLickLogOut = useCallback(() => {
         dispatch({
             type:LOG_OUT_REQUEST
@@ -436,7 +454,7 @@ const ProfileProject = () => {
     })
 
     useEffect(() => {
-            if (inView && hasMoreProject && !loadProjectLoading && loadUserProjects) {
+            if (typeof id !== "undefined" && inView && hasMoreProject && !loadProjectLoading && loadUserProjects) {
                 const lastId = loadUserProjects[loadUserProjects.length - 1]?.id;
                 dispatch({
                     type: LOAD_PROJECT_REQUEST,

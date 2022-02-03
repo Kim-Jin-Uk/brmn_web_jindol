@@ -7,21 +7,18 @@ import Footer from "../../components/Footer";
 import {createGlobalStyle} from "styled-components";
 import sideStyles from "../../styles/Project.module.scss";
 import Image from "next/image"
-import {Modal, Popover} from "antd";
+import {message, Modal, Popover} from "antd";
 import Router, {useRouter} from "next/router";
-
-
 import {
     FacebookShareButton,
     TwitterShareButton,
 } from "react-share";
 import useScript from "../../hooks/use-script";
 import KakaoShareButton from "../../components/ShareBtn/KakaoShareButton";
-import {GET_MY_PROFILE_REQUEST, GET_OTHER_PROFILE_REQUEST, LOG_IN_REQUEST, LOG_OUT_REQUEST} from "../../reducers/user";
+import {GET_MY_PROFILE_REQUEST, LOG_IN_REQUEST, LOG_OUT_REQUEST} from "../../reducers/user";
 import {
     ADD_VIEW_COUNT_REQUEST, DELETE_PROJECT_REQUEST,
     LOAD_PROJECT_DETAIL_REQUEST,
-    LOAD_PROJECT_DETAIL_SUCCESS,
     LOAD_PROJECT_REQUEST
 } from "../../reducers/project";
 import {useDispatch, useSelector} from "react-redux";
@@ -171,8 +168,9 @@ const ProjectPage = () => {
     const [id,setId] = useState(router.query.id)
     const dispatch = useDispatch()
     const [openAble,setOpenAble] = useState(true)
-    const {user,profile, logInDone} = useSelector((state) => state.user);
-    const {loadProjectDetail,deleteProjectDone} = useSelector((state) => state.project);
+    const {user,profile, logInDone, getMyProfileError, logOutError} = useSelector((state) => state.user);
+    const {loadProjectDetail,deleteProjectDone, loadProjectError,deleteProjectError,loadProjectDetailError
+    ,addViewCountError} = useSelector((state) => state.project);
     const [isMe,setIsMe] = useState(false)
     const [deleteVisible,setDeleteVisible] = useState(false)
     const [shareVisible,setShareVisible] = useState(false)
@@ -221,6 +219,12 @@ const ProjectPage = () => {
         }
     },[deleteProjectDone])
 
+    useEffect(() => {
+        if (loadProjectError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[loadProjectError])
+
     const onClickCloseBtn = () => {
         setDeleteVisible(false)
     }
@@ -231,6 +235,12 @@ const ProjectPage = () => {
             data:{id:id}
         })
     }
+
+    useEffect(() => {
+        if (deleteProjectError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[deleteProjectError])
 
     const handleShareOk = () => {
         setShareVisible(false)
@@ -285,6 +295,18 @@ const ProjectPage = () => {
     },[id])
 
     useEffect(() => {
+        if (loadProjectDetailError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[loadProjectDetailError])
+
+    useEffect(() => {
+        if (addViewCountError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[addViewCountError])
+
+    useEffect(() => {
         if (user !== null){
             if (user === "not agreement"){
                 dispatch({
@@ -298,6 +320,18 @@ const ProjectPage = () => {
             }
         }
     },[user])
+
+    useEffect(() => {
+        if (logOutError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[logOutError])
+
+    useEffect(() => {
+        if (getMyProfileError){
+            message.warning("네트워크 상태가 불안정 합니다.")
+        }
+    },[getMyProfileError])
 
     useEffect(() => {
         if (user && loadProjectDetail){
