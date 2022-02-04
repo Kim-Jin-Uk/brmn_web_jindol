@@ -26,29 +26,42 @@ import ProfileThumbnail from "../../components/ProfileThumbnail";
 import moment from "moment";
 import 'moment/locale/ko'
 
+export default function ClipboardCopy() {
+    const doCopy = text => {
+// 흐름 1.
+        if (!document.queryCommandSupported("copy")) {
+            return message.warning("복사하기가 지원되지 않는 브라우저입니다.");
+        }
+// 흐름 2.
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.top = 0;
+        textarea.style.left = 0;
+        textarea.style.position = "fixed";
+// 흐름 3.
+        document.body.appendChild(textarea);
+// focus() -> 사파리 브라우저 서포팅
+        textarea.focus();
+// select() -> 사용자가 입력한 내용을 영역을 설정할 때 필요
+        textarea.select();
+// 흐름 4.
+        document.execCommand("copy");
+// 흐름 5.
+        document.body.removeChild(textarea);
+        message.success("클립보드에 복사되었습니다.");
+    };
+    return (
+        <button className={styles.default_icon} onClick={() => doCopy(window.location.href)}></button>
+    );
+}
+
 function ShareGroup(props){
     useScript('https://developers.kakao.com/sdk/js/kakao.js')
     let currentUrl = window.location.href
     let clipboard = navigator.clipboard;
-    const handleCopyClipBoard = async () => {
-        try {
-            if (clipboard == undefined) {
-                console.log('clipboard is undefined');
-            } else {
-                clipboard.writeText(currentUrl).then(function() {
-                    message.success('링크가 복사되었습니다');
-                    console.log('Copied to clipboard successfully!');
-                }, function() {
-                    console.error('Unable to write to clipboard. :-(');
-                });
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    };
     return(
         <div className={styles.share_wrapper}>
-            <div className={styles.default_icon} onClick={handleCopyClipBoard}></div>
+            <ClipboardCopy></ClipboardCopy>
             <KakaoShareButton title={props.title} hash={props.hash} url={props.url} />
             <FacebookShareButton style={{ marginRight: "20px" }} url={currentUrl}>
                 <div className={styles.facebook_icon}></div>
