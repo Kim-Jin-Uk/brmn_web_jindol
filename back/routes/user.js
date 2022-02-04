@@ -822,7 +822,10 @@ router.post('/question',async (req,res,next) => {
 router.post('/notice',async (req,res,next) => {
     try{
         const noticeList = await Notice.findAll({
-            where:{type:"notice"}
+            where:{type:"notice"},
+            order: [
+                ['updatedAt', 'DESC'],
+            ],
         })
         let ip = requestIp.getClientIp(req);
         await Log.create({
@@ -854,7 +857,10 @@ router.post('/notice',async (req,res,next) => {
 router.post('/frequency',async (req,res,next) => {
     try{
         const frequencyList = await Notice.findAll({
-            where:{type:"frequency"}
+            where:{type:"frequency"},
+            order: [
+                ['updatedAt', 'DESC'],
+            ],
         })
         let ip = requestIp.getClientIp(req);
         await Log.create({
