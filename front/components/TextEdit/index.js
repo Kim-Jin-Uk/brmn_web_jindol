@@ -21,7 +21,7 @@ const Global = createGlobalStyle`
     font-size: 14px;
     line-height: 150%;
     color: #1D1D1D;
-    padding: 61px 20px 100px;
+    padding: 61px 20px 100px !important;
     min-height: calc(100vh - 61px);
 
   }
