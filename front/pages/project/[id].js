@@ -26,7 +26,7 @@ import ProfileThumbnail from "../../components/ProfileThumbnail";
 import moment from "moment";
 import 'moment/locale/ko'
 
-export default function ClipboardCopy() {
+function ClipboardCopy() {
     const doCopy = text => {
 // 흐름 1.
         if (!document.queryCommandSupported("copy")) {
