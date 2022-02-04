@@ -386,7 +386,7 @@ const ProjectPage = () => {
                         ? loadProjectDetail.title
                         :"제목"
                 }</div>
-                <div className={styles.main_field}>분야</div>
+                <div className={styles.main_field}>{fieldList.join(", ")}</div>
                 {projectList.map((props, index) => (
                     <>
                         <ProjectCard props={props}></ProjectCard>
@@ -411,7 +411,7 @@ const ProjectPage = () => {
                     <div>{fieldList.join(", ")}</div>
                     <div>{
                         loadProjectDetail
-                            ? `조회수 ${loadProjectDetail.view_count}회`
+                            ? `조회수 ${loadProjectDetail.view_count + 1}회`
                             : `조회수 0회`
                     }</div>
                     <div>{
