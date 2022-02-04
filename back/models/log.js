@@ -1,15 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
     const Log = sequelize.define('logs',{
         UserId:{
-            type: DataTypes.STRING(34),
+            type: DataTypes.STRING(256),
             allowNull:true,
         },
         ip:{
-            type: DataTypes.STRING(128),
+            type: DataTypes.STRING(256),
             allowNull:true,
         },
         type:{
-            type: DataTypes.STRING(25),
+            type: DataTypes.STRING(256),
             allowNull:true,
         },
         contents:{
