@@ -17,7 +17,7 @@ const KakaoShareButton = (props) => {
             // 중복 initialization 방지
             if (!kakao.isInitialized()) {
                 // 두번째 step 에서 가져온 javascript key 를 이용하여 initialize
-                kakao.init(process.env.NEXT_PUBLIC_KAKAO_KEY)
+                kakao.init("2672d8a0c63d3b95ac4112740d05ff81")
             }
 
             kakao.Link.createDefaultButton({
