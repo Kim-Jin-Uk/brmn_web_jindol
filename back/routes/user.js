@@ -628,7 +628,7 @@ router.post('/upload/profile/image',isLoggendIn, upload.single('profileImage'), 
                 type:"upload profile image error",
                 contents:err,
             })
-            console.error(err)
+            console.error(err.message)
             next(err)
         }catch (err) {
             console.error(err)
