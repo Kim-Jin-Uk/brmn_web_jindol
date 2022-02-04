@@ -360,7 +360,7 @@ const Index = () =>{
                         <Header param={"project"} openAble = {openAble} setOpenAble={setOpenAble} user={user} profile={profile}  isLoggedin={logInDone}/>
 
                         <div className={styles.body_color}>
-                            <Select defaultValue="n1" className={styles.nav_mobile} value={active}>
+                            <Select onChange={onCLickNav} defaultValue="n1" className={styles.nav_mobile} value={active}>
                                 <Option value="n1">전체</Option>
                                 <Option value="n2">보컬</Option>
                                 <Option value="n3">촬영편집</Option>
