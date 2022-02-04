@@ -28,11 +28,20 @@ import 'moment/locale/ko'
 
 function ShareGroup(props){
     useScript('https://developers.kakao.com/sdk/js/kakao.js')
-    const currentUrl = window.location.href
+    let currentUrl = window.location.href
+    let clipboard = navigator.clipboard;
     const handleCopyClipBoard = async () => {
         try {
-            await navigator.clipboard.writeText(currentUrl);
-            alert('링크가 복사되었습니다');
+            if (clipboard == undefined) {
+                console.log('clipboard is undefined');
+            } else {
+                clipboard.writeText(currentUrl).then(function() {
+                    message.success('링크가 복사되었습니다');
+                    console.log('Copied to clipboard successfully!');
+                }, function() {
+                    console.error('Unable to write to clipboard. :-(');
+                });
+            }
         } catch (error) {
             console.log(error)
         }
