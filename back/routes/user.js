@@ -63,7 +63,7 @@ router.post('/', async (req,res,next) => {
                 UserId:req.user.dataValues.id,
                 ip:ip,
                 type:"get user error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -115,7 +115,7 @@ router.get('/login',async (req,res,next) => {
                     UserId:req.user.dataValues.id,
                     ip:ip,
                     type:"get login user error",
-                    contents:err,
+                    contents:err.message,
                 })
                 console.error(err)
                 next(err)
@@ -147,7 +147,7 @@ router.post('/logout',isLoggendIn,async (req,res,next) => {
                 UserId:req.user.dataValues.id,
                 ip:ip,
                 type:"logout user error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -179,7 +179,7 @@ router.get('/agreement',isLoggendIn,async (req,res,next) => {
                 UserId:req.user.dataValues.id,
                 ip:ip,
                 type:"get agreement user error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -222,7 +222,7 @@ router.post('/agreement',isLoggendIn,async (req,res,next) => {
                 UserId:req.user.dataValues.id,
                 ip:ip,
                 type:"update agreement user error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -269,7 +269,7 @@ router.post('/profile',async (req,res,next) => {
                 UserId:null,
                 ip:ip,
                 type:"get profile user error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -314,7 +314,7 @@ router.post('/profile/detail',async (req,res,next) => {
                 UserId:null,
                 ip:ip,
                 type:"get profile detail user error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -550,7 +550,7 @@ router.post('/update/myprofile',isLoggendIn,async (req,res,next) => {
                 UserId:req.user.dataValues.id,
                 ip:ip,
                 type:"update profile user error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -596,7 +596,7 @@ router.post('/update/profile/default',isLoggendIn,async (req,res,next) => {
                 UserId:req.user.dataValues.id,
                 ip:ip,
                 type:"update profile image default error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -610,6 +610,7 @@ router.post('/update/profile/default',isLoggendIn,async (req,res,next) => {
 
 router.post('/upload/profile/image',isLoggendIn, upload.single('profileImage'), async (req,res,next)=>{
     try{
+        let ip = requestIp.getClientIp(req);
         await Log.create({
             UserId:req.user.dataValues.id,
             ip:ip,
@@ -626,9 +627,9 @@ router.post('/upload/profile/image',isLoggendIn, upload.single('profileImage'), 
                 UserId:req.user.dataValues.id,
                 ip:ip,
                 type:"upload profile image error",
-                contents:err,
+                contents:err.message,
             })
-            console.error(err.message)
+            console.error(err)
             next(err)
         }catch (err) {
             console.error(err)
@@ -666,7 +667,7 @@ router.post('/update/profile/image',isLoggendIn, upload.none(), async (req,res,n
                 UserId:req.user.dataValues.id,
                 ip:ip,
                 type:"update profile image error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -701,7 +702,7 @@ router.patch('/:userId/follow',isLoggendIn,async (req, res, next) => {
                 UserId:req.user.dataValues.id,
                 ip:ip,
                 type:"add follow user error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -736,7 +737,7 @@ router.delete('/:userId/follow',isLoggendIn,async (req, res, next) => {
                 UserId:req.user.dataValues.id,
                 ip:ip,
                 type:"remove follow user error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -771,7 +772,7 @@ router.post('/report',async (req,res,next) => {
                 UserId:null,
                 ip:ip,
                 type:"report user error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -807,7 +808,7 @@ router.post('/question',async (req,res,next) => {
                 UserId:null,
                 ip:ip,
                 type:"question user error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -842,7 +843,7 @@ router.post('/notice',async (req,res,next) => {
                 UserId:null,
                 ip:ip,
                 type:"get notice user error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -877,7 +878,7 @@ router.post('/frequency',async (req,res,next) => {
                 UserId:null,
                 ip:ip,
                 type:"get frequency user error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)

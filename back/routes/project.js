@@ -51,7 +51,7 @@ router.post('/upload/image',isLoggendIn, upload.single('projectImage'), async (r
                 UserId:req.user.dataValues.id,
                 ip:ip,
                 type:"upload image project error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -142,7 +142,7 @@ router.post('/upload',isLoggendIn,async (req,res,next) => {
                 UserId:req.user.dataValues.id,
                 ip:ip,
                 type:"upload project error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -635,7 +635,7 @@ router.post('/load',async (req,res,next) => {
                 UserId:null,
                 ip:ip,
                 type:"load project error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -688,7 +688,7 @@ router.post('/load/detail',async (req,res,next) => {
                 UserId:null,
                 ip:ip,
                 type:"load project detail error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -726,7 +726,7 @@ router.post('/add/viewcount',async (req,res,next) => {
                 UserId:null,
                 ip:ip,
                 type:"add view count error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -765,7 +765,7 @@ router.post('/delete',isLoggendIn,async (req,res,next) => {
                 UserId:req.user.dataValues.id,
                 ip:ip,
                 type:"delete project error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
@@ -904,7 +904,7 @@ router.post('/update',isLoggendIn,async (req,res,next) => {
                 UserId:req.user.dataValues.id,
                 ip:ip,
                 type:"update project error",
-                contents:err,
+                contents:err.message,
             })
             console.error(err)
             next(err)
