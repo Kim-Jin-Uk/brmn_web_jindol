@@ -226,7 +226,7 @@ const Upload = () => {
 
     useEffect(() => {
         if (projectThumbImagePath){
-            setImgUrl(projectThumbImagePath.fileName)
+            setImgUrl(projectThumbImagePath.fileName.replace(/\/thumb\//,'/project/'))
             setImgSet(true)
         }
     },[projectThumbImagePath])
