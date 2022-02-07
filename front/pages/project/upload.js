@@ -226,7 +226,7 @@ const Upload = () => {
 
     useEffect(() => {
         if (projectThumbImagePath){
-            setImgUrl(projectThumbImagePath)
+            setImgUrl(projectThumbImagePath.fileName)
             setImgSet(true)
         }
     },[projectThumbImagePath])
@@ -435,7 +435,7 @@ const Upload = () => {
                                                 <div className={styles.detail_title} style={{verticalAlign:"top", position:"static", top:"0", transform:"translateY(0)"}}>표지*</div>
                                                 <div onClick={imgUpload} className={styles.detail_img_wrapper}>
                                                     <ProfileThumbnail circle size={240} image={
-                                                        imgUrl.fileName.replace(/\/thumb\//,'/project/')
+                                                        imgUrl.replace(/\/thumb\//,'/project/')
                                                     }></ProfileThumbnail>
                                                 </div>
                                                 {
