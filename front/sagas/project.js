@@ -61,7 +61,7 @@ function* uploadProjectImage(action){
 }
 
 function uploadProjectThumbImageAPI(data){
-  return axios.post('project/upload/image',data)
+  return axios.post('project/upload/image/thumb',data)
 }
 
 function* uploadProjectThumbImage(action){

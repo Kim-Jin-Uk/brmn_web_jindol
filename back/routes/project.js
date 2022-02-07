@@ -62,6 +62,36 @@ router.post('/upload/image',isLoggendIn, upload.single('projectImage'), async (r
     }
 })
 
+router.post('/upload/image/thumb',isLoggendIn, upload.single('projectImage'), async (req,res,next)=>{
+    try{
+        let ip = requestIp.getClientIp(req);
+        await Log.create({
+            UserId:req.user.dataValues.id,
+            ip:ip,
+            type:"upload image project",
+            contents:req.file.location,
+        })
+        res.send({
+            fileName: req.file.location.replace(/\/project\//,'/thumb/')
+        });
+    }catch (err) {
+        try{
+            let ip = requestIp.getClientIp(req);
+            await Log.create({
+                UserId:req.user.dataValues.id,
+                ip:ip,
+                type:"upload image project error",
+                contents:err.message,
+            })
+            console.error(err)
+            next(err)
+        }catch (err) {
+            console.error(err)
+            next(err)
+        }
+    }
+})
+
 router.post('/upload',isLoggendIn,async (req,res,next) => {
     try{
         const mainText = req.body.mainText
