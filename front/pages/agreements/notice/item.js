@@ -196,10 +196,10 @@ const Notice = () => {
                                                             <Link href={"/agreements/service"}><a>고객센터</a></Link>
                                                         </div>
                                                         <div className={sideStyles.side_sns_wrapper}>
-                                                            <Link href={"/"}><a><div className={sideStyles.side_sns_1}></div></a></Link>
-                                                            <Link href={"/"}><a><div className={sideStyles.side_sns_2}></div></a></Link>
-                                                            <Link href={"/"}><a><div className={sideStyles.side_sns_3}></div></a></Link>
-                                                            <Link href={"/"}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                                            <Link href={"https://www.instagram.com/brmn.music/"}><a><div className={sideStyles.side_sns_1}></div></a></Link>
+                                                            <Link href={"https://www.youtube.com/channel/UCCkwGVEZn-c6udCK-RXO2ig"}><a><div className={sideStyles.side_sns_2}></div></a></Link>
+                                                            <Link href={"https://www.facebook.com/%EB%B8%8C%EB%A0%88%EB%A9%98-brmn-100401712331312"}><a><div className={sideStyles.side_sns_3}></div></a></Link>
+                                                            <Link href={"https://twitter.com/brmn_music"}><a><div className={sideStyles.side_sns_4}></div></a></Link>
                                                         </div>
                                                         <div className={sideStyles.side_bottom_content}>
                                                             Copyright brmn all right reserved
