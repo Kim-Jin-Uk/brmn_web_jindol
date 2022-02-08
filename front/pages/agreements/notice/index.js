@@ -242,30 +242,41 @@ const Index = () => {
                                                         <button className={sideStyles.side_login_top_close} onClick={onClickClose}></button>
                                                     </div>
 
-                                                    <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
-                                                        <div className={sideStyles.side_nav_1}></div>
-                                                        <div className={sideStyles.side_nav_content}>이용안내</div>
-                                                    </a></Link>
-                                                    <Link href={"/project"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
-                                                        <div className={sideStyles.side_nav_2}></div>
-                                                        <div className={sideStyles.side_nav_content}>프로젝트</div>
-                                                    </a></Link>
-                                                    <Link href={
-                                                        user && user.email
-                                                            ?`/profile/${user.email}`
-                                                            :`/profile/1`
-                                                    }><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
-                                                        <div className={sideStyles.side_nav_4}></div>
-                                                        <div className={sideStyles.side_nav_content}>작업물 관리</div>
-                                                    </a></Link>
-                                                    <Link href={"/profile/edit"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
-                                                        <div className={sideStyles.side_nav_5}></div>
-                                                        <div className={sideStyles.side_nav_content}>프로필 편집</div>
-                                                    </a></Link>
-                                                    <div onClick={() => onCLickLogOut()} style={{cursor:"pointer", display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
-                                                        <div className={sideStyles.side_nav_6}></div>
-                                                        <div className={sideStyles.side_nav_content}>로그아웃</div>
+                                                    <div onClick={() => setOpenAble(true)}>
+                                                        <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                            <div className={sideStyles.side_nav_1}></div>
+                                                            <div className={sideStyles.side_nav_content}>이용안내</div>
+                                                        </a></Link>
                                                     </div>
+                                                    <div onClick={() => setOpenAble(true)}>
+                                                        <Link href={"/project"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                            <div className={sideStyles.side_nav_2}></div>
+                                                            <div className={sideStyles.side_nav_content}>프로젝트</div>
+                                                        </a></Link>
+                                                    </div>
+                                                    <div onClick={() => setOpenAble(true)}>
+                                                        <Link href={
+                                                            user && user.email
+                                                                ?`/profile/${user.email}`
+                                                                :`/profile/1`
+                                                        }><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                            <div className={sideStyles.side_nav_4}></div>
+                                                            <div className={sideStyles.side_nav_content}>작업물 관리</div>
+                                                        </a></Link>
+                                                    </div>
+                                                    <div onClick={() => setOpenAble(true)}>
+                                                        <Link href={"/profile/edit"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                            <div className={sideStyles.side_nav_5}></div>
+                                                            <div className={sideStyles.side_nav_content}>프로필 편집</div>
+                                                        </a></Link>
+                                                    </div>
+                                                    <div onClick={() => setOpenAble(true)}>
+                                                        <div onClick={() => onCLickLogOut()} style={{cursor:"pointer", display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                            <div className={sideStyles.side_nav_6}></div>
+                                                            <div className={sideStyles.side_nav_content}>로그아웃</div>
+                                                        </div>
+                                                    </div>
+
 
                                                     <div
                                                         style={{
@@ -274,7 +285,7 @@ const Index = () => {
                                                             width:"100%",
                                                             minWidth:"320px"
                                                         }}>
-                                                        <div className={sideStyles.side_link_wrapper}>
+                                                        <div onClick={() => setOpenAble(true)} className={sideStyles.side_link_wrapper}>
                                                             <Link href={"/agreements/service"}><a>고객센터</a></Link>
                                                         </div>
                                                         <div className={sideStyles.side_sns_wrapper}>
@@ -304,14 +315,18 @@ const Index = () => {
                                                         <div style={{display:"inline-block", marginLeft:"12px"}}><Link href="/signin/signup"><a><Button className={sideStyles.side_signup}>회원가입</Button></a></Link></div>
                                                     </div>
 
-                                                    <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
-                                                        <div className={sideStyles.side_nav_1}></div>
-                                                        <div className={sideStyles.side_nav_content}>이용안내</div>
-                                                    </a></Link>
-                                                    <Link href={"/project"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
-                                                        <div className={sideStyles.side_nav_2}></div>
-                                                        <div className={sideStyles.side_nav_content}>프로젝트</div>
-                                                    </a></Link>
+                                                    <div onClick={() => setOpenAble(true)}>
+                                                        <Link href={"/"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                            <div className={sideStyles.side_nav_1}></div>
+                                                            <div className={sideStyles.side_nav_content}>이용안내</div>
+                                                        </a></Link>
+                                                    </div>
+                                                    <div onClick={() => setOpenAble(true)}>
+                                                        <Link href={"/project"}><a style={{display:"block", paddingLeft:"16px", height:"60px", borderBottom:"1px solid #E8E8E8"}}>
+                                                            <div className={sideStyles.side_nav_2}></div>
+                                                            <div className={sideStyles.side_nav_content}>프로젝트</div>
+                                                        </a></Link>
+                                                    </div>
 
                                                     <div
                                                         style={{
@@ -320,7 +335,7 @@ const Index = () => {
                                                             width:"100%",
                                                             minWidth:"320px"
                                                         }}>
-                                                        <div className={sideStyles.side_link_wrapper}>
+                                                        <div onClick={() => setOpenAble(true)} className={sideStyles.side_link_wrapper}>
                                                             <Link href={"/agreements/service"}><a>고객센터</a></Link>
                                                         </div>
                                                         <div className={sideStyles.side_sns_wrapper}>
