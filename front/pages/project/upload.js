@@ -235,7 +235,11 @@ const Upload = () => {
         if (e.key === "Enter"){
             const item = e.target.innerText.replace(/\n/gi,'').toLowerCase()
             if (!hashList.includes(item)){
-                setHashList([...hashList,item])
+                if (item.replace(/(\s*)/g,'') !== ''){
+                    setHashList([...hashList,item])
+                }else {
+
+                }
             }else {
                 message.warning("동일한 태그를 입력하셨습니다.")
             }
@@ -246,7 +250,11 @@ const Upload = () => {
         if (e.key === "Enter"){
             const item = e.target.innerText.replace(/\n/gi,'').toLowerCase()
             if (!techList.includes(item)){
-                setTechList([...techList,item])
+                if (item.replace(/(\s*)/g,'') !== ''){
+                    setTechList([...techList,item])
+                }else {
+
+                }
             }else {
                 message.warning("동일한 태그를 입력하셨습니다.")
             }

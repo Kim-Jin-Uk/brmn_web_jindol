@@ -418,7 +418,7 @@ const ProjectPage = () => {
                 <ul className={styles.main_hashtag_wrapper}>
                     {
                         hashList.map((v) => (
-                            <li><Link href={"/"}><a>{v}</a></Link></li>
+                            <li>{v}</li>
                         ))
                     }
                 </ul>
