@@ -1,2 +1,2 @@
-const backUrl = "http://api.brmnmusic.com"
+const backUrl = "http://localhost:3065"
 export default backUrl

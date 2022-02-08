@@ -89,40 +89,40 @@ const Service = () => {
 
                 <div className={styles.service_btn_wrapper}>
                     {/*intro*/}
-                    <div>
-                        <div onClick={onClickIntro} className={`${styles.service_btn_icon} ${styles.service_btn_1}`}></div>
+                    <div style={{cursor:"pointer"}} onClick={onClickIntro}>
+                        <div className={`${styles.service_btn_icon} ${styles.service_btn_1}`}></div>
                         <div className={styles.service_btn_content_wrapper}>
                             <div>서비스 이용안내</div>
                             <div>신청 방법, 진행 순서를 안내합니다</div>
                         </div>
                     </div>
                     {/*notice*/}
-                    <div>
-                        <div onClick={onClickNotice} className={`${styles.service_btn_icon} ${styles.service_btn_2}`}></div>
+                    <div style={{cursor:"pointer"}} onClick={onClickNotice}>
+                        <div className={`${styles.service_btn_icon} ${styles.service_btn_2}`}></div>
                         <div className={styles.service_btn_content_wrapper}>
                             <div>공지사항</div>
                             <div>시스템 공지사항을 알려드립니다</div>
                         </div>
                     </div>
                     {/*report*/}
-                    <div>
-                        <div onClick={onClickReport} className={`${styles.service_btn_icon} ${styles.service_btn_3}`}></div>
+                    <div style={{cursor:"pointer"}} onClick={onClickReport}>
+                        <div className={`${styles.service_btn_icon} ${styles.service_btn_3}`}></div>
                         <div className={styles.service_btn_content_wrapper}>
                             <div>오류신고</div>
                             <div>사이트에서 발견한 오류를 신고</div>
                         </div>
                     </div>
                     {/*question*/}
-                    <div>
-                        <div onClick={onClickQuestion} className={`${styles.service_btn_icon} ${styles.service_btn_4}`}></div>
+                    <div style={{cursor:"pointer"}} onClick={onClickQuestion}>
+                        <div className={`${styles.service_btn_icon} ${styles.service_btn_4}`}></div>
                         <div className={styles.service_btn_content_wrapper}>
                             <div>고객 문의</div>
                             <div>서비스에 대해 직접 문의할 수 있습니다</div>
                         </div>
                     </div>
                     {/*frequency*/}
-                    <div>
-                        <div onClick={onClickFrequency} className={`${styles.service_btn_icon} ${styles.service_btn_5}`}></div>
+                    <div style={{cursor:"pointer"}} onClick={onClickFrequency}>
+                        <div className={`${styles.service_btn_icon} ${styles.service_btn_5}`}></div>
                         <div className={styles.service_btn_content_wrapper}>
                             <div>자주 묻는 질문</div>
                             <div>사용자들의 질문 사항에 대한 답변</div>

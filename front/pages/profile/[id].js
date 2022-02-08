@@ -37,21 +37,21 @@ function MainCard(props) {
     return(
         <>
             <div className={`${cardStyle.card_group} ${styles.card_group} `}>
-                <button className={`${cardStyle.card_button} `}>
-                    <div onClick={onClickCard} className={`${cardStyle.card_main} `}>
+                <button onClick={onClickCard} className={`${cardStyle.card_button} `}>
+                    <div className={`${cardStyle.card_main} `}>
                         <img src={props.card.imgUrl} className={`${cardStyle.card_main_img} `}></img>
                         <div className={`${cardStyle.card_main_background} `}>
                             <div className={`${cardStyle.card_main_background_title} `}>{props.card.title}</div>
                         </div>
                     </div>
-                    <div onClick={onClickProfile} className={`${cardStyle.card_meta} `}>
+                    <div className={`${cardStyle.card_meta} `}>
                         <div className={`${cardStyle.card_meta_title} `}>{props.card.title}</div>
-                        <div>
-                            <img src={props.card.profImg} className={`${cardStyle.card_meta_img} `}></img>
-                            <div className={`${cardStyle.card_meta_nickname} `}>{props.card.nickname}</div>
-                        </div>
                     </div>
                 </button>
+                <div style={{cursor:"pointer"}} onClick={onClickProfile}>
+                    <img src={props.card.profImg} className={`${cardStyle.card_meta_img} `}></img>
+                    <div className={`${cardStyle.card_meta_nickname} `}>{props.card.nickname}</div>
+                </div>
             </div>
         </>
     )
@@ -223,11 +223,11 @@ const ProfileProject = () => {
     const onCLickNav = useCallback((name) => {
         const field = {}
         if (name === "n1"){
-            field["n1"] = !navActive["n1"]
-            field["n2"] = navActive["n1"]
+            field["n1"] = true
+            field["n2"] = false
         } else {
-            field["n2"] = !navActive["n2"]
-            field["n1"] = navActive["n2"]
+            field["n2"] = true
+            field["n1"] = false
         }
         setNavActive({...navActive, ...field})
     },[navActive])

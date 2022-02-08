@@ -62,6 +62,7 @@ const Global = createGlobalStyle`
 `;
 
 function MainCard(props) {
+    console.log(props)
     return(
         <>
             <div className={styles.card_group}>
@@ -75,13 +76,13 @@ function MainCard(props) {
                     </div>
                     <div className={styles.card_meta}>
                         <div className={styles.card_meta_title}>{props.card.title}</div>
-                        <div>
-                            <img src={props.card.profImg} className={styles.card_meta_img}></img>
-                            <div className={styles.card_meta_nickname}>{props.card.nickname}</div>
-                        </div>
                     </div>
                 </button>
                 </a></Link>
+                <div style={{cursor:"pointer"}}>
+                    <img onClick={() => Router.push(`profile/${props.card.email}`)} src={props.card.profImg} className={styles.card_meta_img}></img>
+                    <div onClick={() => Router.push(`profile/${props.card.email}`)} className={styles.card_meta_nickname}>{props.card.nickname}</div>
+                </div>
             </div>
         </>
     )

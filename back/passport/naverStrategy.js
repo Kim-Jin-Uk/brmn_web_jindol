@@ -8,7 +8,7 @@ module.exports = () => {
     passport.use(new NaverStrategy({
         clientID: process.env.NAVER_API_KEY,
         clientSecret:process.env.NAVER_API_SECRET_KEY,
-        callbackURL: 'http://api.brmnmusic.com/naver/oauth',
+        callbackURL: 'http://localhost:3065/naver/oauth',
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             console.log("naverprofilereq",profile)

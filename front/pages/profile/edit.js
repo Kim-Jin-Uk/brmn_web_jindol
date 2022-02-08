@@ -368,8 +368,10 @@ function AddCard(value) {
         editter.col_4_edit = ""
         editter.col_5_edit = ""
         editter.edit = null
+        value.mode(null)
         value.triggerSet(editter)
         value.type(false)
+        console.log(editter)
     }
 
     const onClickDelete = () => {
@@ -387,6 +389,10 @@ function AddCard(value) {
         value.triggerSet(editter)
         value.type(false)
     }
+
+    useEffect(() => {
+        console.log("value",value)
+    },[value])
 
     const onClickSave = () => {
         let date = ""
