@@ -275,6 +275,32 @@
   margin-bottom: 20px;
 }
 
+.inquiry_input_err{
+  background: #FFFFFF;
+  border: 1px solid #F43333;
+  border-radius: 4px;
+  width: 100%;
+  height: 48px;
+  padding: 0 12px;
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 130%;
+  outline: none;
+  margin-bottom: 4px;
+}
+
+.inquiry_err_text{
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 170%;
+  color: #F43333;
+  margin-bottom: 20px;
+}
+
 .inquiry_textarea{
   background: #FFFFFF;
   border: 1px solid #CCCCCC;
@@ -289,6 +315,23 @@
   line-height: 130%;
   outline: none;
   margin-bottom: 20px;
+  resize: none;
+}
+
+.inquiry_textarea_err{
+  background: #FFFFFF;
+  border: 1px solid #F43333;
+  border-radius: 4px;
+  width: 100%;
+  min-height: 120px;
+  padding: 14px 12px;
+  font-family: Spoqa Han Sans Neo;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 130%;
+  outline: none;
+  margin-bottom: 4px;
   resize: none;
 }
 
@@ -376,6 +419,15 @@
   font-size: 16px;
   line-height: 150%;
   color: #616161;
+}
+
+.inquiry_checkbox_err{
+  >span{
+    //border: 1px solid #F43333 !important;
+    >span{
+      border: 1px solid #F43333 !important;
+    }
+  }
 }
 
 @media (min-width: 600px) and (max-width: 840px) {

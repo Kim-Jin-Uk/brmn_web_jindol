@@ -118,6 +118,14 @@ const Index = () => {
     const [agree, setAgree] = useState(false)
     const [visible, setVisible] = useState(false)
 
+
+    const [nameErr, setNameErr] = useState(true)
+    const [phoneErr, setPhoneErr] = useState(true)
+    const [emailErr, setEmailErr] = useState(true)
+    const [contentErr, setContentErr] = useState(true)
+    const [agreeErr, setAgreeErr] = useState(true)
+
+
     const onClickClose = useCallback(() => {
         setOpenAble(!openAble)
     },[openAble])
@@ -130,16 +138,36 @@ const Index = () => {
         const regPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/
         const regEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
         if (name === ""){
-            message.warning("이름을 입력해주세요")
-        }else if (!regPhone.test(phone)){
-            message.warning("올바른 핸드폰 번호를 입력해주세요")
-        }else if (!regEmail.test(email)){
-            message.warning("올바른 이메일을 입력해주세요")
-        }else if (content.length < 10){
-            message.warning("내용을 최소 10글자 이상 입력해주세요")
-        }else if (!agree){
-            message.warning("개인정보 수집·이용에 동의해주세요")
-        }else {
+            setNameErr(false)
+        }else{
+            setNameErr(true)
+        }
+        if (!regPhone.test(phone)){
+            setPhoneErr(false)
+        }else{
+            setPhoneErr(true)
+        }
+        if (!regEmail.test(email)){
+            setEmailErr(false)
+        }else{
+            setEmailErr(true)
+        }
+        if (content.length < 10){
+            setContentErr(false)
+        }else{
+            setContentErr(true)
+        }
+        if (!agree){
+            setAgreeErr(false)
+        }else{
+            setAgreeErr(true)
+        }
+        if (name !== "" && regPhone.test(phone) && regEmail.test(email) && content.length >= 10 && agree) {
+            setNameErr(true)
+            setPhoneErr(true)
+            setEmailErr(true)
+            setContentErr(true)
+            setAgreeErr(true)
             setVisible(true)
         }
     }
@@ -207,23 +235,63 @@ const Index = () => {
                 </div>
 
                 <div style={{marginTop:"36px"}}>
-                    <div>
-                        <div className={styles.inquiry_value}>이름</div>
-                        <input className={styles.inquiry_input} type="text" placeholder={"이름"} value={name} onChange={onChangeName}/>
-                    </div>
-                    <div>
-                        <div className={styles.inquiry_value}>휴대폰 번호</div>
-                        <input className={styles.inquiry_input} type="tel" placeholder={"연락 받을 수 있는 휴대폰 번호"} value={phone} onChange={onChangePhone}/>
-                    </div>
-                    <div>
-                        <div className={styles.inquiry_value}>이메일</div>
-                        <input className={styles.inquiry_input} type="email" placeholder={"답변 받을 이메일 주소"} value={email} onChange={onChangeEmail}/>
-                    </div>
-                    <div>
-                        <div className={styles.inquiry_value}>내용</div>
-                        <textarea className={styles.inquiry_textarea} type="text" placeholder={"서비스에 관한 문의사항을 접수해주세요."} value={content} onChange={onChangeContent}/>
-                    </div>
-                    <Checkbox onChange={onChange}>개인정보 수집·이용에 동의합니다</Checkbox>
+                    <div className={styles.inquiry_value}>이름</div>
+                    {
+                        nameErr
+                            ?
+                            <div>
+                                <input className={styles.inquiry_input} type="text" placeholder={"이름"} value={name} onChange={onChangeName}/>
+                            </div>
+                            :
+                            <div>
+                                <input className={styles.inquiry_input_err} type="text" placeholder={"이름"} value={name} onChange={onChangeName}/>
+                                <div className={styles.inquiry_err_text}>이름을 적어주세요</div>
+                            </div>
+                    }
+                    <div className={styles.inquiry_value}>휴대폰 번호</div>
+                    {
+                        phoneErr
+                            ?
+                            <div>
+                                <input className={styles.inquiry_input} type="tel" placeholder={"연락 받을 수 있는 휴대폰 번호"} value={phone} onChange={onChangePhone}/>
+                            </div>
+                            :
+                            <div>
+                                <input className={styles.inquiry_input_err} type="tel" placeholder={"연락 받을 수 있는 휴대폰 번호"} value={phone} onChange={onChangePhone}/>
+                                <div className={styles.inquiry_err_text}>올바른 핸드폰 번호를 적어주세요.</div>
+                            </div>
+                    }
+                    <div className={styles.inquiry_value}>이메일</div>
+                    {
+                        emailErr
+                            ?
+                            <div>
+                                <input className={styles.inquiry_input} type="email" placeholder={"답변 받을 이메일 주소"} value={email} onChange={onChangeEmail}/>
+                            </div>
+                            :
+                            <div>
+                                <input className={styles.inquiry_input_err} type="email" placeholder={"답변 받을 이메일 주소"} value={email} onChange={onChangeEmail}/>
+                                <div className={styles.inquiry_err_text}>올바른 이메일을 입력해주세요.</div>
+                            </div>
+                    }
+                    <div className={styles.inquiry_value}>내용</div>
+                    {
+                        contentErr
+                            ?
+                            <div>
+                                <textarea className={styles.inquiry_textarea} type="text" placeholder={"서비스에 관한 문의사항을 접수해주세요."} value={content} onChange={onChangeContent}/>
+                            </div>
+                            :
+                            <div>
+                                <textarea className={styles.inquiry_textarea_err} type="text" placeholder={"서비스에 관한 문의사항을 접수해주세요."} value={content} onChange={onChangeContent}/>
+                                <div className={styles.inquiry_err_text}>최소 10글자 이상 적어주세요.</div>
+                            </div>
+                    }
+                    {
+                        agreeErr
+                            ?<Checkbox onChange={onChange}>개인정보 수집·이용에 동의합니다</Checkbox>
+                            :<Checkbox className={styles.inquiry_checkbox_err} onChange={onChange}>개인정보 수집·이용에 동의합니다</Checkbox>
+                    }
                 </div>
 
                 <Button onClick={onClickBtn} className={styles.inquiry_btn}>접수하기</Button>
