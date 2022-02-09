@@ -82,7 +82,11 @@ function MainCard(props) {
                 </button>
                 </a></Link>
                 <div style={{cursor:"pointer"}}>
-                    <img onClick={() => Router.push(`profile/${props.card.email}`)} src={props.card.profImg} className={styles.card_meta_img}></img>
+                    <img onClick={() => Router.push(`profile/${props.card.email}`)} src={
+                        props.card.profImg
+                            ?props.card.profImg
+                            :"https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
+                    } className={styles.card_meta_img}></img>
                     <div onClick={() => Router.push(`profile/${props.card.email}`)} className={styles.card_meta_nickname}>{props.card.nickname}</div>
                 </div>
             </div>

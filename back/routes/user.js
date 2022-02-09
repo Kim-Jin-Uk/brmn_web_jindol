@@ -571,7 +571,7 @@ router.post('/update/profile/default',isLoggendIn,async (req,res,next) => {
         })
 
         await Profile.update({
-            profile_img:null
+            profile_img:"https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
         },{
             where:{userId:userData.dataValues.id}
         })

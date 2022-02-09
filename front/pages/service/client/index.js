@@ -442,7 +442,7 @@ const Index = () => {
                                                             <ProfileThumbnail circle size={40} image={
                                                                 profile && profile.profile_img
                                                                     ?profile.profile_img
-                                                                    :profile_image_default
+                                                                    :"https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
                                                             }></ProfileThumbnail>
                                                         </a></Link>
                                                     </div>

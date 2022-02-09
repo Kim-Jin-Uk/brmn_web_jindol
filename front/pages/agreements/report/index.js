@@ -86,10 +86,10 @@ const Global = createGlobalStyle`
   .ant-modal-body {
     padding: 12px 20px 20px;
     border-bottom: 1px solid #e8e8e8;
-    >span{
+    >div{
       font-family: Spoqa Han Sans Neo;
       font-style: normal;
-      font-weight: normal;
+      font-weight: 500;
       font-size: 14px;
       line-height: 150%;
       color: #1D1D1D;
@@ -336,7 +336,7 @@ const Index = () => {
                                                                 <ProfileThumbnail circle size={40} image={
                                                                     profile && profile.profile_img
                                                                         ?profile.profile_img
-                                                                        :profile_image_default
+                                                                        :"https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
                                                                 }></ProfileThumbnail>
                                                             </a></Link>
                                                         </div>

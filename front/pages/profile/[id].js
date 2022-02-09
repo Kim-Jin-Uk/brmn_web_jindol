@@ -7,7 +7,7 @@ import sideStyles from "../../styles/Project.module.scss";
 import styles from "../../styles/Profile.module.scss"
 import cardStyle from '../../styles/Project.module.scss'
 import Footer from "../../components/Footer";
-import {Dropdown, Menu as AntMenu, message} from "antd";
+import {Dropdown, Empty, Image, Menu as AntMenu, message} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {
     FOLLOW_REQUEST,
@@ -32,27 +32,59 @@ function MainCard(props) {
         Router.push(`/project/${props.card.id}`)
     }
     const onClickProfile = () => {
-        Router.replace(`/profile/${props.card.email}`)
+        Router.push(`/profile/${props.card.email}`)
     }
     return(
         <>
-            <div className={`${cardStyle.card_group} ${styles.card_group} `}>
-                <button onClick={onClickCard} className={`${cardStyle.card_button} `}>
-                    <div className={`${cardStyle.card_main} `}>
-                        <img src={props.card.imgUrl} className={`${cardStyle.card_main_img} `}></img>
-                        <div className={`${cardStyle.card_main_background} `}>
-                            <div className={`${cardStyle.card_main_background_title} `}>{props.card.title}</div>
+            {
+                props.card !== null
+                    ?
+                    <div className={`${cardStyle.card_group} ${styles.card_group} `}>
+                        <button onClick={onClickCard} className={`${cardStyle.card_button} `}>
+                            <div className={`${cardStyle.card_main} `}>
+                                <img src={props.card.imgUrl} className={`${cardStyle.card_main_img} `}></img>
+                                <div className={`${cardStyle.card_main_background} `}>
+                                    <div className={`${cardStyle.card_main_background_title} `}>{props.card.title}</div>
+                                </div>
+                            </div>
+                            <div className={`${cardStyle.card_meta} `}>
+                                <div className={`${cardStyle.card_meta_title} `}>{props.card.title}</div>
+                            </div>
+                        </button>
+                        <div style={{cursor:"pointer"}} onClick={onClickProfile}>
+                            <img src={
+                                props.card.profImg
+                                    ? props.card.profImg
+                                    :"https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
+                            } className={`${cardStyle.card_meta_img} `}></img>
+                            <div className={`${cardStyle.card_meta_nickname} `}>{props.card.nickname}</div>
                         </div>
                     </div>
-                    <div className={`${cardStyle.card_meta} `}>
-                        <div className={`${cardStyle.card_meta_title} `}>{props.card.title}</div>
+                    :
+                    <div className={`${cardStyle.card_group} ${styles.card_group} `}>
+                        <button onClick={() => Router.push("/project/upload")} style={{background:"#ffffff"}} className={`${cardStyle.card_button} `}>
+                            <div className={`${styles.card_none_main} `}>
+                                <div className={`${cardStyle.card_main} `}>
+                                    <div style={{margin:"0"}} className={`${cardStyle.card_main_img} `}>
+                                        <Empty
+                                            className={styles.card_none}
+                                            description={
+                                                <span className={styles.card_none_text}>
+                                    아직 업로드한 작품이 없습니다.
+                                    <br/>
+                                    지금 등록해보세요.
+                                    </span>
+                                            }
+                                        >
+                                            <Button className={styles.card_none_btn}>프로젝트 업로드</Button>
+                                        </Empty>
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
                     </div>
-                </button>
-                <div style={{cursor:"pointer"}} onClick={onClickProfile}>
-                    <img src={props.card.profImg} className={`${cardStyle.card_meta_img} `}></img>
-                    <div className={`${cardStyle.card_meta_nickname} `}>{props.card.nickname}</div>
-                </div>
-            </div>
+            }
+
         </>
     )
 }
@@ -134,7 +166,7 @@ const ProfileProject = () => {
     const {user,profile, logInDone, otherProfile, otherProfileDetail,imagePath,otherUser,
         uploadProfileImageError,updateProfileImageDefaultError,getOtherUserError,getOtherProfileError,logOutError,
         getMyProfileError, getOtherProfileDetailError, updateProfileImageError, unfollowingError, followingError} = useSelector((state) => state.user);
-    const {loadUserProjects,hasMoreProject,loadProjectLoading,loadProjectError} = useSelector((state) => state.project);
+    const {loadUserProjects,hasMoreProject,loadProjectLoading,loadProjectError, reloadProject} = useSelector((state) => state.project);
 
     const [openAble,setOpenAble] = useState(true)
     const [isMe,setIsMe] = useState(true)
@@ -192,11 +224,8 @@ const ProfileProject = () => {
             </div>
         </AntMenu>
     )
-    const [cardList,setCardList] = useState([
-    ])
-
+    const [cardList,setCardList] = useState([])
     const [equipOpen,setEquipOpen] = useState(true)
-
 
     const [techOpen,setTechOpen] = useState(true)
 
@@ -394,12 +423,6 @@ const ProfileProject = () => {
     },[otherProfileDetail])
 
     useEffect(() => {
-        if (loadUserProjects){
-            console.log(loadUserProjects)
-        }
-    },[loadUserProjects])
-
-    useEffect(() => {
         if (imagePath){
             dispatch({
                 type: UPDATE_PROFILE_IMAGE_REQUEST,
@@ -481,7 +504,7 @@ const ProfileProject = () => {
                                             <ProfileThumbnail circle size={112} image={
                                                 otherProfile && otherProfile.profile_img
                                                     ?otherProfile.profile_img
-                                                    :profile_image_default
+                                                    :"https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
                                             }></ProfileThumbnail>
                                             <Dropdown overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
                                                 <div className={styles.profile_top_icon_change}></div>
@@ -512,33 +535,40 @@ const ProfileProject = () => {
                                                     : 0
                                             }</div>
                                         </div>
-                                        <div className={styles.side_sns_wrapper}>
-                                            {
-                                                userInstagram
-                                                    ?<Link href={userInstagram}><a><div className={sideStyles.side_sns_1}></div></a></Link>
-                                                    :<></>
-                                            }
-                                            {
-                                                userYoutube
-                                                    ?<Link href={userYoutube}><a><div className={sideStyles.side_sns_2}></div></a></Link>
-                                                    :<></>
-                                            }
-                                            {
-                                                userSoundCloud
-                                                    ?<Link href={userSoundCloud}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
-                                                    :<></>
-                                            }
-                                            {
-                                                userFacebook
-                                                    ?<Link href={userFacebook}><a><div className={sideStyles.side_sns_3}></div></a></Link>
-                                                    :<></>
-                                            }
-                                            {
-                                                userTwitter
-                                                    ?<Link href={userTwitter}><a><div className={sideStyles.side_sns_4}></div></a></Link>
-                                                    :<></>
-                                            }
-                                        </div>
+                                        {
+                                            userInstagram || userYoutube || userSoundCloud ||userFacebook ||userTwitter
+                                                ?
+                                                <div className={styles.side_sns_wrapper}>
+                                                    {
+                                                        userInstagram
+                                                            ?<Link href={userInstagram}><a><div className={sideStyles.side_sns_1}></div></a></Link>
+                                                            :<></>
+                                                    }
+                                                    {
+                                                        userYoutube
+                                                            ?<Link href={userYoutube}><a><div className={sideStyles.side_sns_2}></div></a></Link>
+                                                            :<></>
+                                                    }
+                                                    {
+                                                        userSoundCloud
+                                                            ?<Link href={userSoundCloud}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
+                                                            :<></>
+                                                    }
+                                                    {
+                                                        userFacebook
+                                                            ?<Link href={userFacebook}><a><div className={sideStyles.side_sns_3}></div></a></Link>
+                                                            :<></>
+                                                    }
+                                                    {
+                                                        userTwitter
+                                                            ?<Link href={userTwitter}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                                            :<></>
+                                                    }
+                                                </div>
+                                                :
+                                                <></>
+                                        }
+
                                     </div>
                                 </div>
                                 <div className={styles.profile_wrapper_clone}></div>
@@ -552,7 +582,7 @@ const ProfileProject = () => {
                                             <ProfileThumbnail circle size={112} image={
                                                 otherProfile && otherProfile.profile_img
                                                     ?otherProfile.profile_img
-                                                    :profile_image_default
+                                                    :"https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
                                             }></ProfileThumbnail>
                                         </div>
                                         <div className={styles.profile_top_name}>{userName}</div>
@@ -590,33 +620,40 @@ const ProfileProject = () => {
                                                     : 0
                                             }</div>
                                         </div>
-                                        <div className={styles.side_sns_wrapper}>
-                                            {
-                                                userInstagram
-                                                    ?<Link href={userInstagram}><a><div className={sideStyles.side_sns_1}></div></a></Link>
-                                                    :<></>
-                                            }
-                                            {
-                                                userYoutube
-                                                    ?<Link href={userYoutube}><a><div className={sideStyles.side_sns_2}></div></a></Link>
-                                                    :<></>
-                                            }
-                                            {
-                                                userSoundCloud
-                                                    ?<Link href={userSoundCloud}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
-                                                    :<></>
-                                            }
-                                            {
-                                                userFacebook
-                                                    ?<Link href={userFacebook}><a><div className={sideStyles.side_sns_3}></div></a></Link>
-                                                    :<></>
-                                            }
-                                            {
-                                                userTwitter
-                                                    ?<Link href={userTwitter}><a><div className={sideStyles.side_sns_4}></div></a></Link>
-                                                    :<></>
-                                            }
-                                        </div>
+                                        {
+                                            userInstagram || userYoutube || userSoundCloud ||userFacebook ||userTwitter
+                                                ?
+                                                <div className={styles.side_sns_wrapper}>
+                                                    {
+                                                        userInstagram
+                                                            ?<Link href={userInstagram}><a><div className={sideStyles.side_sns_1}></div></a></Link>
+                                                            :<></>
+                                                    }
+                                                    {
+                                                        userYoutube
+                                                            ?<Link href={userYoutube}><a><div className={sideStyles.side_sns_2}></div></a></Link>
+                                                            :<></>
+                                                    }
+                                                    {
+                                                        userSoundCloud
+                                                            ?<Link href={userSoundCloud}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
+                                                            :<></>
+                                                    }
+                                                    {
+                                                        userFacebook
+                                                            ?<Link href={userFacebook}><a><div className={sideStyles.side_sns_3}></div></a></Link>
+                                                            :<></>
+                                                    }
+                                                    {
+                                                        userTwitter
+                                                            ?<Link href={userTwitter}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                                            :<></>
+                                                    }
+                                                </div>
+                                                :
+                                                <></>
+                                        }
+
                                     </div>
                                 </div>
                                 <div className={styles.profile_wrapper_clone}></div>
@@ -661,11 +698,16 @@ const ProfileProject = () => {
                         navActive["n1"]
                             ?(
                                 <div style={{paddingLeft:"14px", marginTop:"4px"}} className={`${cardStyle.card_wrapper} ${styles.card_wrapper}`}>
-                                    {cardList.map((card, index) => (
-                                        <>
-                                            <MainCard card={card}></MainCard>
-                                        </>
-                                    ))}
+                                    {
+                                        cardList.length > 0
+                                            ?
+                                            cardList.map((card, index) => (
+                                                <>
+                                                    <MainCard card={card}></MainCard>
+                                                </>
+                                            ))
+                                            :<MainCard card={null}></MainCard>
+                                    }
                                     <div ref={hasMoreProject && !loadProjectLoading ? ref : undefined} />
                                 </div>
                             )
@@ -693,33 +735,40 @@ const ProfileProject = () => {
                                                         : 0
                                                 }</div>
                                             </div>
-                                            <div className={styles.profile_sns_wrapper}>
-                                                {
-                                                    userInstagram
-                                                        ?<Link href={userInstagram}><a><div className={sideStyles.side_sns_1}></div></a></Link>
-                                                        :<></>
-                                                }
-                                                {
-                                                    userYoutube
-                                                        ?<Link href={userYoutube}><a><div className={sideStyles.side_sns_2}></div></a></Link>
-                                                        :<></>
-                                                }
-                                                {
-                                                    userSoundCloud
-                                                        ?<Link href={userSoundCloud}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
-                                                        :<></>
-                                                }
-                                                {
-                                                    userFacebook
-                                                        ?<Link href={userFacebook}><a><div className={sideStyles.side_sns_3}></div></a></Link>
-                                                        :<></>
-                                                }
-                                                {
-                                                    userTwitter
-                                                        ?<Link href={userTwitter}><a><div className={sideStyles.side_sns_4}></div></a></Link>
-                                                        :<></>
-                                                }
-                                            </div>
+                                            {
+                                                userInstagram || userYoutube || userSoundCloud ||userFacebook ||userTwitter
+                                                    ?
+                                                    <div className={styles.profile_sns_wrapper}>
+                                                        {
+                                                            userInstagram
+                                                                ?<Link href={userInstagram}><a><div className={sideStyles.side_sns_1}></div></a></Link>
+                                                                :<></>
+                                                        }
+                                                        {
+                                                            userYoutube
+                                                                ?<Link href={userYoutube}><a><div className={sideStyles.side_sns_2}></div></a></Link>
+                                                                :<></>
+                                                        }
+                                                        {
+                                                            userSoundCloud
+                                                                ?<Link href={userSoundCloud}><a><div style={{backgroundSize:"24px"}} className={sideStyles.side_sns_2_1}></div></a></Link>
+                                                                :<></>
+                                                        }
+                                                        {
+                                                            userFacebook
+                                                                ?<Link href={userFacebook}><a><div className={sideStyles.side_sns_3}></div></a></Link>
+                                                                :<></>
+                                                        }
+                                                        {
+                                                            userTwitter
+                                                                ?<Link href={userTwitter}><a><div className={sideStyles.side_sns_4}></div></a></Link>
+                                                                :<></>
+                                                        }
+                                                    </div>
+                                                    :
+                                                    <></>
+                                            }
+
                                         </div>
                                     </div>
 
@@ -1083,7 +1132,7 @@ const ProfileProject = () => {
                                                             <ProfileThumbnail circle size={40} image={
                                                                 profile && profile.profile_img
                                                                     ?profile.profile_img
-                                                                    :profile_image_default
+                                                                    :"https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
                                                             }></ProfileThumbnail>
                                                         </a></Link>
                                                     </div>

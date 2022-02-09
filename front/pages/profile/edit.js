@@ -713,7 +713,7 @@ const Edit = () => {
     const [modalVisible, setModalVisible] = useState(false)
     const [fieldName, setFieldName] = useState("")
     const [fieldList, setFieldList] = useState([
-        "보컬","랩","작곡","연주","디자인","영상제작","작사","음향 엔지니어",
+        "보컬", "촬영편집", "사운드", "기획", "디자인"
     ])
 
     const onClickAddField = () => {
@@ -952,7 +952,7 @@ const Edit = () => {
         if (updateMyProfileDone){
             message.success('프로필을 성공적으로 업데이트 하였습니다');
             dispatch({type:UPLOAD_MY_PROFILE_DONE})
-            Router.replace('/project')
+            Router.back()
         }
     },[updateMyProfileDone])
 
@@ -1441,7 +1441,7 @@ const Edit = () => {
                                                                 <ProfileThumbnail circle size={40} image={
                                                                     profile && profile.profile_img
                                                                         ?profile.profile_img
-                                                                        :profile_image_default
+                                                                        :"https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
                                                                 }></ProfileThumbnail>
                                                             </a></Link>
                                                         </div>

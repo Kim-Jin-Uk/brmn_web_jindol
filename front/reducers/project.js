@@ -71,6 +71,7 @@ export const initialState = {
     projectThumbImagePath:null,
 
     hasMoreProject: true,
+
 }
 
 export const UPLOAD_PROJECT_IMAGE_REQUEST = "UPLOAD_PROJECT_IMAGE_REQUEST"
@@ -220,6 +221,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
             draft.loadProjectDone = true;
             draft.loadUserProjects = draft.loadUserProjects.concat(action.data);
             draft.hasMoreProject = action.data.length === 50;
+            draft.deleteProjectDone = false;
             break;
         case LOAD_PROJECT_FAILURE:
             draft.loadProjectLoading = false;
@@ -375,6 +377,7 @@ export default (state = initialState, action) => produce(state, (draft) => {
         case DELETE_PROJECT_SUCCESS:
             draft.deleteProjectLoading = false;
             draft.deleteProjectDone = true;
+            draft.loadUserProjects = [];
             break;
         case DELETE_PROJECT_FAILURE:
             draft.deleteProjectLoading = false;

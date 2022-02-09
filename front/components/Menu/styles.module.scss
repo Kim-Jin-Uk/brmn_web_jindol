@@ -181,7 +181,29 @@
     width: 280px;
     height: 156px;
     padding-top: 12px;
-    padding-left: 16px;
+    > a{
+        margin: 0;
+        padding-left: 16px;
+        padding-top: 5px;
+        width: 100%;
+        height: 32px;
+        &:hover{
+            background: #E8E8E8;
+            color: #1D1D1D;
+        }
+    }
+
+    > div{
+        margin: 0;
+        padding-left: 16px;
+        padding-top: 5px;
+        width: 100%;
+        height: 32px;
+        &:hover{
+            background: #E8E8E8;
+            color: #1D1D1D;
+        }
+    }
 }
 
 .dropdown_item_top{

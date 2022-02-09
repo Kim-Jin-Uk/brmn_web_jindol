@@ -16,10 +16,21 @@ import {useRouter} from "next/router";
 import icon_styles from "../IconButton/styles.module.scss"
 import {useDispatch, useSelector} from "react-redux";
 import {LOG_OUT_REQUEST} from "../../reducers/user";
+import {createGlobalStyle} from "styled-components";
 
 ConfigProvider.config({
     prefixCls: 'ant',
 });
+
+const Global = createGlobalStyle`
+  .ant-dropdown-menu{
+    padding: 0 !important;
+  }
+
+  .ant-dropdown-placement-bottomCenter > .ant-dropdown-arrow, .ant-dropdown-placement-bottomLeft > .ant-dropdown-arrow, .ant-dropdown-placement-bottomRight > .ant-dropdown-arrow{
+    box-shadow: -1px -1px 1px rgb(0 0 0 / 0%);
+  }
+`
 
 function MenuItem(props) {
     return (
@@ -77,7 +88,7 @@ export default function Menu(param) {
                             <ProfileThumbnail circle size={64} image={
                                 profile && profile.profile_img
                                     ? profile.profile_img
-                                    : profile_image_default
+                                    : "https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
                             }/>
                         </a></Link>
                     </div>
@@ -120,6 +131,7 @@ export default function Menu(param) {
 
     return (
         <>
+            <Global></Global>
             {
                 side
                     ? (
@@ -188,7 +200,7 @@ export default function Menu(param) {
                                                                                     <ProfileThumbnail circle size={40} image={
                                                                                         profile && profile.profile_img
                                                                                             ? profile.profile_img
-                                                                                            : profile_image_default
+                                                                                            : "https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
                                                                                     }/>
                                                                                 </div>
                                                                             </a></Link>
@@ -282,7 +294,7 @@ export default function Menu(param) {
                                                                                 <ProfileThumbnail circle size={40} image={
                                                                                     profile && profile.profile_img
                                                                                         ? profile.profile_img
-                                                                                        : profile_image_default
+                                                                                        : "https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
                                                                                 }/>
                                                                             </div>
                                                                         </a></Link>

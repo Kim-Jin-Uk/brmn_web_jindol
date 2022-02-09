@@ -134,7 +134,7 @@ const TextEdit = (param) => {
     const [inputChecker,setInputChecker] = useState(true)
 
     useEffect(() => {
-        if (param.mainText.length > 1 && inputChecker){
+        if (inputChecker){
             setInputChecker(false)
             console.log(param.mainText)
             let inputText = ''
@@ -159,8 +159,8 @@ const TextEdit = (param) => {
     },[param.mainText])
 
     useEffect(() => {
-        console.log(imgList)
-    },[imgList])
+        console.log("value",value)
+    },[value])
 
     useEffect(()=>{
         if (img !== ""){
