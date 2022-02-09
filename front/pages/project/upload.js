@@ -37,6 +37,8 @@ const Global = createGlobalStyle`
     
     .ant-modal{
       z-index: 4000 !important;
+      transform: translateY(-50%);
+      top: 50%;
     }
     
     .ant-checkbox-group{

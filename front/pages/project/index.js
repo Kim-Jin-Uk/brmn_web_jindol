@@ -50,6 +50,8 @@ const Global = createGlobalStyle`
       max-width: 100%;
       height: 100%;
       top: 0;
+      transform: translateY(-50%);
+      top: 50%;
     }
     
     .ant-modal-content{

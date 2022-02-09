@@ -59,6 +59,8 @@ const Global = createGlobalStyle`
     max-width: 500px;
     min-width: 280px;
     margin: 0 auto;
+    transform: translateY(-50%);
+    top: 50%;
   }
 
   .ant-modal-close {
