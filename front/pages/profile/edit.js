@@ -315,6 +315,23 @@ function AddCard(value) {
     const [endDate, setEndDate] = useState(new Date())
     const [normalDate, setNormalDate] = useState(new Date())
 
+    const [originitem, setOriginItem] = useState(null)
+
+    useEffect(() => {
+        if (value.value.edit === "edit"){
+            setOriginItem(value.checker.list[value.checker.index])
+        }
+    },[value.value.edit])
+
+    useEffect(() => {
+        if (originitem){
+            const index = value.checker.index
+            const list = [...value.checker.list]
+            console.log("remove",list.filter((value,i) => i !== index))
+            value.checkerSet(list.filter((value,i) => i !== index))
+        }
+    },[originitem])
+
     useEffect(() => {
         if (value.value.col_2_edit.length > 1){
             if (value.value.col_2_edit.includes(" - ")){
@@ -363,6 +380,16 @@ function AddCard(value) {
     })
 
     const onClickCancle = () => {
+        if (value.value.edit === "edit" && originitem){
+            const index = value.checker.index
+            let list = [...value.checker.list]
+            list = list.filter((value,i) => i !== index)
+            console.log("origin",list)
+            console.log(index)
+            console.log(originitem)
+            list.splice(value.checker.index,0,originitem)
+            value.checkerSet(list)
+        }
         let editter = value.value
         editter.col_1_edit = ""
         editter.col_2_edit = ""
@@ -373,7 +400,6 @@ function AddCard(value) {
         value.mode(null)
         value.triggerSet(editter)
         value.type(false)
-        console.log(editter)
     }
 
     const onClickDelete = () => {
@@ -393,7 +419,7 @@ function AddCard(value) {
     }
 
     useEffect(() => {
-        console.log("value",value)
+        // console.log("value",value)
     },[value])
 
     const onClickSave = () => {
@@ -431,6 +457,7 @@ function AddCard(value) {
         editter.col_4_edit = ""
         editter.col_5_edit = ""
         editter.edit = null
+        value.mode(null)
         value.triggerSet(editter)
         value.type(false)
     }
@@ -1299,7 +1326,7 @@ const Edit = () => {
                                         <>
                                             <ValueCard value={value} index={index} type={techList} trigger={setTech}
                                                        triggerSet={setTechAdd} param={techAdd} mode={setEditTechMode}
-                                                       checker={editTechMode}
+                                                       checker={editTechMode} checkerSet={setTechList}
                                             ></ValueCard>
                                         </>
                                     ))
@@ -1329,7 +1356,7 @@ const Edit = () => {
                                         <>
                                             <ValueCard value={value} index={index} type={equipList} trigger={setEquip}
                                                        triggerSet={setEquipAdd} param={equipAdd} mode={setEditEquipMode}
-                                                       checker={editEquipMode}></ValueCard>
+                                                       checker={editEquipMode} checkerSet={setEquipList}></ValueCard>
                                         </>
                                     ))
                                 }
@@ -1358,7 +1385,7 @@ const Edit = () => {
                                         <>
                                             <ValueCard value={value} index={index} type={careerList} trigger={setCareer}
                                                        triggerSet={setCareerAdd} param={careerAdd} mode={setEditCareerMode}
-                                                       checker={editCareerMode}></ValueCard>
+                                                       checker={editCareerMode} checkerSet={setCareerList}></ValueCard>
                                         </>
                                     ))
                                 }
@@ -1384,7 +1411,7 @@ const Edit = () => {
                                         <>
                                             <ValueCard value={value} index={index} type={awardList} trigger={setAward}
                                                        triggerSet={setAwardAdd} param={awardAdd} mode={setEditAwardMode}
-                                                       checker={editAwardMode}></ValueCard>
+                                                       checker={editAwardMode} checkerSet={setAwardList}></ValueCard>
                                         </>
                                     ))
                                 }
@@ -1410,7 +1437,7 @@ const Edit = () => {
                                         <>
                                             <ValueCard value={value} index={index} type={eduList} trigger={setEdu}
                                                        triggerSet={setEduAdd} param={eduAdd} mode={setEditEduMode}
-                                                       checker={editEduMode}></ValueCard>
+                                                       checker={editEduMode} checkerSet={setEduList}></ValueCard>
                                         </>
                                     ))
                                 }
@@ -1436,7 +1463,7 @@ const Edit = () => {
                                         <>
                                             <ValueCard value={value} index={index} type={createList} trigger={setCreate}
                                                        triggerSet={setCreateAdd} param={createAdd} mode={setEditCreateMode}
-                                                       checker={editCreateMode}></ValueCard>
+                                                       checker={editCreateMode} checkerSet={setCreateList}></ValueCard>
                                         </>
                                     ))
                                 }

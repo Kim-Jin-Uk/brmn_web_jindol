@@ -184,10 +184,11 @@ const Upload = () => {
     const [imgSet,setImgSet] = useState(false)
     const [hashList,setHashList] = useState([])
     const [techList,setTechList] = useState([])
-    const [userCopyright, setUserCopyright] = useState("저작자표시 (CC BY)")
+    const [userCopyright, setUserCopyright] = useState("판권 소유")
     const [mainText,setMainText] = useState([])
 
     const copyrightList = [
+        "판권 소유",
         "저작자표시 (CC BY)",
         "저작자표시 동일조건변경허락 (CC BY-SA)",
         "저작자표시 변경금지 (CC BY-ND)",

@@ -55,6 +55,15 @@ export default function Menu(param) {
         }
     },[param.openAble])
 
+    const GoMyProfile = useCallback(() => {
+        console.log("click")
+        if (user && user.email){
+            document.location.href = `/profile/${user.email}`
+        }else{
+            router.push(`/profile/1`)
+        }
+    },[user])
+
     const onClickUpload = useCallback(() => {
         if (param.upload){
             param.setUpload(false)
@@ -79,18 +88,20 @@ export default function Menu(param) {
         <AntMenu>
             <div className={styles.dropdown}>
                 <div className={styles.dropdown_top}>
-                    <div style={{cursor: "pointer", display: "inline-block", paddingTop: "20px" , paddingLeft: "20px"}}>
-                        <Link href={
+                    <div onClick={() => {
+                        user && user.email
+                            ? document.location.href = `/profile/${user.email}`
+                            : router.push(`/profile/1`)
+                    }} style={{cursor: "pointer", display: "inline-block", paddingTop: "20px" , paddingLeft: "20px"}}>
+                        <ProfileThumbnail onClick={() => {
                             user && user.email
-                                ?`/profile/${user.email}`
-                                :`/profile/1`
-                        }><a>
-                            <ProfileThumbnail circle size={64} image={
-                                profile && profile.profile_img
-                                    ? profile.profile_img
-                                    : "https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
-                            }/>
-                        </a></Link>
+                                ? document.location.href = `/profile/${user.email}`
+                                : router.push(`/profile/1`)
+                        }} circle size={64} image={
+                            profile && profile.profile_img
+                                ? profile.profile_img
+                                : "https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
+                        }/>
                     </div>
                     <div className={styles.dropdown_item_top}>
                         {
@@ -108,13 +119,13 @@ export default function Menu(param) {
                     </div>
                 </div>
                 <div className={styles.dropdown_bottom}>
-                    <Link href={
+                    <div onClick={() => {
                         user && user.email
-                            ?`/profile/${user.email}`
-                            :`/profile/1`
-                    }><a className={styles.dropdown_item_bottom}>작업물 관리</a></Link>
-                    <Link href={"/profile/edit"}><a className={styles.dropdown_item_bottom}>프로필 편집</a></Link>
-                    <Link href={"/agreements/question"}><a className={styles.dropdown_item_bottom}>문의하기</a></Link>
+                            ? document.location.href = `/profile/${user.email}`
+                            : router.push(`/profile/1`)
+                    }} className={styles.dropdown_item_bottom}>작업물 관리</div>
+                    <div onClick={() => router.push("/profile/edit")} className={styles.dropdown_item_bottom}>프로필 편집</div>
+                    <div onClick={() => router.push("/agreements/question")} className={styles.dropdown_item_bottom}>문의하기</div>
                     <div onClick={() => onCLickLogOut()} className={styles.dropdown_item_bottom}>로그아웃</div>
                 </div>
             </div>
@@ -191,19 +202,13 @@ export default function Menu(param) {
 
                                                                     <Dropdown key={"a"} overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
                                                                         <AntBtn className={styles.dropdown_button}>
-                                                                            <Link href={
-                                                                                user && user.email
-                                                                                    ?`/profile/${user.email}`
-                                                                                    :`/profile/1`
-                                                                            }><a>
-                                                                                <div style={{cursor: "pointer", display: "flex"}}>
-                                                                                    <ProfileThumbnail circle size={40} image={
-                                                                                        profile && profile.profile_img
-                                                                                            ? profile.profile_img
-                                                                                            : "https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
-                                                                                    }/>
-                                                                                </div>
-                                                                            </a></Link>
+                                                                            <div onClick={()=>GoMyProfile()} style={{cursor: "pointer", display: "flex"}}>
+                                                                                <ProfileThumbnail circle size={40} image={
+                                                                                    profile && profile.profile_img
+                                                                                        ? profile.profile_img
+                                                                                        : "https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
+                                                                                }/>
+                                                                            </div>
                                                                         </AntBtn>
                                                                     </Dropdown>
                                                                 </>
@@ -285,19 +290,13 @@ export default function Menu(param) {
                                                                 <Button upload className={styles.create} onClick={()=>router.push("/project/upload").then((() =>window.scrollTo(0,0) ))}>프로젝트 업로드</Button>
                                                                 <Dropdown key={"b"} overlay={ProfileMenu} placement="bottomRight" arrow trigger={"hover"}>
                                                                     <AntBtn className={styles.dropdown_button}>
-                                                                        <Link href={
-                                                                            user && user.email
-                                                                                ?`/profile/${user.email}`
-                                                                                :`/profile/1`
-                                                                        }><a>
-                                                                            <div style={{cursor: "pointer", display: "flex"}}>
-                                                                                <ProfileThumbnail circle size={40} image={
-                                                                                    profile && profile.profile_img
-                                                                                        ? profile.profile_img
-                                                                                        : "https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
-                                                                                }/>
-                                                                            </div>
-                                                                        </a></Link>
+                                                                        <div onClick={()=>GoMyProfile()} style={{cursor: "pointer", display: "flex"}}>
+                                                                            <ProfileThumbnail circle size={40} image={
+                                                                                profile && profile.profile_img
+                                                                                    ? profile.profile_img
+                                                                                    : "https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
+                                                                            }/>
+                                                                        </div>
                                                                     </AntBtn>
                                                                 </Dropdown>
                                                             </>

@@ -23,7 +23,7 @@
     "draftjs-to-html": "^0.9.1",
     "embla-carousel-react": "^6.0.2",
     "faker": "^5.5.3",
-    "history": "^5.2.0",
+    "history": "^4.10.1",
     "html-to-draftjs": "^1.5.0",
     "immer": "^9.0.7",
     "moment": "^2.29.1",

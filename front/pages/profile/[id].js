@@ -27,112 +27,6 @@ import {CHANGE_CHECKER, LOAD_PROJECT_REQUEST} from "../../reducers/project";
 import {createGlobalStyle} from "styled-components";
 import {useInView} from "react-intersection-observer";
 
-function MainCard(props) {
-    const onClickCard = () => {
-        Router.push(`/project/${props.card.id}`)
-    }
-    const onClickProfile = () => {
-        Router.push(`/profile/${props.card.email}`)
-    }
-    return(
-        <>
-            {
-                props.card !== null
-                    ?
-                    <div className={`${cardStyle.card_group} ${styles.card_group} `}>
-                        <button onClick={onClickCard} className={`${cardStyle.card_button} `}>
-                            <div className={`${cardStyle.card_main} `}>
-                                <img src={props.card.imgUrl} className={`${cardStyle.card_main_img} `}></img>
-                                <div className={`${cardStyle.card_main_background} `}>
-                                    <div className={`${cardStyle.card_main_background_title} `}>{props.card.title}</div>
-                                </div>
-                            </div>
-                            <div className={`${cardStyle.card_meta} `}>
-                                <div className={`${cardStyle.card_meta_title} `}>{props.card.title}</div>
-                            </div>
-                        </button>
-                        <div style={{cursor:"pointer"}} onClick={onClickProfile}>
-                            <img src={
-                                props.card.profImg
-                                    ? props.card.profImg
-                                    :"https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
-                            } className={`${cardStyle.card_meta_img} `}></img>
-                            <div className={`${cardStyle.card_meta_nickname} `}>{props.card.nickname}</div>
-                        </div>
-                    </div>
-                    :
-                    <div className={`${cardStyle.card_group} ${styles.card_group} `}>
-                        <button onClick={() => Router.push("/project/upload")} style={{background:"#ffffff"}} className={`${cardStyle.card_button} `}>
-                            <div className={`${styles.card_none_main} `}>
-                                <div className={`${cardStyle.card_main} `}>
-                                    <div style={{margin:"0"}} className={`${cardStyle.card_main_img} `}>
-                                        <Empty
-                                            className={styles.card_none}
-                                            description={
-                                                <span className={styles.card_none_text}>
-                                    아직 업로드한 작품이 없습니다.
-                                    <br/>
-                                    지금 등록해보세요.
-                                    </span>
-                                            }
-                                        >
-                                            <Button className={styles.card_none_btn}>프로젝트 업로드</Button>
-                                        </Empty>
-                                    </div>
-                                </div>
-                            </div>
-                        </button>
-                    </div>
-            }
-
-        </>
-    )
-}
-
-function InfoCard(props) {
-    return(
-        <>
-            {
-                props.props !== undefined && props.props !== null
-                    ? <div style={{marginBottom:"22px"}}>
-                        <div>
-                            <div className={styles.info_title}>{props.props.title}</div>
-                            {
-                                props.props.date !== undefined && props.props.date !== null
-                                    ?(
-                                        <div className={styles.info_date}>{props.props.date}</div>
-                                    )
-                                    :(
-                                        <></>
-                                    )
-                            }
-                        </div>
-                        {
-                            props.props.info !== undefined && props.props.info !== null
-                                ?(
-                                    <div className={styles.info_subtitle}>{props.props.info}</div>
-                                )
-                                :(
-                                    <></>
-                                )
-                        }
-                        {
-                            props.props.detail !== undefined && props.props.detail !== null
-                                ?(
-                                    <div className={styles.info_content}>{props.props.detail}</div>
-                                )
-                                :(
-                                    <></>
-                                )
-                        }
-                    </div>
-                    : <></>
-            }
-        </>
-    )
-
-}
-
 const Global = createGlobalStyle`
     .ant-modal{
       top: 50%;
@@ -159,7 +53,7 @@ const Global = createGlobalStyle`
     }
 `;
 
-const ProfileProject = () => {
+const ProfileProject = ({match}) => {
     const router = useRouter()
     const [id,setId] = useState(router.query.id)
     const dispatch = useDispatch()
@@ -194,6 +88,117 @@ const ProfileProject = () => {
         "n1": true,
         "n2": false,
     })
+
+    function MainCard(props) {
+        const onClickCard = () => {
+            Router.push(`/project/${props.card.id}`)
+        }
+        const onClickProfile = () => {
+            Router.push(`/profile/${props.card.email}`)
+        }
+        return(
+            <>
+                {
+                    props.card !== null
+                        ?
+                        <div className={`${cardStyle.card_group} ${styles.card_group} `}>
+                            <button onClick={onClickCard} className={`${cardStyle.card_button} `}>
+                                <div className={`${cardStyle.card_main} `}>
+                                    <img src={props.card.imgUrl} className={`${cardStyle.card_main_img} `}></img>
+                                    <div className={`${cardStyle.card_main_background} `}>
+                                        <div className={`${cardStyle.card_main_background_title} `}>{props.card.title}</div>
+                                    </div>
+                                </div>
+                                <div className={`${cardStyle.card_meta} `}>
+                                    <div className={`${cardStyle.card_meta_title} `}>{props.card.title}</div>
+                                </div>
+                            </button>
+                            <div style={{cursor:"pointer"}} onClick={onClickProfile}>
+                                <img src={
+                                    props.card.profImg
+                                        ? props.card.profImg
+                                        :"https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
+                                } className={`${cardStyle.card_meta_img} `}></img>
+                                <div className={`${cardStyle.card_meta_nickname} `}>{props.card.nickname}</div>
+                            </div>
+                        </div>
+                        :
+                            isMe
+                                ?
+                                    <div className={`${cardStyle.card_group} ${styles.card_group} `}>
+                            <button style={{background:"#ffffff",cursor:"auto",border: "1px solid #E8E8E8"}} className={`${cardStyle.card_button} `}>
+                                <div className={`${styles.card_none_main} `}>
+                                    <div className={`${cardStyle.card_main} `}>
+                                        <div style={{margin:"0"}} className={`${cardStyle.card_main_img} `}>
+                                            <Empty
+                                                className={styles.card_none}
+                                                description={
+                                                    <span className={styles.card_none_text}>
+                                                    아직 업로드한 프로젝트가 없습니다.
+                                                    <br/>
+                                                    지금 등록해보세요.
+                                                    </span>
+                                                }
+                                            >
+                                                <Button onClick={() => Router.push("/project/upload")} className={styles.card_none_btn}>프로젝트 업로드</Button>
+                                            </Empty>
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                                :
+                                    <div className={styles.project_none_text}>아직 업로드한 프로젝트가 없습니다.</div>
+                }
+
+            </>
+        )
+    }
+
+    function InfoCard(props) {
+        console.log("props",props.props)
+        return(
+            <>
+                {
+                    props.props !== undefined && props.props !== null
+                        ? <div style={{marginBottom:"22px"}}>
+                            <div>
+                                <div className={styles.info_title}>{props.props.title}</div>
+                                {
+                                    props.props.date !== undefined && props.props.date !== null
+                                        ?(
+                                            <div className={styles.info_date}>{props.props.date}</div>
+                                        )
+                                        :(
+                                            <></>
+                                        )
+                                }
+                            </div>
+                            {
+                                props.props.info !== undefined && props.props.info !== null
+                                    ?(
+                                        <div className={styles.info_subtitle}>{props.props.info}</div>
+                                    )
+                                    :(
+                                        <></>
+                                    )
+                            }
+                            {
+                                props.props.detail !== undefined && props.props.detail !== null
+                                    ?(
+                                        <div className={styles.info_content}>{props.props.detail}</div>
+                                    )
+                                    :(
+                                        <></>
+                                    )
+                            }
+                        </div>
+                        : <></>
+                }
+            </>
+        )
+
+    }
 
     const onCLickChangeProfileImage = useCallback(() => {
         imageInput.current.click()
@@ -260,6 +265,10 @@ const ProfileProject = () => {
         }
         setNavActive({...navActive, ...field})
     },[navActive])
+
+    useEffect(() => {
+        console.log("match",match)
+    },[match])
 
     useEffect(() => {
         if (!router.isReady) return
@@ -432,8 +441,16 @@ const ProfileProject = () => {
     },[imagePath])
 
     useEffect(() => {
-        setCardList(loadUserProjects)
-    },[loadUserProjects])
+        let UserProject = []
+        if (id){
+            for (let i = 0; i < loadUserProjects.length; i++) {
+                if (loadUserProjects[i].email === id){
+                    UserProject.push(loadUserProjects[i])
+                }
+            }
+            setCardList(UserProject)
+        }
+    },[loadUserProjects,id])
 
     useEffect(() => {
         if (user && otherUser){
@@ -772,14 +789,38 @@ const ProfileProject = () => {
                                         </div>
                                     </div>
 
-                                    <div className={styles.info_card}>
-                                        <div className={styles.info_card_title}>소개</div>
-                                        <div className={styles.info_card_content}>{
-                                            otherProfile && otherProfile.introduce
-                                            ?otherProfile.introduce
-                                            :""
-                                        }</div>
-                                    </div>
+                                    {
+                                        !otherProfile.introduce && techList.length < 1 && equipList.length < 1 && careerList.length < 1 && eduList.length < 1 && awardList.length < 1 && createList.length < 1
+                                            ?
+                                                isMe
+                                                    ? <div style={{marginTop:"28px"}} className={styles.info_card}>
+                                                        <Empty
+                                                            description={
+                                                                <span className={styles.card_none_text}>
+                                                                아직 프로필이 없습니다.
+                                                                <br/>
+                                                                지금 등록해보세요.
+                                                            </span>
+                                                            }
+                                                        >
+                                                            <Button onClick={() => Router.push("/profile/edit")} className={styles.profile_none_btn}>프로필 업로드</Button>
+                                                        </Empty>
+                                                    </div>
+                                                    : <div className={styles.project_none_text}>아직 프로필이 없습니다.</div>
+                                            : <></>
+                                    }
+
+                                    {
+                                        otherProfile && otherProfile.introduce
+                                            ? <div className={styles.info_card}>
+                                                <div className={styles.info_card_title}>소개</div>
+                                                <div className={styles.info_card_content}>{
+                                                    otherProfile.introduce
+                                                }</div>
+                                            </div>
+                                            : <div></div>
+                                    }
+
                                     {/*tech*/}
                                     {
                                         techList.length < 1

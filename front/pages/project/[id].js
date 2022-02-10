@@ -368,8 +368,12 @@ const ProjectPage = () => {
             setIsMe(false)
         }
         if (loadProjectDetail){
-            const coprightText = loadProjectDetail.copyright.toLowerCase().split("(")[1].replace(')','').replace(' ','-')
-            setCopyrightList(coprightText.split('-'))
+            if (loadProjectDetail.copyright !== "판권 소유"){
+                const coprightText = loadProjectDetail.copyright.toLowerCase().split("(")[1].replace(')','').replace(' ','-')
+                setCopyrightList(coprightText.split('-'))
+            }else {
+                setCopyrightList(["all"])
+            }
             setProjectList(loadProjectDetail.projectdetails)
             let hash = []
             let field = []
@@ -485,9 +489,9 @@ const ProjectPage = () => {
                             : 1
                     }`}><a>
                         <img className={styles.main_artist_img} src={
-                            loadProjectDetail
+                            loadProjectDetail && loadProjectDetail.user.profile.profile_img
                                 ? loadProjectDetail.user.profile.profile_img
-                                : ""
+                                : "https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
                         }></img>
                     </a></Link>
                 </div>
@@ -504,11 +508,17 @@ const ProjectPage = () => {
                 </div>
 
                 <div className={styles.main_img_wrapper}>
-                    {copyrightList.map((props, index) => (
-                        <>
-                            <CopyrightBtn props={props}></CopyrightBtn>
-                        </>
-                    ))}
+                    {
+                        copyrightList[0] === "all"
+                            ?
+                            <div className={styles.all_right_reserved}>© All Rights Reserved</div>
+                            :
+                            copyrightList.map((props, index) => (
+                                <>
+                                    <CopyrightBtn props={props}></CopyrightBtn>
+                                </>
+                            ))
+                    }
                 </div>
 
             </div>
