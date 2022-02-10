@@ -7,7 +7,7 @@ dotenv.config()
 module.exports = () => {
     passport.use(new KakaoStrategy({
         clientID: process.env.KAKAO_API_KEY,
-        callbackURL: 'http://localhost:3065/oauth',
+        callbackURL: 'https://api.brmnmusic.com/oauth',
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             console.log("kakaoprofile",profile)
