@@ -1,12 +1,12 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import Header from "../../components/Header";
 import styles from "../../styles/Profile.module.scss"
+import sideStyles from "../../styles/Project.module.scss";
 import Button from "../../components/Button";
 import Footer from "../../components/Footer";
 import {message, Checkbox, Input, Select, Menu, Modal} from "antd";
 import {createGlobalStyle} from "styled-components";
 const { Option } = Select;
-import profile_image_default from "/images/default/profimg_default.svg"
 import DatePicker, {registerLocale} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ko from 'date-fns/locale/ko';
@@ -22,7 +22,6 @@ import {
 import Router from "next/router";
 import moment from 'moment'
 import 'moment/locale/ko'
-import sideStyles from "../../styles/Project.module.scss";
 import Link from "next/link";
 import ProfileThumbnail from "../../components/ProfileThumbnail";
 
@@ -645,7 +644,7 @@ const Edit = () => {
         "경상남도",
         "제주특별자치도"
     ]
-    const [userLocation, setUserLocation] = useState("서울특별시")
+    const [userLocation, setUserLocation] = useState("위치")
     const [userIntroduce, onChangeUserIntroduce, setUserIntroduce] = useInput("")
     const [userField, setUserField] = useState([])
     const [userInstagram, onChangeUserInstagram, setUserInstagram] = useInput("")
@@ -1004,28 +1003,32 @@ const Edit = () => {
     },[userLocation])
 
     const onClickMainSaveButton = () => {
-        dispatch({
-            type:UPDATE_MY_PROFILE_REQUEST,
-            data:{
-                email:user.email,
-                name:userName,
-                job:userJob,
-                location:userLocation,
-                introduce:userIntroduce,
-                field:userField.join(", "),
-                instagram:userInstagram,
-                youtube:userYoutube,
-                soundcloud:userSoundCloud,
-                facebook:userFacebook,
-                twitter:userTwitter,
-                tech:techList,
-                equip:equipList,
-                career:careerList,
-                award:awardList,
-                edu:eduList,
-                create:createList,
-            }
-        })
+        if (userName.length > 0){
+            dispatch({
+                type:UPDATE_MY_PROFILE_REQUEST,
+                data:{
+                    email:user.email,
+                    name:userName,
+                    job:userJob,
+                    location:userLocation,
+                    introduce:userIntroduce,
+                    field:userField.join(", "),
+                    instagram:userInstagram,
+                    youtube:userYoutube,
+                    soundcloud:userSoundCloud,
+                    facebook:userFacebook,
+                    twitter:userTwitter,
+                    tech:techList,
+                    equip:equipList,
+                    career:careerList,
+                    award:awardList,
+                    edu:eduList,
+                    create:createList,
+                }
+            })
+        }else {
+            message.warning("이름을 적어주세요.")
+        }
     }
 
     const onCLickLogOut = useCallback(() => {
@@ -1062,7 +1065,7 @@ const Edit = () => {
                     ]}
                 >
                     <div>분야 이름</div>
-                    <input className={styles.add_field_input} onChange={onChangeFieldName} value={fieldName} type="text" placeholder={"분야 이름을 입력합니다."}/>
+                    <input maxLength={30} className={styles.add_field_input} onChange={onChangeFieldName} value={fieldName} type="text" placeholder={"분야 이름을 입력합니다."}/>
                 </Modal>
 
                 <div className={styles.edit_main_wrapper}>

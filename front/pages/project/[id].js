@@ -77,6 +77,13 @@ const Global = createGlobalStyle`
   body {
     background: #fafafa;
   }
+  
+  pre{
+    white-space: -moz-pre-wrap; /* Mozilla, supported since 1999 */
+    white-space: -o-pre-wrap; /* Opera */ 
+    white-space: pre-wrap; /* CSS3 - Text module (Candidate Recommendation) http://www.w3.org/TR/css3-text/#white-space */ 
+    word-wrap: break-word; /* IE 5.5+ */
+  }
 
   .ant-popover-inner-content {
     height: 76px;
@@ -496,17 +503,20 @@ const ProjectPage = () => {
                     </a></Link>
                 </div>
 
-                <div className={styles.main_artist}>
-                    <div className={styles.main_artist_title}>기술</div>
-                    <div style={{marginTop:"16px", marginLeft:"-3px"}}>
-                        {techList.map((props, index) => (
-                            <>
-                                <TechBtn props={props}></TechBtn>
-                            </>
-                        ))}
-                    </div>
-                </div>
-
+                {
+                    techList.length > 0
+                        ? <div className={styles.main_artist}>
+                            <div className={styles.main_artist_title}>기술</div>
+                            <div style={{marginTop:"16px", marginLeft:"-3px"}}>
+                                {techList.map((props, index) => (
+                                    <>
+                                        <TechBtn props={props}></TechBtn>
+                                    </>
+                                ))}
+                            </div>
+                        </div>
+                        : <></>
+                }
                 <div className={styles.main_img_wrapper}>
                     {
                         copyrightList[0] === "all"

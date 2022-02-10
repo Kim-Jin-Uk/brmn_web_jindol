@@ -209,7 +209,7 @@
 .dropdown_item_top{
     margin-left: 12px;
     display: inline-block;
-    width: 120px;
+    width: 160px;
     vertical-align: top;
     margin-top: 20px;
     >span{
@@ -237,6 +237,14 @@
     font-size: 16px;
     line-height: 130%;
     color: #1D1D1D;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
 }
 
 .dropdown_item_top_second{
@@ -246,6 +254,10 @@
     font-size: 12px;
     line-height: 170%;
     color: #616161;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
 }
 
 .dropdown_button{

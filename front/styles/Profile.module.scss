@@ -50,10 +50,18 @@
   color: #1D1D1D;
   text-align: center;
   margin: 12px auto 0;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
 }
 
 .profile_top_sub{
   display: none;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
 }
 
 .profile_top_button{
@@ -254,6 +262,10 @@
   line-height: 130%;
   color: #1D1D1D;
   margin-bottom: 8px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
 }
 
 .profile_profile_top_sub{
@@ -263,6 +275,10 @@
   font-size: 14px;
   line-height: 170%;
   color: #1D1D1D;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
 }
 
 .profile_profile_top_follow{

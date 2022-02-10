@@ -428,7 +428,7 @@ const Upload = () => {
                                         <div style={{paddingTop:"4px", border:"none"}}>
                                             <div className={styles.detail_box}>
                                                 <div className={styles.detail_title}>제목*</div>
-                                                <input value={title} onChange={onChangeTitle} className={styles.detail_edit} type="text" placeholder={"제목"}/>
+                                                <input maxLength={60} value={title} onChange={onChangeTitle} className={styles.detail_edit} type="text" placeholder={"제목"}/>
                                             </div>
                                             <div className={styles.detail_box} style={{height:"auto"}}>
                                                 <div className={styles.detail_title}>분야*</div>
