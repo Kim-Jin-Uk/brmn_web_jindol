@@ -235,7 +235,11 @@ const Upload = () => {
                 const item = e.target.innerText.replace(/\n/gi,'').toLowerCase()
                 if (!hashList.includes(item)){
                     if (item.replace(/(\s*)/g,'') !== ''){
-                        setHashList([...hashList,item])
+                        if (item.length >= 30){
+                            message.warning("태그는 30자까지 입력가능합니다.")
+                        }else {
+                            setHashList([...hashList,item])
+                        }
                     }else {
 
                     }
@@ -254,7 +258,11 @@ const Upload = () => {
                 const item = e.target.innerText.replace(/\n/gi,'').toLowerCase()
                 if (!techList.includes(item)){
                     if (item.replace(/(\s*)/g,'') !== ''){
-                        setTechList([...techList,item])
+                        if (item.length >= 30){
+                            message.warning("태그는 30자까지 입력가능합니다.")
+                        }else{
+                            setTechList([...techList,item])
+                        }
                     }else {
 
                     }
