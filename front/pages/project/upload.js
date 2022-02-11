@@ -286,11 +286,15 @@ const Upload = () => {
 
     const addModalFieldItem = () =>{
         const item = fieldName.toLowerCase()
-        if (!fieldList.includes(item)){
-            setFieldList([...fieldList, item])
-            setModalVisible(false)
+        if (fieldList.length >= 30){
+            message.warning("태그는 30개까지 입력가능합니다.")
         }else {
-            message.warning("동일한 태그가 존재합니다.")
+            if (!fieldList.includes(item)){
+                setFieldList([...fieldList, item])
+                setModalVisible(false)
+            }else {
+                message.warning("동일한 태그가 존재합니다.")
+            }
         }
         setFieldName("")
 

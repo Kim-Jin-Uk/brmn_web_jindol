@@ -752,7 +752,17 @@ const Edit = () => {
         setFieldName(e.target.value)
     }
     const addFieldItem = () =>{
-        setFieldList([...fieldList, fieldName])
+        const item = fieldName.toLowerCase()
+        if (fieldList.length >= 8){
+            message.warning("분야는 추가로 3개까지 입력가능합니다.")
+        }else {
+            if (!fieldList.includes(item)){
+                setFieldList([...fieldList, item])
+                setModalVisible(false)
+            }else {
+                message.warning("동일한 분야가 존재합니다.")
+            }
+        }
         setFieldName("")
         setModalVisible(false)
     }
