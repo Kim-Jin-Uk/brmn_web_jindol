@@ -68,26 +68,26 @@ function MainCard(props) {
     return(
         <>
             <div className={styles.card_group}>
-                <Link href={`/project/${props.card.id}`}><a>
+                <div onClick={() => document.location.href = `/project/${props.card.id}`}>
                     <button className={styles.card_button}>
-                    <div className={styles.card_main}>
-                        <img src={props.card.imgUrl} className={styles.card_main_img}></img>
-                        <div className={styles.card_main_background}>
-                            <div className={styles.card_main_background_title}>{props.card.title}</div>
+                        <div className={styles.card_main}>
+                            <img src={props.card.imgUrl} className={styles.card_main_img}></img>
+                            <div className={styles.card_main_background}>
+                                <div className={styles.card_main_background_title}>{props.card.title}</div>
+                            </div>
                         </div>
-                    </div>
-                    <div className={styles.card_meta}>
-                        <div className={styles.card_meta_title}>{props.card.title}</div>
-                    </div>
-                </button>
-                </a></Link>
+                        <div className={styles.card_meta}>
+                            <div className={styles.card_meta_title}>{props.card.title}</div>
+                        </div>
+                    </button>
+                </div>
                 <div style={{cursor:"pointer"}}>
-                    <img onClick={() => Router.push(`profile/${props.card.email}`)} src={
+                    <img onClick={() => {document.location.href = `/profile/${props.card.email}`}} src={
                         props.card.profImg
                             ?props.card.profImg
                             :"https://brmnmusic-image-s3.s3.ap-northeast-2.amazonaws.com/brmn/profimg_default.svg"
                     } className={styles.card_meta_img}></img>
-                    <div onClick={() => Router.push(`profile/${props.card.email}`)} className={styles.card_meta_nickname}>{props.card.nickname}</div>
+                    <div onClick={() => {document.location.href = `/profile/${props.card.email}`}} className={styles.card_meta_nickname}>{props.card.nickname}</div>
                 </div>
             </div>
         </>

@@ -618,6 +618,14 @@
     line-height: 170%;
     color: #1D1D1D;
     padding-left: 2px;
+    vertical-align: top;
+  }
+  > span:last-child{
+    height: 18px;
+    width: calc(100% - 28px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 

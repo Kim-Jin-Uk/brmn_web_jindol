@@ -91,10 +91,10 @@ const ProfileProject = ({match}) => {
 
     function MainCard(props) {
         const onClickCard = () => {
-            Router.push(`/project/${props.card.id}`)
+            document.location.href = `/project/${props.card.id}`
         }
         const onClickProfile = () => {
-            Router.push(`/profile/${props.card.email}`)
+            document.location.href = `/profile/${props.card.email}`
         }
         return(
             <>
@@ -218,7 +218,7 @@ const ProfileProject = ({match}) => {
             type:UPDATE_PROFILE_IMAGE_DEFAULT_REQUEST,
             data:{id:user.email}
         })
-    },[])
+    },[user])
 
     const ProfileMenu = (
         <AntMenu>
