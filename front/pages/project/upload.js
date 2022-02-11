@@ -236,30 +236,38 @@ const Upload = () => {
 
     const onEnterHash = (e) => {
         if (e.key === "Enter"){
-            const item = e.target.innerText.replace(/\n/gi,'').toLowerCase()
-            if (!hashList.includes(item)){
-                if (item.replace(/(\s*)/g,'') !== ''){
-                    setHashList([...hashList,item])
-                }else {
-
-                }
+            if (hashList.length >= 30){
+                message.warning("태그는 30개까지 입력가능합니다.")
             }else {
-                message.warning("동일한 태그를 입력하셨습니다.")
+                const item = e.target.innerText.replace(/\n/gi,'').toLowerCase()
+                if (!hashList.includes(item)){
+                    if (item.replace(/(\s*)/g,'') !== ''){
+                        setHashList([...hashList,item])
+                    }else {
+
+                    }
+                }else {
+                    message.warning("동일한 태그를 입력하셨습니다.")
+                }
             }
             e.target.innerText = ""
         }
     }
     const onEnterTech = (e) => {
         if (e.key === "Enter"){
-            const item = e.target.innerText.replace(/\n/gi,'').toLowerCase()
-            if (!techList.includes(item)){
-                if (item.replace(/(\s*)/g,'') !== ''){
-                    setTechList([...techList,item])
-                }else {
-
-                }
+            if (techList.length >= 30){
+                message.warning("태그는 30개까지 입력가능합니다.")
             }else {
-                message.warning("동일한 태그를 입력하셨습니다.")
+                const item = e.target.innerText.replace(/\n/gi,'').toLowerCase()
+                if (!techList.includes(item)){
+                    if (item.replace(/(\s*)/g,'') !== ''){
+                        setTechList([...techList,item])
+                    }else {
+
+                    }
+                }else {
+                    message.warning("동일한 태그를 입력하셨습니다.")
+                }
             }
             e.target.innerText = ""
         }
