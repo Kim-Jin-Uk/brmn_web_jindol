@@ -81,7 +81,7 @@ function MainCard(props) {
                         </div>
                     </button>
                 </div>
-                <div style={{cursor:"pointer"}}>
+                <div style={{cursor: "pointer"}}>
                     <img onClick={() => {document.location.href = `/profile/${props.card.email}`}} src={
                         props.card.profImg
                             ?props.card.profImg
